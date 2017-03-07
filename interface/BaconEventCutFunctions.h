@@ -13,7 +13,7 @@
 
 #include "MyTools/RootUtils/interface/Constants.h"
 #include "MyTools/AnalysisTools/interface/EventSelector.h"
-#include "DAZSLE/ZPrimePlusJet/interface/BaconData.h"
+#include "DAZSLE/PhiBBPlusJet/interface/BaconData.h"
 
 template class EventSelector<BaconData>;
 
@@ -40,6 +40,8 @@ namespace BaconEventCutFunctions {
 	bool Max_AK8Puppijet0_tau21(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Min_AK8Puppijet0_tau21DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Max_AK8Puppijet0_tau21DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
+	bool Min_AK8Puppijet0_N2DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
+	bool Max_AK8Puppijet0_N2DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Min_AK8Puppijet0_tau32(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Max_AK8Puppijet0_tau32(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	void Configure(EventSelector<BaconData>* p_event_selector);
