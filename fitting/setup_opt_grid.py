@@ -60,20 +60,21 @@ if __name__ == "__main__":
 		supersamples = config.supersamples
 		samples = [] 
 		for supersample in supersamples:
+			#print config.samples[supersample]
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				sample_files[sample] = config.skims[sample]
+				sample_files[sample] = config.sklims[sample]
 	elif args.supersamples:
 		supersamples = args.supersamples.split(",")
 		samples = [] 
 		for supersample in supersamples:
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				sample_files[sample] = config.skims[sample]
+				sample_files[sample] = config.sklims[sample]
 	elif args.samples:
 		samples = args.samples.split(",")
 		for sample in samples:
-			sample_files[sample] = config.skims[sample]
+			sample_files[sample] = config.sklims[sample]
 	elif args.files:
 		files = args.files.split(",")
 		for filename in files:
@@ -108,7 +109,10 @@ if __name__ == "__main__":
 		for selection_name in selection_names:
 			for sample in samples:
 				print "\n *** Running sample {}".format(sample)
-				limit_histogrammer = LimitHistograms(sample, "Events")
+				if "DMSpin0" in sample:
+					limit_histogrammer = LimitHistograms(sample, "Events")
+				else:
+					limit_histogrammer = LimitHistograms(sample, "otree")
 				if args.output_folder:
 					limit_histogrammer.set_output_path("{}/InputHistograms_{}.root".format(args.output_folder, sample))
 				else:

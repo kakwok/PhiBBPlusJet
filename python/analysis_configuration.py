@@ -3,13 +3,14 @@ import os
 # Signal, background, data names
 background_names = [
 	"qcd",
-	"st_4f",
-	"st_5f",
+	"stqq",
 	"tqq",
 	"wqq",
-	"zqq"
+	"zqq",
+	"vvqq",
 ]
 signal_names = []
+#signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
 signal_masses = [50,75,100,125,150,250,300,400,500]
 for mass in signal_masses:
 	signal_names.append("Pbb_{}".format(mass))
@@ -23,12 +24,12 @@ supersamples.extend(data_names)
 # Sample names. Dictionary is [signal/background/data name]:[list of samples] 
 samples = {
 	"qcd":["QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8","QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"],
-	"st_4f":["ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1","ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1"],
-	"st_5f":["ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1","ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1"],
-	"tqq":["TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"],
-	"wqq":["WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"],
-	#"wqq":["WJetsToQQ_HT180_13TeV"],
-	"zqq":["ZJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"],
+	"stqq":["ST_t_antitop","ST_t_top","ST_tW_antitop","ST_tW_top"],
+	"tqq":["TTJets"],
+	"wqq":["WJetsToQQ"],
+	"zqq":["DYJetsToQQ"],
+	"vvqq":["WWTo4Q", "WZ", "ZZ"],
+	"data_obs":["JetHTRun2016B","JetHTRun2016C","JetHTRun2016D","JetHTRun2016E","JetHTRun2016F","JetHTRun2016G","JetHTRun2016H"],
 	"Pbb_50":["DMSpin0_ggPhibb1j_50"],
 	"Pbb_75":["DMSpin0_ggPhibb1j_75"],
 	"Pbb_100":["DMSpin0_ggPhibb1j_100"],
@@ -38,8 +39,10 @@ samples = {
 	"Pbb_300":["DMSpin0_ggPhibb1j_300"],
 	"Pbb_400":["DMSpin0_ggPhibb1j_400"],
 	"Pbb_500":["DMSpin0_ggPhibb1j_500"],
-	"data_obs":["JetHTRun2016B","JetHTRun2016C","JetHTRun2016D","JetHTRun2016E","JetHTRun2016F","JetHTRun2016G","JetHTRun2016H"],
 }
+#for mass in signal_masses:
+#	for spin in ["Scalar", "PseudoScalar"]:
+#		samples["Pbb_{}_{}".format(mass, spin)] = ["Spin0_ggPhibb1j_{}_{}".format(mass, spin)]
 
 # Skims. Dictionary is [sample name]:[path to skim].
 skims = {}
@@ -106,30 +109,41 @@ for mass in signal_masses:
 
 # Sklims
 sklims = {}
-sklims["JetHTRun2016B"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/JetHTRun2016B_PromptReco_v2_resub.root"
-sklims["JetHTRun2016C"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/JetHTRun2016C_PromptReco_v2.root"
-sklims["JetHTRun2016D"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/JetHTRun2016D_PromptReco_v2.root"
-sklims["JetHTRun2016E"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/JetHTRun2016E_PromptReco_v2.root"
-sklims["JetHTRun2016F"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/JetHTRun2016F_PromptReco_v1.root"
-sklims["JetHTRun2016G"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/JetHTRun2016G_PromptReco_v1.root"
-sklims["JetHTRun2016H"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/JetHTRun2016H_PromptReco_v2.root"
-sklims["QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT100to200_13TeV_1000pb_weighted.root"
-sklims["QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT200to300_13TeV_ext_1000pb_weighted.root"
-sklims["QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT300to500_13TeV_ext_1000pb_weighted.root"
-sklims["QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT500to700_13TeV_ext_1000pb_weighted.root"
-sklims["QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT700to1000_13TeV_ext_1000pb_weighted.root"
-sklims["QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT1000to1500_13TeV_ext_1000pb_weighted.root"
-sklims["QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT1500to2000_13TeV_ext_1000pb_weighted.root"
-sklims["QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/QCD_HT2000toInf_13TeV_ext_1000pb_weighted.root"
-sklims["ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/ST_t-channel_antitop_4f_inclusiveDecays_13TeV_powheg_1000pb_weighted.root"
-sklims["ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1"] =  "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/ST_t-channel_top_4f_inclusiveDecays_13TeV_powheg_1000pb_weighted.root"
-sklims["ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/ST_tW_antitop_5f_inclusiveDecays_13TeV_1000pb_weighted.root"
-sklims["ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/ST_tW_top_5f_inclusiveDecays_13TeV_1000pb_weighted.root"
-sklims["WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/WJetsToQQ_HT_600ToInf_13TeV_1000pb_weighted.root"
-sklims["ZJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/ZJetsToQQ_HT600toInf_13TeV_madgraph_1000pb_weighted.root"
-sklims["TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/sklim-v0-Nov29/TTJets_13TeV_1000pb_weighted.root"
+sklims["JetHTRun2016B"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v1.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_0.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_1.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_2.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_3.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_4.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_5.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_6.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_7.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_8.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_9.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_10.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_11.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_12.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_13.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016B_23Sep2016_v3_14.root"]
+sklims["JetHTRun2016C"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016C_23Sep2016_v1_v2.root"]
+sklims["JetHTRun2016D"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_0.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_1.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_2.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_3.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_4.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_5.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_6.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016D_23Sep2016_v1_7.root"]
+sklims["JetHTRun2016E"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_0.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_1.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_2.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_3.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_4.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_5.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_6.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016E_23Sep2016_v1_7.root"]
+sklims["JetHTRun2016F"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016F_23Sep2016_v1.root"]
+sklims["JetHTRun2016G"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016G_23Sep2016_v1_v2.root"]
+sklims["JetHTRun2016H"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016H_PromptReco_v2.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/JetHTRun2016H_PromptReco_v3.root"]
+sklims["QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT100to200_13TeV_1000pb_weighted.root"]
+sklims["QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT200to300_13TeV_1000pb_weighted.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT200to300_13TeV_ext_1000pb_weighted.root"]
+sklims["QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT300to500_13TeV_1000pb_weighted.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT300to500_13TeV_ext_1000pb_weighted.root"]
+sklims["QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT500to700_13TeV_ext_1000pb_weighted.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT500to700_13TeV_1000pb_weighted.root"]
+sklims["QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT700to1000_13TeV_ext_1000pb_weighted.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT700to1000_13TeV_1000pb_weighted.root"]
+sklims["QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT1000to1500_13TeV_ext_1000pb_weighted.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT1000to1500_13TeV_1000pb_weighted.root"]
+sklims["QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT1500to2000_13TeV_1000pb_weighted.root","root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT1500to2000_13TeV_ext_1000pb_weighted.root"]
+sklims["QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/QCD_HT2000toInf_13TeV_1000pb_weighted.root"]
+
+sklims["ST_t_antitop"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root"]
+sklims["ST_t_top"] = [ "root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root"]
+sklims["ST_tW_antitop"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4_1000pb_weighted.root"]
+sklims["ST_tW_top"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4_1000pb_weighted.root"]
+
+sklims["WJetsToQQ"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/WJetsToQQ_HT180_13TeV_1000pb_weighted.root"]
+sklims["DYJetsToQQ"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/DYJetsToQQ_HT180_13TeV_1000pb_weighted.root"]
+sklims["TTJets"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/TT_powheg_1000pb_weighted.root"]
+sklims["WWTo4Q"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/WWTo4Q_13TeV_powheg_1000pb_weighted.root"]
+sklims["ZZ"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/ZZ_13TeV_pythia8_1000pb_weighted.root"]
+sklims["WZ"] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.03/cvernier/WZ_13TeV_pythia8_1000pb_weighted.root"]
 for mass in signal_masses:
-	sklims["DMSpin0_ggPhibb1j_{}".format(mass)] = "root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/DMSpin0_ggPhibb1j_{}_1000pb_weighted.root".format(mass)
+	sklims["DMSpin0_ggPhibb1j_{}".format(mass)] = ["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/DMSpin0_ggPhibb1j_{}.root".format(mass)]
+
+# Need to re-make these sklims for v12! The processing barely did any events.
+#for mass in signal_masses:
+#	for spin in ["Scalar", "PseudoScalar"]:
+#		sklims["Spin0_ggPhibb1j_{}_{}".format(mass, spin)] = ["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.02/norm/Spin0_ggPhi12j_g1_{}_{}_13TeV_madgraph_1000pb_weighted.root".format(mass, spin)]
+
 
 def get_sample_from_sklim(sklim):
 	found_sample = ""
