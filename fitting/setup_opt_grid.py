@@ -65,7 +65,7 @@ if __name__ == "__main__":
 			for sample in config.samples[supersample]:
 				if "Spin0" in sample:
 					sample_files[sample] = config.skims[sample]
-			else:
+				else:
 					sample_files[sample] = config.sklims[sample]
 	elif args.supersamples:
 		supersamples = args.supersamples.split(",")
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 			for sample in config.samples[supersample]:
 				if "Spin0" in sample:
 					sample_files[sample] = config.skims[sample]
-			else:
+				else:
 					sample_files[sample] = config.sklims[sample]
 	elif args.samples:
 		samples = args.samples.split(",")
