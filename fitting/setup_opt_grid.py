@@ -117,7 +117,7 @@ if __name__ == "__main__":
 				if args.output_folder:
 					limit_histogrammer.set_output_path("{}/InputHistograms_{}.root".format(args.output_folder, sample))
 				else:
-					limit_histogrammer.set_output_path("/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/{}/InputHistograms_{}.root".format(selection_name, sample))
+					limit_histogrammer.set_output_path("{}/Optimization/{}/InputHistograms_{}.root".format(analysis_configuration.paths["LimitSetting"], selection_name, sample))
 				for filename in sample_files[sample]:
 					print "Input file {}".format(filename)
 					limit_histogrammer.add_file(filename)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
 		for sample in samples:
 			start_directory = os.getcwd()
 			job_tag = "job_{}_{}".format(sample, int(floor(time.time())))
-			submission_directory = "/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/condor/{}".format(job_tag)
+			submission_directory = "{}/Optimization/condor/{}".format(analysis_configuration.paths["LimitSetting"], job_tag)
 			os.system("mkdir -pv {}".format(submission_directory))
 			os.chdir(submission_directory)
 
@@ -175,7 +175,7 @@ if __name__ == "__main__":
 			hadd_script = open(hadd_script_path, "w")
 			hadd_script.write("#!/bin/bash\n")
 			for selection_name in selection_names:
-				hadd_script.write("hadd /uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/{}/InputHistograms_{}.root {}/InputHistograms*{}*csubjob*root\n".format(selection_name, sample, submission_directory, selection_name))
+				hadd_script.write("hadd {}/Optimization/{}/InputHistograms_{}.root {}/InputHistograms*{}*csubjob*root\n".format(analysis_configuration.paths["LimitSetting"], selection_name, sample, submission_directory, selection_name))
 			hadd_script.close()
 			postprocessing_commands.append("source {}".format(hadd_script_path))
 			os.chdir(start_directory)
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 		if not args.all:
 			master_hadd_basename += "_" + str(int(floor(time.time())))
 		master_hadd_basename += ".sh"
-		master_hadd_script_path = "/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/{}".format(master_hadd_basename)
+		master_hadd_script_path = "{}/Optimization/{}".format(analysis_configuration.paths["LimitSetting"], master_hadd_basename)
 		master_hadd_script = open(master_hadd_script_path, "w")
 		master_hadd_script.write("#!/bin/bash\n")
 		for postprocessing_command in postprocessing_commands:
@@ -200,7 +200,7 @@ if __name__ == "__main__":
 		for sample in samples:
 			start_directory = os.getcwd()
 			job_tag = "job_{}_{}".format(sample, int(floor(time.time())))
-			submission_directory = "/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/condor/{}".format(job_tag)
+			submission_directory = "{}/Optimization/condor/{}".format(analysis_configuration.paths["LimitSetting"], job_tag)
 			os.system("mkdir -pv {}".format(submission_directory))
 			os.chdir(submission_directory)
 
@@ -314,7 +314,7 @@ if __name__ == "__main__":
 		for selection_name in selection_names:
 			top_directory = "{}/Optimization/{}".format(analysis_configuration.paths["LimitSetting"], selection_name)
 			os.system("mkdir -pv {}/combine".format(top_directory))
-			rhalphabet_command = "python /uscms_data/d3/dryu/DAZSLE/CMSSW_7_4_7/src/DAZSLE/PhiBBPlusJet/fitting/PbbJet/buildRhalphabetPbb.py -i {}/hists_1D.root -b -o {}/combine --pseudo".format(top_directory, top_directory)
+			rhalphabet_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/fitting/PbbJet/buildRhalphabetPbb.py -i {}/hists_1D.root -b -o {}/combine --pseudo".format(top_directory, top_directory)
 			print rhalphabet_command
 			os.system(rhalphabet_command)
 	if args.copy_cards:
