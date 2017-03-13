@@ -118,7 +118,7 @@ if __name__ == "__main__":
 		for selection_name in selection_names:
 			for sample in samples:
 				print "\n *** Running sample {}".format(sample)
-				if "DMSpin0" in sample:
+				if "Spin0" in sample:
 					limit_histogrammer = LimitHistograms(sample, "Events")
 				else:
 					limit_histogrammer = LimitHistograms(sample, "otree")
