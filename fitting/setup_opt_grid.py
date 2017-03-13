@@ -118,7 +118,7 @@ if __name__ == "__main__":
 		for selection_name in selection_names:
 			for sample in samples:
 				print "\n *** Running sample {}".format(sample)
-				if len(sample_files[sample] == 0):
+				if len(sample_files[sample]) == 0:
 					print "\tWARNING : No input files! Skipping this sample."
 					continue
 				if "Spin0" in sample:
