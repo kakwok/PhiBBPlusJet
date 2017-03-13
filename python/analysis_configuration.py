@@ -14,6 +14,7 @@ signal_names = []
 signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 for mass in signal_masses:
 	signal_names.append("Pbb_{}".format(mass))
+	signal_names.append("PSbb_{}".format(mass))
 data_names = ["data_obs"]
 supersamples = []
 supersamples.extend(background_names)
@@ -80,37 +81,7 @@ skims["ZJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root:/
 skims["TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/TTJets_13TeV.root"]
 for mass in signal_masses:
 	skims["Spin0_ggPhi12j_g1_{}_Scalar".format(mass)] = [x.strip().replace("/eos/", "root://eoscms.cern.ch//eos/") for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/Spin0_ggPhi12j_g1_{}_Scalar_13TeV_madgraphs.txt"))]
-Spin0_ggPhi12j_g1_5_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_25_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_50_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_75_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_100_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_125_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_150_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_200_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_250_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_300_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_350_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_400_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_500_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_600_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_800_Scalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_1000_Scalar_13TeV_madgraph.txt
-
-Spin0_ggPhi12j_g1_800_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_75_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_600_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_5_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_50_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_500_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_350_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_300_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_25_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_250_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_200_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_150_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_125_PseudoScalar_13TeV_madgraph.txt
-Spin0_ggPhi12j_g1_1000_PseudoScalar_13TeV_madgraph.txt
+	skims["Spin0_ggPhi12j_g1_{}_PseudoScalar".format(mass)] = [x.strip().replace("/eos/", "root://eoscms.cern.ch//eos/") for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/Spin0_ggPhi12j_g1_{}_PseudoScalar_13TeV_madgraphs.txt"))]
 
 # Function to infer the sample from a file path... removing for now, because this doesn't work well on the batch system. E.g. if you have subfiles with generic names (e.g. Output_subjob1.root), there is no way to get the sample.
 #def get_sample_from_skim(skim):
