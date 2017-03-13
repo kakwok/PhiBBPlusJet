@@ -80,8 +80,8 @@ skims["JetHTRun2016H"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BAS
 #skims["ZJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.061/ZJetsToQQ_HT600toInf_13TeV_madgraph.root"]
 #skims["TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/TTJets_13TeV.root"]
 for mass in signal_masses:
-	skims["Spin0_ggPhi12j_g1_{}_Scalar".format(mass)] = [x.strip().replace("/eos/", "root://eoscms.cern.ch//eos/") for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/Spin0_ggPhi12j_g1_{}_Scalar_13TeV_madgraphs.txt".format(mass)))]
-	skims["Spin0_ggPhi12j_g1_{}_PseudoScalar".format(mass)] = [x.strip().replace("/eos/", "root://eoscms.cern.ch//eos/") for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/Spin0_ggPhi12j_g1_{}_PseudoScalar_13TeV_madgraphs.txt".format(mass)))]
+	skims["Spin0_ggPhi12j_g1_{}_Scalar".format(mass)] = [x.strip().replace("/eos/", "root://eoscms.cern.ch//eos/") for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/Spin0_ggPhi12j_g1_{}_Scalar_13TeV_madgraph.txt".format(mass)))]
+	skims["Spin0_ggPhi12j_g1_{}_PseudoScalar".format(mass)] = [x.strip().replace("/eos/", "root://eoscms.cern.ch//eos/") for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/Spin0_ggPhi12j_g1_{}_PseudoScalar_13TeV_madgraph.txt".format(mass)))]
 
 # Function to infer the sample from a file path... removing for now, because this doesn't work well on the batch system. E.g. if you have subfiles with generic names (e.g. Output_subjob1.root), there is no way to get the sample.
 #def get_sample_from_skim(skim):
