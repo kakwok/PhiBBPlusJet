@@ -63,18 +63,27 @@ if __name__ == "__main__":
 			#print config.samples[supersample]
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				sample_files[sample] = config.sklims[sample]
+				if "Pbb" or "PSbb" in sample:
+					sample_files[sample] = config.slims[sample]
+			else:
+					sample_files[sample] = config.sklims[sample]
 	elif args.supersamples:
 		supersamples = args.supersamples.split(",")
 		samples = [] 
 		for supersample in supersamples:
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				sample_files[sample] = config.sklims[sample]
+				if "Pbb" or "PSbb" in sample:
+					sample_files[sample] = config.slims[sample]
+			else:
+					sample_files[sample] = config.sklims[sample]
 	elif args.samples:
 		samples = args.samples.split(",")
 		for sample in samples:
-			sample_files[sample] = config.sklims[sample]
+			if "Pbb" or "PSbb" in sample:
+				sample_files[sample] = config.slims[sample]
+			else:
+				sample_files[sample] = config.sklims[sample]
 	elif args.files:
 		files = args.files.split(",")
 		for filename in files:
