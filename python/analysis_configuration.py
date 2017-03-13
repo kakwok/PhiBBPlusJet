@@ -1,5 +1,9 @@
 import os
 
+paths = {
+	"LimitSetting":os.path.expandvars("$HOME/DAZSLE/data/LimitSetting")
+}
+
 # Signal, background, data names
 background_names = [
 	"qcd",
