@@ -11,7 +11,7 @@ background_names = [
 ]
 signal_names = []
 #signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
-signal_masses = [50,75,100,125,150,250,300,400,500]
+signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 for mass in signal_masses:
 	signal_names.append("Pbb_{}".format(mass))
 data_names = ["data_obs"]
@@ -30,15 +30,24 @@ samples = {
 	"zqq":["DYJetsToQQ"],
 	"vvqq":["WWTo4Q", "WZ", "ZZ"],
 	"data_obs":["JetHTRun2016B","JetHTRun2016C","JetHTRun2016D","JetHTRun2016E","JetHTRun2016F","JetHTRun2016G","JetHTRun2016H"],
-	"Pbb_50":["DMSpin0_ggPhibb1j_50"],
-	"Pbb_75":["DMSpin0_ggPhibb1j_75"],
-	"Pbb_100":["DMSpin0_ggPhibb1j_100"],
-	"Pbb_125":["DMSpin0_ggPhibb1j_125"],
-	"Pbb_150":["DMSpin0_ggPhibb1j_150"],
-	"Pbb_250":["DMSpin0_ggPhibb1j_250"],
-	"Pbb_300":["DMSpin0_ggPhibb1j_300"],
-	"Pbb_400":["DMSpin0_ggPhibb1j_400"],
-	"Pbb_500":["DMSpin0_ggPhibb1j_500"],
+	"Sbb_50":["Spin0_ggPhi12j_g1_50_Scalar"],
+	"Sbb_75":["Spin0_ggPhi12j_g1_75_Scalar"],
+	"Sbb_100":["Spin0_ggPhi12j_g1_100_Scalar"],
+	"Sbb_125":["Spin0_ggPhi12j_g1_125_Scalar"],
+	"Sbb_150":["Spin0_ggPhi12j_g1_150_Scalar"],
+	"Sbb_250":["Spin0_ggPhi12j_g1_250_Scalar"],
+	"Sbb_300":["Spin0_ggPhi12j_g1_300_Scalar"],
+	"Sbb_400":["Spin0_ggPhi12j_g1_400_Scalar"],
+	"Sbb_500":["Spin0_ggPhi12j_g1_500_Scalar"],
+	"PSbb_50":["Spin0_ggPhi12j_g1_50_PseudoScalar"],
+	"PSbb_75":["Spin0_ggPhi12j_g1_75_PseudoScalar"],
+	"PSbb_100":["Spin0_ggPhi12j_g1_100_PseudoScalar"],
+	"PSbb_125":["Spin0_ggPhi12j_g1_125_PseudoScalar"],
+	"PSbb_150":["Spin0_ggPhi12j_g1_150_PseudoScalar"],
+	"PSbb_250":["Spin0_ggPhi12j_g1_250_PseudoScalar"],
+	"PSbb_300":["Spin0_ggPhi12j_g1_300_PseudoScalar"],
+	"PSbb_400":["Spin0_ggPhi12j_g1_400_PseudoScalar"],
+	"PSbb_500":["Spin0_ggPhi12j_g1_500_PseudoScalar"],
 }
 #for mass in signal_masses:
 #	for spin in ["Scalar", "PseudoScalar"]:
@@ -70,7 +79,38 @@ skims["WJetsToQQ_HT180_13TeV"] = ["root://cmsxrootd-site.fnal.gov//store/user/jd
 skims["ZJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.061/ZJetsToQQ_HT600toInf_13TeV_madgraph.root"]
 skims["TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"] = ["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/TTJets_13TeV.root"]
 for mass in signal_masses:
-	skims["DMSpin0_ggPhibb1j_{}".format(mass)] = ["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/DMSpin0_ggPhibb1j_{}.root".format(mass)]
+	skims["Spin0_ggPhi12j_g1_{}_Scalar".format(mass)] = [x.strip().replace("/eos/", "root://eoscms.cern.ch//eos/") for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/Spin0_ggPhi12j_g1_{}_Scalar_13TeV_madgraphs.txt"))]
+Spin0_ggPhi12j_g1_5_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_25_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_50_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_75_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_100_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_125_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_150_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_200_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_250_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_300_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_350_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_400_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_500_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_600_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_800_Scalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_1000_Scalar_13TeV_madgraph.txt
+
+Spin0_ggPhi12j_g1_800_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_75_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_600_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_5_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_50_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_500_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_350_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_300_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_25_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_250_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_200_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_150_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_125_PseudoScalar_13TeV_madgraph.txt
+Spin0_ggPhi12j_g1_1000_PseudoScalar_13TeV_madgraph.txt
 
 # Function to infer the sample from a file path... removing for now, because this doesn't work well on the batch system. E.g. if you have subfiles with generic names (e.g. Output_subjob1.root), there is no way to get the sample.
 #def get_sample_from_skim(skim):
