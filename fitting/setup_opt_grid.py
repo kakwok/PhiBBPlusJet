@@ -44,6 +44,7 @@ if __name__ == "__main__":
 	action_group = parser.add_mutually_exclusive_group() 
 	action_group.add_argument('--run', action="store_true", help="Run")
 	action_group.add_argument('--condor_run', action="store_true", help="Run on condor")
+	action_group.add_argument('--lxbatch', action="store_true", help="Run on lxbatch")
 	action_group.add_argument('--combine_outputs', action="store_true", help="Compile results into one file for next step (buildRhalphabet). Also applies luminosity weights to MC.")
 	action_group.add_argument('--rhalphabet', action="store_true", help="Setup rhalphabet and prepare combine workspaces.")
 	action_group.add_argument('--copy_cards', action="store_true", help="Copy cards to the combine folders.")
@@ -193,12 +194,78 @@ if __name__ == "__main__":
 		master_hadd_script.close()
 		print "Once jobs have finished, run hadd with:"
 		print "source " + master_hadd_script_path
+	elif args.lxbatch:
+		import time
+		postprocessing_commands = []
+		for sample in samples:
+			start_directory = os.getcwd()
+			job_tag = "job_{}_{}".format(sample, int(floor(time.time())))
+			submission_directory = "/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/condor/{}".format(job_tag)
+			os.system("mkdir -pv {}".format(submission_directory))
+			os.chdir(submission_directory)
+
+			files_per_job = 1
+			if "JetHTRun2016" in sample:
+				files_per_job = 5
+			elif "QCD" in sample:
+				files_per_job = 2
+
+			csubjob_index = 0
+			this_job_input_files = []
+			input_files_to_transfer = []
+			for file_counter, filename in enumerate(sample_files[sample], start=1):
+				print file_counter, filename
+				if "root://" in filename:
+					this_job_input_files.append(filename)
+				else:
+					input_files_to_transfer.append(filename)
+					this_job_input_files.append(os.path.basename(filename))
+				
+				if file_counter % files_per_job == 0 or file_counter == len(sample_files[sample]):
+					print "\nSubmitting jobs now."
+					job_script_path = "{}/run_csubjob{}.sh".format(submission_directory, csubjob_index)
+					job_script = open(job_script_path, 'w')
+					job_script.write("#!/bin/bash\n")
+					for selection_name in selection_names:
+						job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/fitting/setup_opt_grid.py --single_point {} {} {} --files {} --label {}_{}_csubjob{} --output_folder . --run\n".format(selection_values[selection_name]["jet_type"], selection_values[selection_name]["n2_ddt"], selection_values[selection_name]["dcsv"], ",".join(this_job_input_files), sample, selection_name, csubjob_index))
+					job_script.close()
+					submission_command = "csub {} --cmssw --no_retar".format(job_script_path)
+					if len(input_files_to_transfer) >= 1:
+						submission_command += " -F " + ",".join(input_files_to_transfer)
+					print submission_command
+					os.system(submission_command)
+					this_job_input_files = []
+					input_files_to_transfer = []
+					csubjob_index += 1
+			hadd_script_path = "{}/hadd.sh".format(submission_directory)
+			hadd_script = open(hadd_script_path, "w")
+			hadd_script.write("#!/bin/bash\n")
+			for selection_name in selection_names:
+				hadd_script.write("hadd {}/Optimization/{}/InputHistograms_{}.root {}/InputHistograms*{}*csubjob*root\n".format(analysis_configuration.paths["LimitSetting"], selection_name, sample, submission_directory, selection_name))
+			hadd_script.close()
+			postprocessing_commands.append("source {}".format(hadd_script_path))
+			os.chdir(start_directory)
+
+		master_hadd_basename = "master_hadd"
+		if args.single_point:
+			master_hadd_basename += "_" + selection_names[0]
+		if not args.all:
+			master_hadd_basename += "_" + str(int(floor(time.time())))
+		master_hadd_basename += ".sh"
+		master_hadd_script_path = "{}/Optimization/{}".format(analysis_configuration.paths["LimitSetting"], master_hadd_basename)
+		master_hadd_script = open(master_hadd_script_path, "w")
+		master_hadd_script.write("#!/bin/bash\n")
+		for postprocessing_command in postprocessing_commands:
+			master_hadd_script.write(postprocessing_command + "\n")
+		master_hadd_script.close()
+		print "Once jobs have finished, run hadd with:"
+		print "source " + master_hadd_script_path
 
 	if args.combine_outputs:
 		luminosity = 34.207 * 1.e3 # in pb^-1
 		from DAZSLE.PhiBBPlusJet.cross_sections import cross_sections
 		for selection_name in selection_names:
-			top_directory = "/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/{}".format(selection_name)
+			top_directory = "{}/Optimization/{}".format(analysis_configuration.paths["LimitSetting"], selection_name)
 			output_file = ROOT.TFile("{}/hists_1D.root".format(top_directory), "RECREATE")
 			pass_histograms = {}
 			fail_histograms = {}
@@ -245,12 +312,12 @@ if __name__ == "__main__":
 
 	if args.rhalphabet:
 		for selection_name in selection_names:
-			top_directory = "/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/{}".format(selection_name)
+			top_directory = "{}/Optimization/{}".format(analysis_configuration.paths["LimitSetting"], selection_name)
 			os.system("mkdir -pv {}/combine".format(top_directory))
 			rhalphabet_command = "python /uscms_data/d3/dryu/DAZSLE/CMSSW_7_4_7/src/DAZSLE/PhiBBPlusJet/fitting/PbbJet/buildRhalphabetPbb.py -i {}/hists_1D.root -b -o {}/combine --pseudo".format(top_directory, top_directory)
 			print rhalphabet_command
 			os.system(rhalphabet_command)
 	if args.copy_cards:
 		for selection_name in selection_names:
-			top_directory = "/uscms/home/dryu/DAZSLE/data/LimitSetting/Optimization/{}".format(selection_name)
+			top_directory = "{}/Optimization/{}".format(analysis_configuration.paths["LimitSetting"], selection_name)
 			os.system("cp ~/DAZSLE/data/LimitSetting/combine/card*txt {}/combine".format(top_directory))
