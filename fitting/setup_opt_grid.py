@@ -154,7 +154,7 @@ if __name__ == "__main__":
 			if "JetHTRun2016" in sample:
 				files_per_job = 5
 			elif "QCD" in sample:
-				files_per_job = 2
+				files_per_job = 4
 
 			csubjob_index = 0
 			this_job_input_files = []
