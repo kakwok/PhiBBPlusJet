@@ -29,9 +29,12 @@ namespace BaconEventCutFunctions {
 	bool AK8Puppijet0_isTightVJet(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Min_pfmet(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Max_pfmet(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
-	bool Max_nAK4PuppijetsdR08(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
-	bool Max_nAK4PuppijetsTdR08(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
+	bool Max_nAK4PuppijetsPt30dR08_0(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 
+	bool Min_AK8Puppijet0_msd(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
+	bool Max_AK8Puppijet0_msd(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
+	bool Min_AK8Puppijet0_msd_puppi(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
+	bool Max_AK8Puppijet0_msd_puppi(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Min_AK8Puppijet0_pt(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Max_AK8Puppijet0_pt(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);
 	bool Min_AK8CHSjet0_doublecsv(const BaconData& p_data, EventSelector<BaconData>* p_event_selector);

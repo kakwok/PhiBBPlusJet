@@ -4,6 +4,26 @@
 #include "DAZSLE/PhiBBPlusJet/interface/BaconEventCutFunctions.h"
 
 namespace BaconEventCutFunctions {
+	bool Min_AK8Puppijet0_msd(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
+		p_event_selector->SetReturnData("Min_AK8Puppijet0_msd", p_data.AK8Puppijet0_msd);
+		return (p_data.AK8Puppijet0_msd >= p_event_selector->GetCutParameters("Min_AK8Puppijet0_msd")[0]);
+	}
+
+	bool Max_AK8Puppijet0_msd(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
+		p_event_selector->SetReturnData("Max_AK8Puppijet0_msd", p_data.AK8Puppijet0_msd);
+		return (p_data.AK8Puppijet0_msd <= p_event_selector->GetCutParameters("Max_AK8Puppijet0_msd")[0]);
+	}
+
+	bool Min_AK8Puppijet0_msd_puppi(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
+		p_event_selector->SetReturnData("Min_AK8Puppijet0_msd_puppi", p_data.AK8Puppijet0_msd_puppi);
+		return (p_data.AK8Puppijet0_msd_puppi >= p_event_selector->GetCutParameters("Min_AK8Puppijet0_msd_puppi")[0]);
+	}
+
+	bool Max_AK8Puppijet0_msd_puppi(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
+		p_event_selector->SetReturnData("Max_AK8Puppijet0_msd_puppi", p_data.AK8Puppijet0_msd_puppi);
+		return (p_data.AK8Puppijet0_msd_puppi <= p_event_selector->GetCutParameters("Max_AK8Puppijet0_msd_puppi")[0]);
+	}
+
 	bool Min_AK8Puppijet0_pt(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
 		p_event_selector->SetReturnData("Min_AK8Puppijet0_pt", p_data.AK8Puppijet0_pt);
 		return (p_data.AK8Puppijet0_pt >= p_event_selector->GetCutParameters("Min_AK8Puppijet0_pt")[0]);
@@ -85,16 +105,10 @@ namespace BaconEventCutFunctions {
 		return (p_data.pfmet <= p_event_selector->GetCutParameters("Max_pfmet")[0]);
 	}
 
-	bool Max_nAK4PuppijetsdR08(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Max_nAK4PuppijetsdR08", p_data.nAK4PuppijetsdR08);
-		return (p_data.nAK4PuppijetsdR08 <= (int)p_event_selector->GetCutParameters("Max_nAK4PuppijetsdR08")[0]);
+	bool Max_nAK4PuppijetsPt30dR08_0(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
+		p_event_selector->SetReturnData("Max_nAK4PuppijetsPt30dR08_0", p_data.nAK4PuppijetsPt30dR08_0);
+		return (p_data.nAK4PuppijetsPt30dR08_0 <= (int)p_event_selector->GetCutParameters("Max_nAK4PuppijetsPt30dR08_0")[0]);
 	}
-
-	bool Max_nAK4PuppijetsTdR08(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Max_nAK4PuppijetsTdR08", p_data.nAK4PuppijetsTdR08);
-		return (p_data.nAK4PuppijetsTdR08 <= (int)p_event_selector->GetCutParameters("Max_nAK4PuppijetsTdR08")[0]);
-	}
-
 
 	bool Min_AK8Puppijet0_tau21(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
 		p_event_selector->SetReturnData("Min_AK8Puppijet0_tau21", p_data.AK8Puppijet0_tau21);
@@ -110,29 +124,29 @@ namespace BaconEventCutFunctions {
 	}
 
 	bool Min_AK8Puppijet0_tau21DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Min_AK8Puppijet0_tau21DDT", p_data.AK8Puppijet0_tau21DDT());
+		p_event_selector->SetReturnData("Min_AK8Puppijet0_tau21DDT", p_data.AK8Puppijet0_tau21DDT);
 		p_event_selector->SetReturnData("AK8Puppijet0_pt", p_data.AK8Puppijet0_pt);
-		return (p_data.AK8Puppijet0_tau21DDT() >= p_event_selector->GetCutParameters("Min_AK8Puppijet0_tau21DDT")[0]);
+		return (p_data.AK8Puppijet0_tau21DDT >= p_event_selector->GetCutParameters("Min_AK8Puppijet0_tau21DDT")[0]);
 	}
 
 	bool Max_AK8Puppijet0_tau21DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Max_AK8Puppijet0_tau21DDT", p_data.AK8Puppijet0_tau21DDT());
+		p_event_selector->SetReturnData("Max_AK8Puppijet0_tau21DDT", p_data.AK8Puppijet0_tau21DDT);
 		p_event_selector->SetReturnData("AK8Puppijet0_pt", p_data.AK8Puppijet0_pt);
 		p_event_selector->SetReturnData("AK8CHSjet0_doublecsv", p_data.AK8CHSjet0_doublecsv);
-		return (p_data.AK8Puppijet0_tau21DDT() <= p_event_selector->GetCutParameters("Max_AK8Puppijet0_tau21DDT")[0]);
+		return (p_data.AK8Puppijet0_tau21DDT <= p_event_selector->GetCutParameters("Max_AK8Puppijet0_tau21DDT")[0]);
 	}
 
 	bool Min_AK8Puppijet0_N2DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Min_AK8Puppijet0_N2DDT", p_data.AK8Puppijet0_N2DDT());
+		p_event_selector->SetReturnData("Min_AK8Puppijet0_N2DDT", p_data.AK8Puppijet0_N2DDT);
 		p_event_selector->SetReturnData("AK8Puppijet0_pt", p_data.AK8Puppijet0_pt);
-		return (p_data.AK8Puppijet0_N2DDT() >= p_event_selector->GetCutParameters("Min_AK8Puppijet0_N2DDT")[0]);
+		return (p_data.AK8Puppijet0_N2DDT >= p_event_selector->GetCutParameters("Min_AK8Puppijet0_N2DDT")[0]);
 	}
 
 	bool Max_AK8Puppijet0_N2DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Max_AK8Puppijet0_N2DDT", p_data.AK8Puppijet0_N2DDT());
+		p_event_selector->SetReturnData("Max_AK8Puppijet0_N2DDT", p_data.AK8Puppijet0_N2DDT);
 		p_event_selector->SetReturnData("AK8Puppijet0_pt", p_data.AK8Puppijet0_pt);
 		p_event_selector->SetReturnData("AK8CHSjet0_doublecsv", p_data.AK8CHSjet0_doublecsv);
-		return (p_data.AK8Puppijet0_N2DDT() <= p_event_selector->GetCutParameters("Max_AK8Puppijet0_N2DDT")[0]);
+		return (p_data.AK8Puppijet0_N2DDT <= p_event_selector->GetCutParameters("Max_AK8Puppijet0_N2DDT")[0]);
 	}
 
 	bool Min_AK8Puppijet0_tau32(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
@@ -294,16 +308,16 @@ namespace BaconEventCutFunctions {
 	}
 
 	bool Min_CA15Puppijet0_tau21DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Min_CA15Puppijet0_tau21DDT", p_data.CA15Puppijet0_tau21DDT());
+		p_event_selector->SetReturnData("Min_CA15Puppijet0_tau21DDT", p_data.CA15Puppijet0_tau21DDT);
 		p_event_selector->SetReturnData("CA15Puppijet0_pt", p_data.CA15Puppijet0_pt);
-		return (p_data.CA15Puppijet0_tau21DDT() >= p_event_selector->GetCutParameters("Min_CA15Puppijet0_tau21DDT")[0]);
+		return (p_data.CA15Puppijet0_tau21DDT >= p_event_selector->GetCutParameters("Min_CA15Puppijet0_tau21DDT")[0]);
 	}
 
 	bool Max_CA15Puppijet0_tau21DDT(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
-		p_event_selector->SetReturnData("Max_CA15Puppijet0_tau21DDT", p_data.CA15Puppijet0_tau21DDT());
+		p_event_selector->SetReturnData("Max_CA15Puppijet0_tau21DDT", p_data.CA15Puppijet0_tau21DDT);
 		p_event_selector->SetReturnData("CA15Puppijet0_pt", p_data.CA15Puppijet0_pt);
 		p_event_selector->SetReturnData("CA15CHSjet0_doublecsv", p_data.CA15CHSjet0_doublecsv);
-		return (p_data.CA15Puppijet0_tau21DDT() <= p_event_selector->GetCutParameters("Max_CA15Puppijet0_tau21DDT")[0]);
+		return (p_data.CA15Puppijet0_tau21DDT <= p_event_selector->GetCutParameters("Max_CA15Puppijet0_tau21DDT")[0]);
 	}
 
 	bool Min_CA15Puppijet0_tau32(const BaconData& p_data, EventSelector<BaconData>* p_event_selector) {
@@ -321,6 +335,8 @@ namespace BaconEventCutFunctions {
 
 
 	void Configure(EventSelector<BaconData>* p_event_selector) {
+		p_event_selector->AddCutFunction("Min_AK8Puppijet0_msd", &Min_AK8Puppijet0_msd);
+		p_event_selector->AddCutFunction("Max_AK8Puppijet0_msd", &Max_AK8Puppijet0_msd);
 		p_event_selector->AddCutFunction("Min_AK8Puppijet0_pt", &Min_AK8Puppijet0_pt);
 		p_event_selector->AddCutFunction("Max_AK8Puppijet0_pt", &Max_AK8Puppijet0_pt);
 		p_event_selector->AddCutFunction("Min_AK8CHSjet0_doublecsv", &Min_AK8CHSjet0_doublecsv);
@@ -381,9 +397,10 @@ namespace BaconEventCutFunctions {
 		p_event_selector->AddCutFunction("CA15Puppijet0_isTightVJet", &CA15Puppijet0_isTightVJet);
 		p_event_selector->AddCutFunction("Min_pfmet", &Min_pfmet);
 		p_event_selector->AddCutFunction("Max_pfmet", &Max_pfmet);
-		p_event_selector->AddCutFunction("Max_nAK4PuppijetsdR08", &Max_nAK4PuppijetsdR08);
-		p_event_selector->AddCutFunction("Max_nAK4PuppijetsTdR08", &Max_nAK4PuppijetsTdR08);
+		p_event_selector->AddCutFunction("Max_nAK4PuppijetsPt30dR08_0", &Max_nAK4PuppijetsPt30dR08_0);
 
+		p_event_selector->AddNMinusOneHistogram("Min_AK8Puppijet0_msd", "m_{SD} [GeV]", 200, 0., 2000.);
+		p_event_selector->AddNMinusOneHistogram("Max_AK8Puppijet0_msd", "m_{SD} [GeV]", 200, 0., 2000.);
 		p_event_selector->AddNMinusOneHistogram("Min_AK8Puppijet0_pt", "p_{T} [GeV]", 200, 0., 2000.);
 		p_event_selector->AddNMinusOneHistogram("Max_AK8Puppijet0_pt", "p_{T} [GeV]", 200, 0., 2000.);
 		p_event_selector->AddNMinusOneHistogram("Min_AK8CHSjet0_doublecsv", "Double b-tag", 40, -2., 2.);
@@ -400,8 +417,7 @@ namespace BaconEventCutFunctions {
 		p_event_selector->AddNMinusOneHistogram("CA15Puppijet0_isTightVJet", "Is tight VJet", 2, -0.5, 1.5);
 		p_event_selector->AddNMinusOneHistogram("Min_pfmet", "MET [GeV]", 100, 0., 1000.); 
 		p_event_selector->AddNMinusOneHistogram("Max_pfmet", "MET [GeV]", 100, 0., 1000.); 
-		p_event_selector->AddNMinusOneHistogram("Max_nAK4PuppijetsdR08", "nAK4PuppijetsdR08", 21, -0.5, 20.5);
-		p_event_selector->AddNMinusOneHistogram("Max_nAK4PuppijetsTdR08", "nAK4PuppijetsTdR08", 21, -0.5, 20.5);
+		p_event_selector->AddNMinusOneHistogram("Max_nAK4PuppijetsPt30dR08_0", "Max_nAK4PuppijetsPt30dR08_0", 21, -0.5, 20.5);
 		p_event_selector->AddNMinusOneHistogram("Min_AK8Puppijet0_tau21", "#tau_{21}", 50, 0., 1.);
 		p_event_selector->AddNMinusOneHistogram("Max_AK8Puppijet0_tau21", "#tau_{21}", 50, 0., 1.);
 		p_event_selector->AddNMinusOneHistogram("Min_AK8Puppijet0_tau21DDT", "#tau_{21}^{DDT}", 50, 0., 1.);

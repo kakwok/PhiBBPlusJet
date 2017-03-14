@@ -36,6 +36,7 @@ public :
    Double_t        sf_lepTrack;
    UInt_t          npu;
    UInt_t          npv;
+   Float_t         rho;
    Float_t         puWeight;
    Float_t         scale1fb;
    Float_t         evtWeight;
@@ -112,6 +113,11 @@ public :
    Double_t        AK8Puppijet0_M2b2;
    Double_t        AK8Puppijet0_D2b1;
    Double_t        AK8Puppijet0_D2b2;
+   Double_t        AK8Puppijet0_pt_old;
+   Double_t        AK8Puppijet0_pt_JESUp;
+   Double_t        AK8Puppijet0_pt_JESDown;
+   Double_t        AK8Puppijet0_pt_JERUp;
+   Double_t        AK8Puppijet0_pt_JERDown;
    Double_t        AK8Puppijet1_csv;
    Double_t        AK8Puppijet1_CHF;
    Double_t        AK8Puppijet1_NHF;
@@ -162,6 +168,11 @@ public :
    Double_t        AK8Puppijet1_M2b2;
    Double_t        AK8Puppijet1_D2b1;
    Double_t        AK8Puppijet1_D2b2;
+   Double_t        AK8Puppijet1_pt_old;
+   Double_t        AK8Puppijet1_pt_JESUp;
+   Double_t        AK8Puppijet1_pt_JESDown;
+   Double_t        AK8Puppijet1_pt_JERUp;
+   Double_t        AK8Puppijet1_pt_JERDown;
    Double_t        AK8Puppijet1_mass;
    Double_t        AK8Puppijet2_csv;
    Double_t        AK8Puppijet2_CHF;
@@ -213,8 +224,15 @@ public :
    Double_t        AK8Puppijet2_M2b2;
    Double_t        AK8Puppijet2_D2b1;
    Double_t        AK8Puppijet2_D2b2;
+   Double_t        AK8Puppijet2_pt_old;
+   Double_t        AK8Puppijet2_pt_JESUp;
+   Double_t        AK8Puppijet2_pt_JESDown;
+   Double_t        AK8Puppijet2_pt_JERUp;
+   Double_t        AK8Puppijet2_pt_JERDown;
    Int_t           nAK8Puppijets;
    Int_t           AK8Puppijet0_isTightVJet;
+   Int_t           AK8Puppijet1_isTightVJet;
+   Int_t           AK8Puppijet2_isTightVJet;
    Int_t           AK8Puppijet0_isHadronicV;
    Double_t        AK8Puppijet0_vMatching;
    Double_t        AK8Puppijet0_vSize;
@@ -224,16 +242,19 @@ public :
    Int_t           AK8Puppijet0_nNeutrals;
    Int_t           AK8Puppijet0_nParticles;
    Double_t        AK8Puppijet0_ratioCA15_04;
+   Int_t           AK8CHSjet0_isTightVJet;
    Double_t        AK8CHSjet0_doublecsv;
    Double_t        AK8CHSjet0_doublesub;
    Double_t        AK8CHSjet0_pt;
    Double_t        AK8CHSjet0_eta;
    Double_t        AK8CHSjet0_phi;
+   Int_t           AK8CHSjet1_isTightVJet;
    Double_t        AK8CHSjet1_doublecsv;
    Double_t        AK8CHSjet1_doublesub;
    Double_t        AK8CHSjet1_pt;
    Double_t        AK8CHSjet1_eta;
    Double_t        AK8CHSjet1_phi;
+   Int_t           AK8CHSjet2_isTightVJet;
    Double_t        AK8CHSjet2_doublecsv;
    Double_t        AK8CHSjet2_doublesub;
    Double_t        AK8CHSjet2_pt;
@@ -299,6 +320,11 @@ public :
    Double_t        CA15Puppijet0_M2b2;
    Double_t        CA15Puppijet0_D2b1;
    Double_t        CA15Puppijet0_D2b2;
+   Double_t        CA15Puppijet0_pt_old;
+   Double_t        CA15Puppijet0_pt_JESUp;
+   Double_t        CA15Puppijet0_pt_JESDown;
+   Double_t        CA15Puppijet0_pt_JERUp;
+   Double_t        CA15Puppijet0_pt_JERDown;
    Double_t        CA15Puppijet1_csv;
    Double_t        CA15Puppijet1_CHF;
    Double_t        CA15Puppijet1_NHF;
@@ -349,6 +375,11 @@ public :
    Double_t        CA15Puppijet1_M2b2;
    Double_t        CA15Puppijet1_D2b1;
    Double_t        CA15Puppijet1_D2b2;
+   Double_t        CA15Puppijet1_pt_old;
+   Double_t        CA15Puppijet1_pt_JESUp;
+   Double_t        CA15Puppijet1_pt_JESDown;
+   Double_t        CA15Puppijet1_pt_JERUp;
+   Double_t        CA15Puppijet1_pt_JERDown;
    Double_t        CA15Puppijet1_mass;
    Double_t        CA15Puppijet2_csv;
    Double_t        CA15Puppijet2_CHF;
@@ -400,8 +431,15 @@ public :
    Double_t        CA15Puppijet2_M2b2;
    Double_t        CA15Puppijet2_D2b1;
    Double_t        CA15Puppijet2_D2b2;
+   Double_t        CA15Puppijet2_pt_old;
+   Double_t        CA15Puppijet2_pt_JESUp;
+   Double_t        CA15Puppijet2_pt_JESDown;
+   Double_t        CA15Puppijet2_pt_JERUp;
+   Double_t        CA15Puppijet2_pt_JERDown;
    Int_t           nCA15Puppijets;
    Int_t           CA15Puppijet0_isTightVJet;
+   Int_t           CA15Puppijet1_isTightVJet;
+   Int_t           CA15Puppijet2_isTightVJet;
    Int_t           CA15Puppijet0_isHadronicV;
    Double_t        CA15Puppijet0_vMatching;
    Double_t        CA15Puppijet0_vSize;
@@ -411,36 +449,83 @@ public :
    Int_t           CA15Puppijet0_nNeutrals;
    Int_t           CA15Puppijet0_nParticles;
    Double_t        CA15Puppijet0_ratioCA15_04;
+   Int_t           CA15CHSjet0_isTightVJet;
    Double_t        CA15CHSjet0_doublecsv;
    Double_t        CA15CHSjet0_doublesub;
    Double_t        CA15CHSjet0_pt;
    Double_t        CA15CHSjet0_eta;
    Double_t        CA15CHSjet0_phi;
+   Int_t           CA15CHSjet1_isTightVJet;
    Double_t        CA15CHSjet1_doublecsv;
    Double_t        CA15CHSjet1_doublesub;
    Double_t        CA15CHSjet1_pt;
    Double_t        CA15CHSjet1_eta;
    Double_t        CA15CHSjet1_phi;
+   Int_t           CA15CHSjet2_isTightVJet;
    Double_t        CA15CHSjet2_doublecsv;
    Double_t        CA15CHSjet2_doublesub;
    Double_t        CA15CHSjet2_pt;
    Double_t        CA15CHSjet2_eta;
    Double_t        CA15CHSjet2_phi;
-   Int_t           nAK4Puppijets;
-   Int_t           nAK4Puppijetsfwd;
-   Int_t           nAK4PuppijetsbtagL;
-   Int_t           nAK4PuppijetsbtagM;
-   Int_t           nAK4PuppijetsbtagT;
-   Int_t           nAK4PuppijetsdR08;
-   Int_t           nAK4PuppijetsLdR08;
-   Int_t           nAK4PuppijetsMdR08;
-   Int_t           nAK4PuppijetsTdR08;
-   Int_t           nAK4PuppijetsLPt100dR08;
-   Int_t           nAK4PuppijetsMPt100dR08;
-   Int_t           nAK4PuppijetsTPt100dR08;
-   Int_t           nAK4PuppijetsLPt150dR08;
-   Int_t           nAK4PuppijetsMPt150dR08;
-   Int_t           nAK4PuppijetsTPt150dR08;
+   Int_t           nAK4PuppijetsPt30;
+   Int_t           nAK4PuppijetsPt30jesUp;
+   Int_t           nAK4PuppijetsPt30jesDown;
+   Int_t           nAK4PuppijetsPt30jerUp;
+   Int_t           nAK4PuppijetsPt30jerDown;
+   Int_t           nAK4PuppijetsfwdPt30;
+   Int_t           nAK4PuppijetsbtagLPt30;
+   Int_t           nAK4PuppijetsbtagMPt30;
+   Int_t           nAK4PuppijetsbtagTPt30;
+   Double_t        MetXCorrjesUp;
+   Double_t        MetYCorrjesUp;
+   Double_t        MetXCorrjesDown;
+   Double_t        MetYCorrjesDown;
+   Double_t        MetXCorrjerUp;
+   Double_t        MetYCorrjerUp;
+   Double_t        MetXCorrjerDown;
+   Double_t        MetYCorrjerDown;
+   Int_t           nAK4PuppijetsPt30dR08_0;
+   Int_t           nAK4PuppijetsPt30dR08jesUp_0;
+   Int_t           nAK4PuppijetsPt30dR08jesDown_0;
+   Int_t           nAK4PuppijetsPt30dR08jerUp_0;
+   Int_t           nAK4PuppijetsPt30dR08jerDown_0;
+   Int_t           nAK4PuppijetsLPt50dR08_0;
+   Int_t           nAK4PuppijetsMPt50dR08_0;
+   Int_t           nAK4PuppijetsTPt50dR08_0;
+   Int_t           nAK4PuppijetsLPt100dR08_0;
+   Int_t           nAK4PuppijetsMPt100dR08_0;
+   Int_t           nAK4PuppijetsTPt100dR08_0;
+   Int_t           nAK4PuppijetsLPt150dR08_0;
+   Int_t           nAK4PuppijetsMPt150dR08_0;
+   Int_t           nAK4PuppijetsTPt150dR08_0;
+   Int_t           nAK4PuppijetsPt30dR08_1;
+   Int_t           nAK4PuppijetsPt30dR08jesUp_1;
+   Int_t           nAK4PuppijetsPt30dR08jesDown_1;
+   Int_t           nAK4PuppijetsPt30dR08jerUp_1;
+   Int_t           nAK4PuppijetsPt30dR08jerDown_1;
+   Int_t           nAK4PuppijetsLPt50dR08_1;
+   Int_t           nAK4PuppijetsMPt50dR08_1;
+   Int_t           nAK4PuppijetsTPt50dR08_1;
+   Int_t           nAK4PuppijetsLPt100dR08_1;
+   Int_t           nAK4PuppijetsMPt100dR08_1;
+   Int_t           nAK4PuppijetsTPt100dR08_1;
+   Int_t           nAK4PuppijetsLPt150dR08_1;
+   Int_t           nAK4PuppijetsMPt150dR08_1;
+   Int_t           nAK4PuppijetsTPt150dR08_1;
+   Int_t           nAK4PuppijetsPt30dR08_2;
+   Int_t           nAK4PuppijetsPt30dR08jesUp_2;
+   Int_t           nAK4PuppijetsPt30dR08jesDown_2;
+   Int_t           nAK4PuppijetsPt30dR08jerUp_2;
+   Int_t           nAK4PuppijetsPt30dR08jerDown_2;
+   Int_t           nAK4PuppijetsLPt50dR08_2;
+   Int_t           nAK4PuppijetsMPt50dR08_2;
+   Int_t           nAK4PuppijetsTPt50dR08_2;
+   Int_t           nAK4PuppijetsLPt100dR08_2;
+   Int_t           nAK4PuppijetsMPt100dR08_2;
+   Int_t           nAK4PuppijetsTPt100dR08_2;
+   Int_t           nAK4PuppijetsLPt150dR08_2;
+   Int_t           nAK4PuppijetsMPt150dR08_2;
+   Int_t           nAK4PuppijetsTPt150dR08_2;
    Double_t        AK4Puppijet0_pt;
    Double_t        AK4Puppijet0_eta;
    Double_t        AK4Puppijet0_phi;
@@ -458,24 +543,45 @@ public :
    Double_t        AK4Puppijet0_qgid;
    Double_t        AK4Puppijet0_dR08;
    Double_t        AK4Puppijet0_dPhi08;
+   Double_t        AK4Puppijet0_pt_old;
+   Double_t        AK4Puppijet0_pt_JESUp;
+   Double_t        AK4Puppijet0_pt_JESDown;
+   Double_t        AK4Puppijet0_pt_JERUp;
+   Double_t        AK4Puppijet0_pt_JERDown;
    Double_t        AK4Puppijet1_mass;
    Double_t        AK4Puppijet1_csv;
    Double_t        AK4Puppijet1_qgid;
    Double_t        AK4Puppijet1_dR08;
    Double_t        AK4Puppijet1_dPhi08;
+   Double_t        AK4Puppijet1_pt_old;
+   Double_t        AK4Puppijet1_pt_JESUp;
+   Double_t        AK4Puppijet1_pt_JESDown;
+   Double_t        AK4Puppijet1_pt_JERUp;
+   Double_t        AK4Puppijet1_pt_JERDown;
    Double_t        AK4Puppijet2_mass;
    Double_t        AK4Puppijet2_csv;
    Double_t        AK4Puppijet2_qgid;
    Double_t        AK4Puppijet2_dR08;
    Double_t        AK4Puppijet2_dPhi08;
+   Double_t        AK4Puppijet2_pt_old;
+   Double_t        AK4Puppijet2_pt_JESUp;
+   Double_t        AK4Puppijet2_pt_JESDown;
+   Double_t        AK4Puppijet2_pt_JERUp;
+   Double_t        AK4Puppijet2_pt_JERDown;
    Double_t        AK4Puppijet3_mass;
    Double_t        AK4Puppijet3_csv;
    Double_t        AK4Puppijet3_qgid;
    Double_t        AK4Puppijet3_dR08;
    Double_t        AK4Puppijet3_dPhi08;
+   Double_t        AK4Puppijet3_pt_old;
+   Double_t        AK4Puppijet3_pt_JESUp;
+   Double_t        AK4Puppijet3_pt_JESDown;
+   Double_t        AK4Puppijet3_pt_JERUp;
+   Double_t        AK4Puppijet3_pt_JERDown;
    Int_t           nmuLoose;
+   Int_t           nmuMedium;
    Int_t           nmuTight;
-   Int_t           ismu0Tight;
+   Int_t           nmuHighPt;
    Double_t        vmuoLoose0_pt;
    Double_t        vmuoLoose0_eta;
    Double_t        vmuoLoose0_phi;
@@ -484,7 +590,7 @@ public :
    Double_t        vmuoLoose1_phi;
    Int_t           neleLoose;
    Int_t           neleTight;
-   Int_t           isele0Tight;
+   Int_t           neleHEEP;
    Double_t        veleLoose0_pt;
    Double_t        veleLoose0_eta;
    Double_t        veleLoose0_phi;
@@ -506,6 +612,9 @@ public :
    Int_t           genEleFromW;
    Int_t           genMuFromW;
    Int_t           genTauFromW;
+   Float_t         topPt;
+   Float_t         antitopPt;
+   Float_t         topPtWeight;
 
    // List of branches
    TBranch        *b_fRun;   //!
@@ -522,6 +631,7 @@ public :
    TBranch        *b_fsf_lepTrack;   //!
    TBranch        *b_fNPU;   //!
    TBranch        *b_fNVtx;   //!
+   TBranch        *b_fRho;   //!
    TBranch        *b_fPUWeight;   //!
    TBranch        *b_fScale;   //!
    TBranch        *b_fevtWeight;   //!
@@ -598,6 +708,11 @@ public :
    TBranch        *b_AK8Puppijet0_M2b2;   //!
    TBranch        *b_AK8Puppijet0_D2b1;   //!
    TBranch        *b_AK8Puppijet0_D2b2;   //!
+   TBranch        *b_AK8Puppijet0_pt_old;   //!
+   TBranch        *b_AK8Puppijet0_pt_JESUp;   //!
+   TBranch        *b_AK8Puppijet0_pt_JESDown;   //!
+   TBranch        *b_AK8Puppijet0_pt_JERUp;   //!
+   TBranch        *b_AK8Puppijet0_pt_JERDown;   //!
    TBranch        *b_AK8Puppijet1_csv;   //!
    TBranch        *b_AK8Puppijet1_CHF;   //!
    TBranch        *b_AK8Puppijet1_NHF;   //!
@@ -648,6 +763,11 @@ public :
    TBranch        *b_AK8Puppijet1_M2b2;   //!
    TBranch        *b_AK8Puppijet1_D2b1;   //!
    TBranch        *b_AK8Puppijet1_D2b2;   //!
+   TBranch        *b_AK8Puppijet1_pt_old;   //!
+   TBranch        *b_AK8Puppijet1_pt_JESUp;   //!
+   TBranch        *b_AK8Puppijet1_pt_JESDown;   //!
+   TBranch        *b_AK8Puppijet1_pt_JERUp;   //!
+   TBranch        *b_AK8Puppijet1_pt_JERDown;   //!
    TBranch        *b_AK8Puppijet1_mass;   //!
    TBranch        *b_AK8Puppijet2_csv;   //!
    TBranch        *b_AK8Puppijet2_CHF;   //!
@@ -699,8 +819,15 @@ public :
    TBranch        *b_AK8Puppijet2_M2b2;   //!
    TBranch        *b_AK8Puppijet2_D2b1;   //!
    TBranch        *b_AK8Puppijet2_D2b2;   //!
+   TBranch        *b_AK8Puppijet2_pt_old;   //!
+   TBranch        *b_AK8Puppijet2_pt_JESUp;   //!
+   TBranch        *b_AK8Puppijet2_pt_JESDown;   //!
+   TBranch        *b_AK8Puppijet2_pt_JERUp;   //!
+   TBranch        *b_AK8Puppijet2_pt_JERDown;   //!
    TBranch        *b_nAK8Puppijets;   //!
    TBranch        *b_AK8Puppijet0_isTightVJet;   //!
+   TBranch        *b_AK8Puppijet1_isTightVJet;   //!
+   TBranch        *b_AK8Puppijet2_isTightVJet;   //!
    TBranch        *b_AK8Puppijet0_isHadronicV;   //!
    TBranch        *b_AK8Puppijet0_vMatching;   //!
    TBranch        *b_AK8Puppijet0_vSize;   //!
@@ -710,16 +837,19 @@ public :
    TBranch        *b_AK8Puppijet0_nNeutrals;   //!
    TBranch        *b_AK8Puppijet0_nParticles;   //!
    TBranch        *b_AK8Puppijet0_ratioCA15_04;   //!
+   TBranch        *b_AK8CHSjet0_isTightVJet;   //!
    TBranch        *b_AK8CHSjet0_doublecsv;   //!
    TBranch        *b_AK8CHSjet0_doublesub;   //!
    TBranch        *b_AK8CHSjet0_pt;   //!
    TBranch        *b_AK8CHSjet0_eta;   //!
    TBranch        *b_AK8CHSjet0_phi;   //!
+   TBranch        *b_AK8CHSjet1_isTightVJet;   //!
    TBranch        *b_AK8CHSjet1_doublecsv;   //!
    TBranch        *b_AK8CHSjet1_doublesub;   //!
    TBranch        *b_AK8CHSjet1_pt;   //!
    TBranch        *b_AK8CHSjet1_eta;   //!
    TBranch        *b_AK8CHSjet1_phi;   //!
+   TBranch        *b_AK8CHSjet2_isTightVJet;   //!
    TBranch        *b_AK8CHSjet2_doublecsv;   //!
    TBranch        *b_AK8CHSjet2_doublesub;   //!
    TBranch        *b_AK8CHSjet2_pt;   //!
@@ -785,6 +915,11 @@ public :
    TBranch        *b_CA15Puppijet0_M2b2;   //!
    TBranch        *b_CA15Puppijet0_D2b1;   //!
    TBranch        *b_CA15Puppijet0_D2b2;   //!
+   TBranch        *b_CA15Puppijet0_pt_old;   //!
+   TBranch        *b_CA15Puppijet0_pt_JESUp;   //!
+   TBranch        *b_CA15Puppijet0_pt_JESDown;   //!
+   TBranch        *b_CA15Puppijet0_pt_JERUp;   //!
+   TBranch        *b_CA15Puppijet0_pt_JERDown;   //!
    TBranch        *b_CA15Puppijet1_csv;   //!
    TBranch        *b_CA15Puppijet1_CHF;   //!
    TBranch        *b_CA15Puppijet1_NHF;   //!
@@ -835,6 +970,11 @@ public :
    TBranch        *b_CA15Puppijet1_M2b2;   //!
    TBranch        *b_CA15Puppijet1_D2b1;   //!
    TBranch        *b_CA15Puppijet1_D2b2;   //!
+   TBranch        *b_CA15Puppijet1_pt_old;   //!
+   TBranch        *b_CA15Puppijet1_pt_JESUp;   //!
+   TBranch        *b_CA15Puppijet1_pt_JESDown;   //!
+   TBranch        *b_CA15Puppijet1_pt_JERUp;   //!
+   TBranch        *b_CA15Puppijet1_pt_JERDown;   //!
    TBranch        *b_CA15Puppijet1_mass;   //!
    TBranch        *b_CA15Puppijet2_csv;   //!
    TBranch        *b_CA15Puppijet2_CHF;   //!
@@ -886,8 +1026,15 @@ public :
    TBranch        *b_CA15Puppijet2_M2b2;   //!
    TBranch        *b_CA15Puppijet2_D2b1;   //!
    TBranch        *b_CA15Puppijet2_D2b2;   //!
+   TBranch        *b_CA15Puppijet2_pt_old;   //!
+   TBranch        *b_CA15Puppijet2_pt_JESUp;   //!
+   TBranch        *b_CA15Puppijet2_pt_JESDown;   //!
+   TBranch        *b_CA15Puppijet2_pt_JERUp;   //!
+   TBranch        *b_CA15Puppijet2_pt_JERDown;   //!
    TBranch        *b_nCA15Puppijets;   //!
    TBranch        *b_CA15Puppijet0_isTightVJet;   //!
+   TBranch        *b_CA15Puppijet1_isTightVJet;   //!
+   TBranch        *b_CA15Puppijet2_isTightVJet;   //!
    TBranch        *b_CA15Puppijet0_isHadronicV;   //!
    TBranch        *b_CA15Puppijet0_vMatching;   //!
    TBranch        *b_CA15Puppijet0_vSize;   //!
@@ -897,36 +1044,83 @@ public :
    TBranch        *b_CA15Puppijet0_nNeutrals;   //!
    TBranch        *b_CA15Puppijet0_nParticles;   //!
    TBranch        *b_CA15Puppijet0_ratioCA15_04;   //!
+   TBranch        *b_CA15CHSjet0_isTightVJet;   //!
    TBranch        *b_CA15CHSjet0_doublecsv;   //!
    TBranch        *b_CA15CHSjet0_doublesub;   //!
    TBranch        *b_CA15CHSjet0_pt;   //!
    TBranch        *b_CA15CHSjet0_eta;   //!
    TBranch        *b_CA15CHSjet0_phi;   //!
+   TBranch        *b_CA15CHSjet1_isTightVJet;   //!
    TBranch        *b_CA15CHSjet1_doublecsv;   //!
    TBranch        *b_CA15CHSjet1_doublesub;   //!
    TBranch        *b_CA15CHSjet1_pt;   //!
    TBranch        *b_CA15CHSjet1_eta;   //!
    TBranch        *b_CA15CHSjet1_phi;   //!
+   TBranch        *b_CA15CHSjet2_isTightVJet;   //!
    TBranch        *b_CA15CHSjet2_doublecsv;   //!
    TBranch        *b_CA15CHSjet2_doublesub;   //!
    TBranch        *b_CA15CHSjet2_pt;   //!
    TBranch        *b_CA15CHSjet2_eta;   //!
    TBranch        *b_CA15CHSjet2_phi;   //!
-   TBranch        *b_nAK4Puppijets;   //!
-   TBranch        *b_nAK4Puppijetsfwd;   //!
-   TBranch        *b_nAK4PuppijetsbtagL;   //!
-   TBranch        *b_nAK4PuppijetsbtagM;   //!
-   TBranch        *b_nAK4PuppijetsbtagT;   //!
-   TBranch        *b_nAK4PuppijetsdR08;   //!
-   TBranch        *b_nAK4PuppijetsLdR08;   //!
-   TBranch        *b_nAK4PuppijetsMdR08;   //!
-   TBranch        *b_nAK4PuppijetsTdR08;   //!
-   TBranch        *b_nAK4PuppijetsLPt100dR08;   //!
-   TBranch        *b_nAK4PuppijetsMPt100dR08;   //!
-   TBranch        *b_nAK4PuppijetsTPt100dR08;   //!
-   TBranch        *b_nAK4PuppijetsLPt150dR08;   //!
-   TBranch        *b_nAK4PuppijetsMPt150dR08;   //!
-   TBranch        *b_nAK4PuppijetsTPt150dR08;   //!
+   TBranch        *b_nAK4PuppijetsPt30;   //!
+   TBranch        *b_nAK4PuppijetsPt30jesUp;   //!
+   TBranch        *b_nAK4PuppijetsPt30jesDown;   //!
+   TBranch        *b_nAK4PuppijetsPt30jerUp;   //!
+   TBranch        *b_nAK4PuppijetsPt30jerDown;   //!
+   TBranch        *b_nAK4PuppijetsfwdPt30;   //!
+   TBranch        *b_nAK4PuppijetsbtagLPt30;   //!
+   TBranch        *b_nAK4PuppijetsbtagMPt30;   //!
+   TBranch        *b_nAK4PuppijetsbtagTPt30;   //!
+   TBranch        *b_MetXCorrjesUp;   //!
+   TBranch        *b_MetYCorrjesUp;   //!
+   TBranch        *b_MetXCorrjesDown;   //!
+   TBranch        *b_MetYCorrjesDown;   //!
+   TBranch        *b_MetXCorrjerUp;   //!
+   TBranch        *b_MetYCorrjerUp;   //!
+   TBranch        *b_MetXCorrjerDown;   //!
+   TBranch        *b_MetYCorrjerDown;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jesUp_0;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jesDown_0;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jerUp_0;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jerDown_0;   //!
+   TBranch        *b_nAK4PuppijetsLPt50dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsMPt50dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsTPt50dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsLPt100dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsMPt100dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsTPt100dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsLPt150dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsMPt150dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsTPt150dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jesUp_1;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jesDown_1;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jerUp_1;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jerDown_1;   //!
+   TBranch        *b_nAK4PuppijetsLPt50dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsMPt50dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsTPt50dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsLPt100dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsMPt100dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsTPt100dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsLPt150dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsMPt150dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsTPt150dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jesUp_2;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jesDown_2;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jerUp_2;   //!
+   TBranch        *b_nAK4PuppijetsPt30dR08jerDown_2;   //!
+   TBranch        *b_nAK4PuppijetsLPt50dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsMPt50dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsTPt50dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsLPt100dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsMPt100dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsTPt100dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsLPt150dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsMPt150dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsTPt150dR08_2;   //!
    TBranch        *b_AK4Puppijet0_pt;   //!
    TBranch        *b_AK4Puppijet0_eta;   //!
    TBranch        *b_AK4Puppijet0_phi;   //!
@@ -944,24 +1138,45 @@ public :
    TBranch        *b_AK4Puppijet0_qgid;   //!
    TBranch        *b_AK4Puppijet0_dR08;   //!
    TBranch        *b_AK4Puppijet0_dPhi08;   //!
+   TBranch        *b_AK4Puppijet0_pt_old;   //!
+   TBranch        *b_AK4Puppijet0_pt_JESUp;   //!
+   TBranch        *b_AK4Puppijet0_pt_JESDown;   //!
+   TBranch        *b_AK4Puppijet0_pt_JERUp;   //!
+   TBranch        *b_AK4Puppijet0_pt_JERDown;   //!
    TBranch        *b_AK4Puppijet1_mass;   //!
    TBranch        *b_AK4Puppijet1_csv;   //!
    TBranch        *b_AK4Puppijet1_qgid;   //!
    TBranch        *b_AK4Puppijet1_dR08;   //!
    TBranch        *b_AK4Puppijet1_dPhi08;   //!
+   TBranch        *b_AK4Puppijet1_pt_old;   //!
+   TBranch        *b_AK4Puppijet1_pt_JESUp;   //!
+   TBranch        *b_AK4Puppijet1_pt_JESDown;   //!
+   TBranch        *b_AK4Puppijet1_pt_JERUp;   //!
+   TBranch        *b_AK4Puppijet1_pt_JERDown;   //!
    TBranch        *b_AK4Puppijet2_mass;   //!
    TBranch        *b_AK4Puppijet2_csv;   //!
    TBranch        *b_AK4Puppijet2_qgid;   //!
    TBranch        *b_AK4Puppijet2_dR08;   //!
    TBranch        *b_AK4Puppijet2_dPhi08;   //!
+   TBranch        *b_AK4Puppijet2_pt_old;   //!
+   TBranch        *b_AK4Puppijet2_pt_JESUp;   //!
+   TBranch        *b_AK4Puppijet2_pt_JESDown;   //!
+   TBranch        *b_AK4Puppijet2_pt_JERUp;   //!
+   TBranch        *b_AK4Puppijet2_pt_JERDown;   //!
    TBranch        *b_AK4Puppijet3_mass;   //!
    TBranch        *b_AK4Puppijet3_csv;   //!
    TBranch        *b_AK4Puppijet3_qgid;   //!
    TBranch        *b_AK4Puppijet3_dR08;   //!
    TBranch        *b_AK4Puppijet3_dPhi08;   //!
+   TBranch        *b_AK4Puppijet3_pt_old;   //!
+   TBranch        *b_AK4Puppijet3_pt_JESUp;   //!
+   TBranch        *b_AK4Puppijet3_pt_JESDown;   //!
+   TBranch        *b_AK4Puppijet3_pt_JERUp;   //!
+   TBranch        *b_AK4Puppijet3_pt_JERDown;   //!
    TBranch        *b_fNMuonsLoose;   //!
+   TBranch        *b_fNMuonsMedium;   //!
    TBranch        *b_fNMuonsTight;   //!
-   TBranch        *b_fismu0Tight;   //!
+   TBranch        *b_fNMuonsHighPt;   //!
    TBranch        *b_vmuoLoose0_pt;   //!
    TBranch        *b_vmuoLoose0_eta;   //!
    TBranch        *b_vmuoLoose0_phi;   //!
@@ -970,7 +1185,7 @@ public :
    TBranch        *b_vmuoLoose1_phi;   //!
    TBranch        *b_fNElectronsLoose;   //!
    TBranch        *b_fNElectronsTight;   //!
-   TBranch        *b_fisele0Tight;   //!
+   TBranch        *b_fNElectronsHEEP;   //!
    TBranch        *b_veleLoose0_pt;   //!
    TBranch        *b_veleLoose0_eta;   //!
    TBranch        *b_veleLoose0_phi;   //!
@@ -992,6 +1207,9 @@ public :
    TBranch        *b_genEleFromW;   //!
    TBranch        *b_genMuFromW;   //!
    TBranch        *b_genTauFromW;   //!
+   TBranch        *b_fTopPt;   //!
+   TBranch        *b_fAntitopPt;   //!
+   TBranch        *b_fTopPtWeight;   //!
 
    BaconTree(TTree *tree=0);
    virtual ~BaconTree();
@@ -1077,6 +1295,7 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("sf_lepTrack", &sf_lepTrack, &b_fsf_lepTrack);
    fChain->SetBranchAddress("npu", &npu, &b_fNPU);
    fChain->SetBranchAddress("npv", &npv, &b_fNVtx);
+   fChain->SetBranchAddress("rho", &rho, &b_fRho);
    fChain->SetBranchAddress("puWeight", &puWeight, &b_fPUWeight);
    fChain->SetBranchAddress("scale1fb", &scale1fb, &b_fScale);
    fChain->SetBranchAddress("evtWeight", &evtWeight, &b_fevtWeight);
@@ -1153,7 +1372,11 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("AK8Puppijet0_M2b2", &AK8Puppijet0_M2b2, &b_AK8Puppijet0_M2b2);
    fChain->SetBranchAddress("AK8Puppijet0_D2b1", &AK8Puppijet0_D2b1, &b_AK8Puppijet0_D2b1);
    fChain->SetBranchAddress("AK8Puppijet0_D2b2", &AK8Puppijet0_D2b2, &b_AK8Puppijet0_D2b2);
-//    fChain->SetBranchAddress("AK8Puppijet0_mass", &AK8Puppijet0_mass, &b_AK8Puppijet0_mass);
+   fChain->SetBranchAddress("AK8Puppijet0_pt_old", &AK8Puppijet0_pt_old, &b_AK8Puppijet0_pt_old);
+   fChain->SetBranchAddress("AK8Puppijet0_pt_JESUp", &AK8Puppijet0_pt_JESUp, &b_AK8Puppijet0_pt_JESUp);
+   fChain->SetBranchAddress("AK8Puppijet0_pt_JESDown", &AK8Puppijet0_pt_JESDown, &b_AK8Puppijet0_pt_JESDown);
+   fChain->SetBranchAddress("AK8Puppijet0_pt_JERUp", &AK8Puppijet0_pt_JERUp, &b_AK8Puppijet0_pt_JERUp);
+   fChain->SetBranchAddress("AK8Puppijet0_pt_JERDown", &AK8Puppijet0_pt_JERDown, &b_AK8Puppijet0_pt_JERDown);
    fChain->SetBranchAddress("AK8Puppijet1_csv", &AK8Puppijet1_csv, &b_AK8Puppijet1_csv);
    fChain->SetBranchAddress("AK8Puppijet1_CHF", &AK8Puppijet1_CHF, &b_AK8Puppijet1_CHF);
    fChain->SetBranchAddress("AK8Puppijet1_NHF", &AK8Puppijet1_NHF, &b_AK8Puppijet1_NHF);
@@ -1204,6 +1427,11 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("AK8Puppijet1_M2b2", &AK8Puppijet1_M2b2, &b_AK8Puppijet1_M2b2);
    fChain->SetBranchAddress("AK8Puppijet1_D2b1", &AK8Puppijet1_D2b1, &b_AK8Puppijet1_D2b1);
    fChain->SetBranchAddress("AK8Puppijet1_D2b2", &AK8Puppijet1_D2b2, &b_AK8Puppijet1_D2b2);
+   fChain->SetBranchAddress("AK8Puppijet1_pt_old", &AK8Puppijet1_pt_old, &b_AK8Puppijet1_pt_old);
+   fChain->SetBranchAddress("AK8Puppijet1_pt_JESUp", &AK8Puppijet1_pt_JESUp, &b_AK8Puppijet1_pt_JESUp);
+   fChain->SetBranchAddress("AK8Puppijet1_pt_JESDown", &AK8Puppijet1_pt_JESDown, &b_AK8Puppijet1_pt_JESDown);
+   fChain->SetBranchAddress("AK8Puppijet1_pt_JERUp", &AK8Puppijet1_pt_JERUp, &b_AK8Puppijet1_pt_JERUp);
+   fChain->SetBranchAddress("AK8Puppijet1_pt_JERDown", &AK8Puppijet1_pt_JERDown, &b_AK8Puppijet1_pt_JERDown);
    fChain->SetBranchAddress("AK8Puppijet1_mass", &AK8Puppijet1_mass, &b_AK8Puppijet1_mass);
    fChain->SetBranchAddress("AK8Puppijet2_csv", &AK8Puppijet2_csv, &b_AK8Puppijet2_csv);
    fChain->SetBranchAddress("AK8Puppijet2_CHF", &AK8Puppijet2_CHF, &b_AK8Puppijet2_CHF);
@@ -1255,8 +1483,15 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("AK8Puppijet2_M2b2", &AK8Puppijet2_M2b2, &b_AK8Puppijet2_M2b2);
    fChain->SetBranchAddress("AK8Puppijet2_D2b1", &AK8Puppijet2_D2b1, &b_AK8Puppijet2_D2b1);
    fChain->SetBranchAddress("AK8Puppijet2_D2b2", &AK8Puppijet2_D2b2, &b_AK8Puppijet2_D2b2);
+   fChain->SetBranchAddress("AK8Puppijet2_pt_old", &AK8Puppijet2_pt_old, &b_AK8Puppijet2_pt_old);
+   fChain->SetBranchAddress("AK8Puppijet2_pt_JESUp", &AK8Puppijet2_pt_JESUp, &b_AK8Puppijet2_pt_JESUp);
+   fChain->SetBranchAddress("AK8Puppijet2_pt_JESDown", &AK8Puppijet2_pt_JESDown, &b_AK8Puppijet2_pt_JESDown);
+   fChain->SetBranchAddress("AK8Puppijet2_pt_JERUp", &AK8Puppijet2_pt_JERUp, &b_AK8Puppijet2_pt_JERUp);
+   fChain->SetBranchAddress("AK8Puppijet2_pt_JERDown", &AK8Puppijet2_pt_JERDown, &b_AK8Puppijet2_pt_JERDown);
    fChain->SetBranchAddress("nAK8Puppijets", &nAK8Puppijets, &b_nAK8Puppijets);
    fChain->SetBranchAddress("AK8Puppijet0_isTightVJet", &AK8Puppijet0_isTightVJet, &b_AK8Puppijet0_isTightVJet);
+   fChain->SetBranchAddress("AK8Puppijet1_isTightVJet", &AK8Puppijet1_isTightVJet, &b_AK8Puppijet1_isTightVJet);
+   fChain->SetBranchAddress("AK8Puppijet2_isTightVJet", &AK8Puppijet2_isTightVJet, &b_AK8Puppijet2_isTightVJet);
    fChain->SetBranchAddress("AK8Puppijet0_isHadronicV", &AK8Puppijet0_isHadronicV, &b_AK8Puppijet0_isHadronicV);
    fChain->SetBranchAddress("AK8Puppijet0_vMatching", &AK8Puppijet0_vMatching, &b_AK8Puppijet0_vMatching);
    fChain->SetBranchAddress("AK8Puppijet0_vSize", &AK8Puppijet0_vSize, &b_AK8Puppijet0_vSize);
@@ -1266,16 +1501,19 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("AK8Puppijet0_nNeutrals", &AK8Puppijet0_nNeutrals, &b_AK8Puppijet0_nNeutrals);
    fChain->SetBranchAddress("AK8Puppijet0_nParticles", &AK8Puppijet0_nParticles, &b_AK8Puppijet0_nParticles);
    fChain->SetBranchAddress("AK8Puppijet0_ratioCA15_04", &AK8Puppijet0_ratioCA15_04, &b_AK8Puppijet0_ratioCA15_04);
+   fChain->SetBranchAddress("AK8CHSjet0_isTightVJet", &AK8CHSjet0_isTightVJet, &b_AK8CHSjet0_isTightVJet);
    fChain->SetBranchAddress("AK8CHSjet0_doublecsv", &AK8CHSjet0_doublecsv, &b_AK8CHSjet0_doublecsv);
    fChain->SetBranchAddress("AK8CHSjet0_doublesub", &AK8CHSjet0_doublesub, &b_AK8CHSjet0_doublesub);
    fChain->SetBranchAddress("AK8CHSjet0_pt", &AK8CHSjet0_pt, &b_AK8CHSjet0_pt);
    fChain->SetBranchAddress("AK8CHSjet0_eta", &AK8CHSjet0_eta, &b_AK8CHSjet0_eta);
    fChain->SetBranchAddress("AK8CHSjet0_phi", &AK8CHSjet0_phi, &b_AK8CHSjet0_phi);
+   fChain->SetBranchAddress("AK8CHSjet1_isTightVJet", &AK8CHSjet1_isTightVJet, &b_AK8CHSjet1_isTightVJet);
    fChain->SetBranchAddress("AK8CHSjet1_doublecsv", &AK8CHSjet1_doublecsv, &b_AK8CHSjet1_doublecsv);
    fChain->SetBranchAddress("AK8CHSjet1_doublesub", &AK8CHSjet1_doublesub, &b_AK8CHSjet1_doublesub);
    fChain->SetBranchAddress("AK8CHSjet1_pt", &AK8CHSjet1_pt, &b_AK8CHSjet1_pt);
    fChain->SetBranchAddress("AK8CHSjet1_eta", &AK8CHSjet1_eta, &b_AK8CHSjet1_eta);
    fChain->SetBranchAddress("AK8CHSjet1_phi", &AK8CHSjet1_phi, &b_AK8CHSjet1_phi);
+   fChain->SetBranchAddress("AK8CHSjet2_isTightVJet", &AK8CHSjet2_isTightVJet, &b_AK8CHSjet2_isTightVJet);
    fChain->SetBranchAddress("AK8CHSjet2_doublecsv", &AK8CHSjet2_doublecsv, &b_AK8CHSjet2_doublecsv);
    fChain->SetBranchAddress("AK8CHSjet2_doublesub", &AK8CHSjet2_doublesub, &b_AK8CHSjet2_doublesub);
    fChain->SetBranchAddress("AK8CHSjet2_pt", &AK8CHSjet2_pt, &b_AK8CHSjet2_pt);
@@ -1341,6 +1579,11 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("CA15Puppijet0_M2b2", &CA15Puppijet0_M2b2, &b_CA15Puppijet0_M2b2);
    fChain->SetBranchAddress("CA15Puppijet0_D2b1", &CA15Puppijet0_D2b1, &b_CA15Puppijet0_D2b1);
    fChain->SetBranchAddress("CA15Puppijet0_D2b2", &CA15Puppijet0_D2b2, &b_CA15Puppijet0_D2b2);
+   fChain->SetBranchAddress("CA15Puppijet0_pt_old", &CA15Puppijet0_pt_old, &b_CA15Puppijet0_pt_old);
+   fChain->SetBranchAddress("CA15Puppijet0_pt_JESUp", &CA15Puppijet0_pt_JESUp, &b_CA15Puppijet0_pt_JESUp);
+   fChain->SetBranchAddress("CA15Puppijet0_pt_JESDown", &CA15Puppijet0_pt_JESDown, &b_CA15Puppijet0_pt_JESDown);
+   fChain->SetBranchAddress("CA15Puppijet0_pt_JERUp", &CA15Puppijet0_pt_JERUp, &b_CA15Puppijet0_pt_JERUp);
+   fChain->SetBranchAddress("CA15Puppijet0_pt_JERDown", &CA15Puppijet0_pt_JERDown, &b_CA15Puppijet0_pt_JERDown);
    fChain->SetBranchAddress("CA15Puppijet1_csv", &CA15Puppijet1_csv, &b_CA15Puppijet1_csv);
    fChain->SetBranchAddress("CA15Puppijet1_CHF", &CA15Puppijet1_CHF, &b_CA15Puppijet1_CHF);
    fChain->SetBranchAddress("CA15Puppijet1_NHF", &CA15Puppijet1_NHF, &b_CA15Puppijet1_NHF);
@@ -1391,6 +1634,11 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("CA15Puppijet1_M2b2", &CA15Puppijet1_M2b2, &b_CA15Puppijet1_M2b2);
    fChain->SetBranchAddress("CA15Puppijet1_D2b1", &CA15Puppijet1_D2b1, &b_CA15Puppijet1_D2b1);
    fChain->SetBranchAddress("CA15Puppijet1_D2b2", &CA15Puppijet1_D2b2, &b_CA15Puppijet1_D2b2);
+   fChain->SetBranchAddress("CA15Puppijet1_pt_old", &CA15Puppijet1_pt_old, &b_CA15Puppijet1_pt_old);
+   fChain->SetBranchAddress("CA15Puppijet1_pt_JESUp", &CA15Puppijet1_pt_JESUp, &b_CA15Puppijet1_pt_JESUp);
+   fChain->SetBranchAddress("CA15Puppijet1_pt_JESDown", &CA15Puppijet1_pt_JESDown, &b_CA15Puppijet1_pt_JESDown);
+   fChain->SetBranchAddress("CA15Puppijet1_pt_JERUp", &CA15Puppijet1_pt_JERUp, &b_CA15Puppijet1_pt_JERUp);
+   fChain->SetBranchAddress("CA15Puppijet1_pt_JERDown", &CA15Puppijet1_pt_JERDown, &b_CA15Puppijet1_pt_JERDown);
    fChain->SetBranchAddress("CA15Puppijet1_mass", &CA15Puppijet1_mass, &b_CA15Puppijet1_mass);
    fChain->SetBranchAddress("CA15Puppijet2_csv", &CA15Puppijet2_csv, &b_CA15Puppijet2_csv);
    fChain->SetBranchAddress("CA15Puppijet2_CHF", &CA15Puppijet2_CHF, &b_CA15Puppijet2_CHF);
@@ -1442,8 +1690,15 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("CA15Puppijet2_M2b2", &CA15Puppijet2_M2b2, &b_CA15Puppijet2_M2b2);
    fChain->SetBranchAddress("CA15Puppijet2_D2b1", &CA15Puppijet2_D2b1, &b_CA15Puppijet2_D2b1);
    fChain->SetBranchAddress("CA15Puppijet2_D2b2", &CA15Puppijet2_D2b2, &b_CA15Puppijet2_D2b2);
+   fChain->SetBranchAddress("CA15Puppijet2_pt_old", &CA15Puppijet2_pt_old, &b_CA15Puppijet2_pt_old);
+   fChain->SetBranchAddress("CA15Puppijet2_pt_JESUp", &CA15Puppijet2_pt_JESUp, &b_CA15Puppijet2_pt_JESUp);
+   fChain->SetBranchAddress("CA15Puppijet2_pt_JESDown", &CA15Puppijet2_pt_JESDown, &b_CA15Puppijet2_pt_JESDown);
+   fChain->SetBranchAddress("CA15Puppijet2_pt_JERUp", &CA15Puppijet2_pt_JERUp, &b_CA15Puppijet2_pt_JERUp);
+   fChain->SetBranchAddress("CA15Puppijet2_pt_JERDown", &CA15Puppijet2_pt_JERDown, &b_CA15Puppijet2_pt_JERDown);
    fChain->SetBranchAddress("nCA15Puppijets", &nCA15Puppijets, &b_nCA15Puppijets);
    fChain->SetBranchAddress("CA15Puppijet0_isTightVJet", &CA15Puppijet0_isTightVJet, &b_CA15Puppijet0_isTightVJet);
+   fChain->SetBranchAddress("CA15Puppijet1_isTightVJet", &CA15Puppijet1_isTightVJet, &b_CA15Puppijet1_isTightVJet);
+   fChain->SetBranchAddress("CA15Puppijet2_isTightVJet", &CA15Puppijet2_isTightVJet, &b_CA15Puppijet2_isTightVJet);
    fChain->SetBranchAddress("CA15Puppijet0_isHadronicV", &CA15Puppijet0_isHadronicV, &b_CA15Puppijet0_isHadronicV);
    fChain->SetBranchAddress("CA15Puppijet0_vMatching", &CA15Puppijet0_vMatching, &b_CA15Puppijet0_vMatching);
    fChain->SetBranchAddress("CA15Puppijet0_vSize", &CA15Puppijet0_vSize, &b_CA15Puppijet0_vSize);
@@ -1453,36 +1708,83 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("CA15Puppijet0_nNeutrals", &CA15Puppijet0_nNeutrals, &b_CA15Puppijet0_nNeutrals);
    fChain->SetBranchAddress("CA15Puppijet0_nParticles", &CA15Puppijet0_nParticles, &b_CA15Puppijet0_nParticles);
    fChain->SetBranchAddress("CA15Puppijet0_ratioCA15_04", &CA15Puppijet0_ratioCA15_04, &b_CA15Puppijet0_ratioCA15_04);
+   fChain->SetBranchAddress("CA15CHSjet0_isTightVJet", &CA15CHSjet0_isTightVJet, &b_CA15CHSjet0_isTightVJet);
    fChain->SetBranchAddress("CA15CHSjet0_doublecsv", &CA15CHSjet0_doublecsv, &b_CA15CHSjet0_doublecsv);
    fChain->SetBranchAddress("CA15CHSjet0_doublesub", &CA15CHSjet0_doublesub, &b_CA15CHSjet0_doublesub);
    fChain->SetBranchAddress("CA15CHSjet0_pt", &CA15CHSjet0_pt, &b_CA15CHSjet0_pt);
    fChain->SetBranchAddress("CA15CHSjet0_eta", &CA15CHSjet0_eta, &b_CA15CHSjet0_eta);
    fChain->SetBranchAddress("CA15CHSjet0_phi", &CA15CHSjet0_phi, &b_CA15CHSjet0_phi);
+   fChain->SetBranchAddress("CA15CHSjet1_isTightVJet", &CA15CHSjet1_isTightVJet, &b_CA15CHSjet1_isTightVJet);
    fChain->SetBranchAddress("CA15CHSjet1_doublecsv", &CA15CHSjet1_doublecsv, &b_CA15CHSjet1_doublecsv);
    fChain->SetBranchAddress("CA15CHSjet1_doublesub", &CA15CHSjet1_doublesub, &b_CA15CHSjet1_doublesub);
    fChain->SetBranchAddress("CA15CHSjet1_pt", &CA15CHSjet1_pt, &b_CA15CHSjet1_pt);
    fChain->SetBranchAddress("CA15CHSjet1_eta", &CA15CHSjet1_eta, &b_CA15CHSjet1_eta);
    fChain->SetBranchAddress("CA15CHSjet1_phi", &CA15CHSjet1_phi, &b_CA15CHSjet1_phi);
+   fChain->SetBranchAddress("CA15CHSjet2_isTightVJet", &CA15CHSjet2_isTightVJet, &b_CA15CHSjet2_isTightVJet);
    fChain->SetBranchAddress("CA15CHSjet2_doublecsv", &CA15CHSjet2_doublecsv, &b_CA15CHSjet2_doublecsv);
    fChain->SetBranchAddress("CA15CHSjet2_doublesub", &CA15CHSjet2_doublesub, &b_CA15CHSjet2_doublesub);
    fChain->SetBranchAddress("CA15CHSjet2_pt", &CA15CHSjet2_pt, &b_CA15CHSjet2_pt);
    fChain->SetBranchAddress("CA15CHSjet2_eta", &CA15CHSjet2_eta, &b_CA15CHSjet2_eta);
    fChain->SetBranchAddress("CA15CHSjet2_phi", &CA15CHSjet2_phi, &b_CA15CHSjet2_phi);
-   fChain->SetBranchAddress("nAK4Puppijets", &nAK4Puppijets, &b_nAK4Puppijets);
-   fChain->SetBranchAddress("nAK4Puppijetsfwd", &nAK4Puppijetsfwd, &b_nAK4Puppijetsfwd);
-   fChain->SetBranchAddress("nAK4PuppijetsbtagL", &nAK4PuppijetsbtagL, &b_nAK4PuppijetsbtagL);
-   fChain->SetBranchAddress("nAK4PuppijetsbtagM", &nAK4PuppijetsbtagM, &b_nAK4PuppijetsbtagM);
-   fChain->SetBranchAddress("nAK4PuppijetsbtagT", &nAK4PuppijetsbtagT, &b_nAK4PuppijetsbtagT);
-   fChain->SetBranchAddress("nAK4PuppijetsdR08", &nAK4PuppijetsdR08, &b_nAK4PuppijetsdR08);
-   fChain->SetBranchAddress("nAK4PuppijetsLdR08", &nAK4PuppijetsLdR08, &b_nAK4PuppijetsLdR08);
-   fChain->SetBranchAddress("nAK4PuppijetsMdR08", &nAK4PuppijetsMdR08, &b_nAK4PuppijetsMdR08);
-   fChain->SetBranchAddress("nAK4PuppijetsTdR08", &nAK4PuppijetsTdR08, &b_nAK4PuppijetsTdR08);
-   fChain->SetBranchAddress("nAK4PuppijetsLPt100dR08", &nAK4PuppijetsLPt100dR08, &b_nAK4PuppijetsLPt100dR08);
-   fChain->SetBranchAddress("nAK4PuppijetsMPt100dR08", &nAK4PuppijetsMPt100dR08, &b_nAK4PuppijetsMPt100dR08);
-   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08", &nAK4PuppijetsTPt100dR08, &b_nAK4PuppijetsTPt100dR08);
-   fChain->SetBranchAddress("nAK4PuppijetsLPt150dR08", &nAK4PuppijetsLPt150dR08, &b_nAK4PuppijetsLPt150dR08);
-   fChain->SetBranchAddress("nAK4PuppijetsMPt150dR08", &nAK4PuppijetsMPt150dR08, &b_nAK4PuppijetsMPt150dR08);
-   fChain->SetBranchAddress("nAK4PuppijetsTPt150dR08", &nAK4PuppijetsTPt150dR08, &b_nAK4PuppijetsTPt150dR08);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30", &nAK4PuppijetsPt30, &b_nAK4PuppijetsPt30);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30jesUp", &nAK4PuppijetsPt30jesUp, &b_nAK4PuppijetsPt30jesUp);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30jesDown", &nAK4PuppijetsPt30jesDown, &b_nAK4PuppijetsPt30jesDown);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30jerUp", &nAK4PuppijetsPt30jerUp, &b_nAK4PuppijetsPt30jerUp);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30jerDown", &nAK4PuppijetsPt30jerDown, &b_nAK4PuppijetsPt30jerDown);
+   fChain->SetBranchAddress("nAK4PuppijetsfwdPt30", &nAK4PuppijetsfwdPt30, &b_nAK4PuppijetsfwdPt30);
+   fChain->SetBranchAddress("nAK4PuppijetsbtagLPt30", &nAK4PuppijetsbtagLPt30, &b_nAK4PuppijetsbtagLPt30);
+   fChain->SetBranchAddress("nAK4PuppijetsbtagMPt30", &nAK4PuppijetsbtagMPt30, &b_nAK4PuppijetsbtagMPt30);
+   fChain->SetBranchAddress("nAK4PuppijetsbtagTPt30", &nAK4PuppijetsbtagTPt30, &b_nAK4PuppijetsbtagTPt30);
+   fChain->SetBranchAddress("MetXCorrjesUp", &MetXCorrjesUp, &b_MetXCorrjesUp);
+   fChain->SetBranchAddress("MetYCorrjesUp", &MetYCorrjesUp, &b_MetYCorrjesUp);
+   fChain->SetBranchAddress("MetXCorrjesDown", &MetXCorrjesDown, &b_MetXCorrjesDown);
+   fChain->SetBranchAddress("MetYCorrjesDown", &MetYCorrjesDown, &b_MetYCorrjesDown);
+   fChain->SetBranchAddress("MetXCorrjerUp", &MetXCorrjerUp, &b_MetXCorrjerUp);
+   fChain->SetBranchAddress("MetYCorrjerUp", &MetYCorrjerUp, &b_MetYCorrjerUp);
+   fChain->SetBranchAddress("MetXCorrjerDown", &MetXCorrjerDown, &b_MetXCorrjerDown);
+   fChain->SetBranchAddress("MetYCorrjerDown", &MetYCorrjerDown, &b_MetYCorrjerDown);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08_0", &nAK4PuppijetsPt30dR08_0, &b_nAK4PuppijetsPt30dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jesUp_0", &nAK4PuppijetsPt30dR08jesUp_0, &b_nAK4PuppijetsPt30dR08jesUp_0);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jesDown_0", &nAK4PuppijetsPt30dR08jesDown_0, &b_nAK4PuppijetsPt30dR08jesDown_0);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jerUp_0", &nAK4PuppijetsPt30dR08jerUp_0, &b_nAK4PuppijetsPt30dR08jerUp_0);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jerDown_0", &nAK4PuppijetsPt30dR08jerDown_0, &b_nAK4PuppijetsPt30dR08jerDown_0);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt50dR08_0", &nAK4PuppijetsLPt50dR08_0, &b_nAK4PuppijetsLPt50dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt50dR08_0", &nAK4PuppijetsMPt50dR08_0, &b_nAK4PuppijetsMPt50dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt50dR08_0", &nAK4PuppijetsTPt50dR08_0, &b_nAK4PuppijetsTPt50dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt100dR08_0", &nAK4PuppijetsLPt100dR08_0, &b_nAK4PuppijetsLPt100dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt100dR08_0", &nAK4PuppijetsMPt100dR08_0, &b_nAK4PuppijetsMPt100dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_0", &nAK4PuppijetsTPt100dR08_0, &b_nAK4PuppijetsTPt100dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt150dR08_0", &nAK4PuppijetsLPt150dR08_0, &b_nAK4PuppijetsLPt150dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt150dR08_0", &nAK4PuppijetsMPt150dR08_0, &b_nAK4PuppijetsMPt150dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt150dR08_0", &nAK4PuppijetsTPt150dR08_0, &b_nAK4PuppijetsTPt150dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08_1", &nAK4PuppijetsPt30dR08_1, &b_nAK4PuppijetsPt30dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jesUp_1", &nAK4PuppijetsPt30dR08jesUp_1, &b_nAK4PuppijetsPt30dR08jesUp_1);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jesDown_1", &nAK4PuppijetsPt30dR08jesDown_1, &b_nAK4PuppijetsPt30dR08jesDown_1);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jerUp_1", &nAK4PuppijetsPt30dR08jerUp_1, &b_nAK4PuppijetsPt30dR08jerUp_1);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jerDown_1", &nAK4PuppijetsPt30dR08jerDown_1, &b_nAK4PuppijetsPt30dR08jerDown_1);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt50dR08_1", &nAK4PuppijetsLPt50dR08_1, &b_nAK4PuppijetsLPt50dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt50dR08_1", &nAK4PuppijetsMPt50dR08_1, &b_nAK4PuppijetsMPt50dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt50dR08_1", &nAK4PuppijetsTPt50dR08_1, &b_nAK4PuppijetsTPt50dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt100dR08_1", &nAK4PuppijetsLPt100dR08_1, &b_nAK4PuppijetsLPt100dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt100dR08_1", &nAK4PuppijetsMPt100dR08_1, &b_nAK4PuppijetsMPt100dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_1", &nAK4PuppijetsTPt100dR08_1, &b_nAK4PuppijetsTPt100dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt150dR08_1", &nAK4PuppijetsLPt150dR08_1, &b_nAK4PuppijetsLPt150dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt150dR08_1", &nAK4PuppijetsMPt150dR08_1, &b_nAK4PuppijetsMPt150dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt150dR08_1", &nAK4PuppijetsTPt150dR08_1, &b_nAK4PuppijetsTPt150dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08_2", &nAK4PuppijetsPt30dR08_2, &b_nAK4PuppijetsPt30dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jesUp_2", &nAK4PuppijetsPt30dR08jesUp_2, &b_nAK4PuppijetsPt30dR08jesUp_2);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jesDown_2", &nAK4PuppijetsPt30dR08jesDown_2, &b_nAK4PuppijetsPt30dR08jesDown_2);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jerUp_2", &nAK4PuppijetsPt30dR08jerUp_2, &b_nAK4PuppijetsPt30dR08jerUp_2);
+   fChain->SetBranchAddress("nAK4PuppijetsPt30dR08jerDown_2", &nAK4PuppijetsPt30dR08jerDown_2, &b_nAK4PuppijetsPt30dR08jerDown_2);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt50dR08_2", &nAK4PuppijetsLPt50dR08_2, &b_nAK4PuppijetsLPt50dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt50dR08_2", &nAK4PuppijetsMPt50dR08_2, &b_nAK4PuppijetsMPt50dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt50dR08_2", &nAK4PuppijetsTPt50dR08_2, &b_nAK4PuppijetsTPt50dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt100dR08_2", &nAK4PuppijetsLPt100dR08_2, &b_nAK4PuppijetsLPt100dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt100dR08_2", &nAK4PuppijetsMPt100dR08_2, &b_nAK4PuppijetsMPt100dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_2", &nAK4PuppijetsTPt100dR08_2, &b_nAK4PuppijetsTPt100dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsLPt150dR08_2", &nAK4PuppijetsLPt150dR08_2, &b_nAK4PuppijetsLPt150dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsMPt150dR08_2", &nAK4PuppijetsMPt150dR08_2, &b_nAK4PuppijetsMPt150dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt150dR08_2", &nAK4PuppijetsTPt150dR08_2, &b_nAK4PuppijetsTPt150dR08_2);
    fChain->SetBranchAddress("AK4Puppijet0_pt", &AK4Puppijet0_pt, &b_AK4Puppijet0_pt);
    fChain->SetBranchAddress("AK4Puppijet0_eta", &AK4Puppijet0_eta, &b_AK4Puppijet0_eta);
    fChain->SetBranchAddress("AK4Puppijet0_phi", &AK4Puppijet0_phi, &b_AK4Puppijet0_phi);
@@ -1500,24 +1802,45 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("AK4Puppijet0_qgid", &AK4Puppijet0_qgid, &b_AK4Puppijet0_qgid);
    fChain->SetBranchAddress("AK4Puppijet0_dR08", &AK4Puppijet0_dR08, &b_AK4Puppijet0_dR08);
    fChain->SetBranchAddress("AK4Puppijet0_dPhi08", &AK4Puppijet0_dPhi08, &b_AK4Puppijet0_dPhi08);
+   fChain->SetBranchAddress("AK4Puppijet0_pt_old", &AK4Puppijet0_pt_old, &b_AK4Puppijet0_pt_old);
+   fChain->SetBranchAddress("AK4Puppijet0_pt_JESUp", &AK4Puppijet0_pt_JESUp, &b_AK4Puppijet0_pt_JESUp);
+   fChain->SetBranchAddress("AK4Puppijet0_pt_JESDown", &AK4Puppijet0_pt_JESDown, &b_AK4Puppijet0_pt_JESDown);
+   fChain->SetBranchAddress("AK4Puppijet0_pt_JERUp", &AK4Puppijet0_pt_JERUp, &b_AK4Puppijet0_pt_JERUp);
+   fChain->SetBranchAddress("AK4Puppijet0_pt_JERDown", &AK4Puppijet0_pt_JERDown, &b_AK4Puppijet0_pt_JERDown);
    fChain->SetBranchAddress("AK4Puppijet1_mass", &AK4Puppijet1_mass, &b_AK4Puppijet1_mass);
    fChain->SetBranchAddress("AK4Puppijet1_csv", &AK4Puppijet1_csv, &b_AK4Puppijet1_csv);
    fChain->SetBranchAddress("AK4Puppijet1_qgid", &AK4Puppijet1_qgid, &b_AK4Puppijet1_qgid);
    fChain->SetBranchAddress("AK4Puppijet1_dR08", &AK4Puppijet1_dR08, &b_AK4Puppijet1_dR08);
    fChain->SetBranchAddress("AK4Puppijet1_dPhi08", &AK4Puppijet1_dPhi08, &b_AK4Puppijet1_dPhi08);
+   fChain->SetBranchAddress("AK4Puppijet1_pt_old", &AK4Puppijet1_pt_old, &b_AK4Puppijet1_pt_old);
+   fChain->SetBranchAddress("AK4Puppijet1_pt_JESUp", &AK4Puppijet1_pt_JESUp, &b_AK4Puppijet1_pt_JESUp);
+   fChain->SetBranchAddress("AK4Puppijet1_pt_JESDown", &AK4Puppijet1_pt_JESDown, &b_AK4Puppijet1_pt_JESDown);
+   fChain->SetBranchAddress("AK4Puppijet1_pt_JERUp", &AK4Puppijet1_pt_JERUp, &b_AK4Puppijet1_pt_JERUp);
+   fChain->SetBranchAddress("AK4Puppijet1_pt_JERDown", &AK4Puppijet1_pt_JERDown, &b_AK4Puppijet1_pt_JERDown);
    fChain->SetBranchAddress("AK4Puppijet2_mass", &AK4Puppijet2_mass, &b_AK4Puppijet2_mass);
    fChain->SetBranchAddress("AK4Puppijet2_csv", &AK4Puppijet2_csv, &b_AK4Puppijet2_csv);
    fChain->SetBranchAddress("AK4Puppijet2_qgid", &AK4Puppijet2_qgid, &b_AK4Puppijet2_qgid);
    fChain->SetBranchAddress("AK4Puppijet2_dR08", &AK4Puppijet2_dR08, &b_AK4Puppijet2_dR08);
    fChain->SetBranchAddress("AK4Puppijet2_dPhi08", &AK4Puppijet2_dPhi08, &b_AK4Puppijet2_dPhi08);
+   fChain->SetBranchAddress("AK4Puppijet2_pt_old", &AK4Puppijet2_pt_old, &b_AK4Puppijet2_pt_old);
+   fChain->SetBranchAddress("AK4Puppijet2_pt_JESUp", &AK4Puppijet2_pt_JESUp, &b_AK4Puppijet2_pt_JESUp);
+   fChain->SetBranchAddress("AK4Puppijet2_pt_JESDown", &AK4Puppijet2_pt_JESDown, &b_AK4Puppijet2_pt_JESDown);
+   fChain->SetBranchAddress("AK4Puppijet2_pt_JERUp", &AK4Puppijet2_pt_JERUp, &b_AK4Puppijet2_pt_JERUp);
+   fChain->SetBranchAddress("AK4Puppijet2_pt_JERDown", &AK4Puppijet2_pt_JERDown, &b_AK4Puppijet2_pt_JERDown);
    fChain->SetBranchAddress("AK4Puppijet3_mass", &AK4Puppijet3_mass, &b_AK4Puppijet3_mass);
    fChain->SetBranchAddress("AK4Puppijet3_csv", &AK4Puppijet3_csv, &b_AK4Puppijet3_csv);
    fChain->SetBranchAddress("AK4Puppijet3_qgid", &AK4Puppijet3_qgid, &b_AK4Puppijet3_qgid);
    fChain->SetBranchAddress("AK4Puppijet3_dR08", &AK4Puppijet3_dR08, &b_AK4Puppijet3_dR08);
    fChain->SetBranchAddress("AK4Puppijet3_dPhi08", &AK4Puppijet3_dPhi08, &b_AK4Puppijet3_dPhi08);
+   fChain->SetBranchAddress("AK4Puppijet3_pt_old", &AK4Puppijet3_pt_old, &b_AK4Puppijet3_pt_old);
+   fChain->SetBranchAddress("AK4Puppijet3_pt_JESUp", &AK4Puppijet3_pt_JESUp, &b_AK4Puppijet3_pt_JESUp);
+   fChain->SetBranchAddress("AK4Puppijet3_pt_JESDown", &AK4Puppijet3_pt_JESDown, &b_AK4Puppijet3_pt_JESDown);
+   fChain->SetBranchAddress("AK4Puppijet3_pt_JERUp", &AK4Puppijet3_pt_JERUp, &b_AK4Puppijet3_pt_JERUp);
+   fChain->SetBranchAddress("AK4Puppijet3_pt_JERDown", &AK4Puppijet3_pt_JERDown, &b_AK4Puppijet3_pt_JERDown);
    fChain->SetBranchAddress("nmuLoose", &nmuLoose, &b_fNMuonsLoose);
+   fChain->SetBranchAddress("nmuMedium", &nmuMedium, &b_fNMuonsMedium);
    fChain->SetBranchAddress("nmuTight", &nmuTight, &b_fNMuonsTight);
-   fChain->SetBranchAddress("ismu0Tight", &ismu0Tight, &b_fismu0Tight);
+   fChain->SetBranchAddress("nmuHighPt", &nmuHighPt, &b_fNMuonsHighPt);
    fChain->SetBranchAddress("vmuoLoose0_pt", &vmuoLoose0_pt, &b_vmuoLoose0_pt);
    fChain->SetBranchAddress("vmuoLoose0_eta", &vmuoLoose0_eta, &b_vmuoLoose0_eta);
    fChain->SetBranchAddress("vmuoLoose0_phi", &vmuoLoose0_phi, &b_vmuoLoose0_phi);
@@ -1526,7 +1849,7 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("vmuoLoose1_phi", &vmuoLoose1_phi, &b_vmuoLoose1_phi);
    fChain->SetBranchAddress("neleLoose", &neleLoose, &b_fNElectronsLoose);
    fChain->SetBranchAddress("neleTight", &neleTight, &b_fNElectronsTight);
-   fChain->SetBranchAddress("isele0Tight", &isele0Tight, &b_fisele0Tight);
+   fChain->SetBranchAddress("neleHEEP", &neleHEEP, &b_fNElectronsHEEP);
    fChain->SetBranchAddress("veleLoose0_pt", &veleLoose0_pt, &b_veleLoose0_pt);
    fChain->SetBranchAddress("veleLoose0_eta", &veleLoose0_eta, &b_veleLoose0_eta);
    fChain->SetBranchAddress("veleLoose0_phi", &veleLoose0_phi, &b_veleLoose0_phi);
@@ -1548,6 +1871,9 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("genEleFromW", &genEleFromW, &b_genEleFromW);
    fChain->SetBranchAddress("genMuFromW", &genMuFromW, &b_genMuFromW);
    fChain->SetBranchAddress("genTauFromW", &genTauFromW, &b_genTauFromW);
+   fChain->SetBranchAddress("topPt", &topPt, &b_fTopPt);
+   fChain->SetBranchAddress("antitopPt", &antitopPt, &b_fAntitopPt);
+   fChain->SetBranchAddress("topPtWeight", &topPtWeight, &b_fTopPtWeight);
    Notify();
 }
 
