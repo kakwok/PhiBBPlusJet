@@ -17,7 +17,7 @@ signal_names = []
 #signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
 signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 for mass in signal_masses:
-	signal_names.append("Pbb_{}".format(mass))
+	signal_names.append("Sbb_{}".format(mass))
 	signal_names.append("PSbb_{}".format(mass))
 data_names = ["data_obs"]
 supersamples = []
