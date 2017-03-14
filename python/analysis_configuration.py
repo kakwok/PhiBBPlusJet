@@ -15,7 +15,8 @@ background_names = [
 ]
 signal_names = []
 #signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
-signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
+#signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
+signal_masses = [50,75,100,125,150,200,250,300,350,400,500]
 for mass in signal_masses:
 	signal_names.append("Sbb_{}".format(mass))
 	signal_names.append("PSbb_{}".format(mass))
@@ -40,8 +41,10 @@ samples = {
 	"Sbb_100":["Spin0_ggPhi12j_g1_100_Scalar"],
 	"Sbb_125":["Spin0_ggPhi12j_g1_125_Scalar"],
 	"Sbb_150":["Spin0_ggPhi12j_g1_150_Scalar"],
+	"Sbb_200":["Spin0_ggPhi12j_g1_200_Scalar"],
 	"Sbb_250":["Spin0_ggPhi12j_g1_250_Scalar"],
 	"Sbb_300":["Spin0_ggPhi12j_g1_300_Scalar"],
+	"Sbb_350":["Spin0_ggPhi12j_g1_350_Scalar"],
 	"Sbb_400":["Spin0_ggPhi12j_g1_400_Scalar"],
 	"Sbb_500":["Spin0_ggPhi12j_g1_500_Scalar"],
 	"PSbb_50":["Spin0_ggPhi12j_g1_50_PseudoScalar"],
@@ -49,8 +52,10 @@ samples = {
 	"PSbb_100":["Spin0_ggPhi12j_g1_100_PseudoScalar"],
 	"PSbb_125":["Spin0_ggPhi12j_g1_125_PseudoScalar"],
 	"PSbb_150":["Spin0_ggPhi12j_g1_150_PseudoScalar"],
+	"PSbb_200":["Spin0_ggPhi12j_g1_200_PseudoScalar"],
 	"PSbb_250":["Spin0_ggPhi12j_g1_250_PseudoScalar"],
 	"PSbb_300":["Spin0_ggPhi12j_g1_300_PseudoScalar"],
+	"PSbb_350":["Spin0_ggPhi12j_g1_350_PseudoScalar"],
 	"PSbb_400":["Spin0_ggPhi12j_g1_400_PseudoScalar"],
 	"PSbb_500":["Spin0_ggPhi12j_g1_500_PseudoScalar"],
 }
