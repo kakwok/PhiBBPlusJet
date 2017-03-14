@@ -122,10 +122,13 @@ if __name__ == "__main__":
 				if len(sample_files[sample]) == 0:
 					print "\tWARNING : No input files! Skipping this sample."
 					continue
-				if "Spin0" in sample:
+				if args.input_type == "skim":
 					limit_histogrammer = LimitHistograms(sample, "Events")
-				else:
+				elif args.input_type == "sklim":
 					limit_histogrammer = LimitHistograms(sample, "otree")
+				else:
+					print "input_type must be skim or sklim."
+					sys.exit(1)
 				if args.output_folder:
 					limit_histogrammer.set_output_path("{}/InputHistograms_{}.root".format(args.output_folder, sample))
 				else:
