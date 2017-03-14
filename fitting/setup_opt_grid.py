@@ -47,6 +47,7 @@ if __name__ == "__main__":
 	action_group.add_argument('--combine_outputs', action="store_true", help="Compile results into one file for next step (buildRhalphabet). Also applies luminosity weights to MC.")
 	action_group.add_argument('--rhalphabet', action="store_true", help="Setup rhalphabet and prepare combine workspaces.")
 	action_group.add_argument('--copy_cards', action="store_true", help="Copy cards to the combine folders.")
+	parser.add_argument('--input_type', type=str, default="skim", help="skim or sklim inputs?")
 	parser.add_argument('--output_folder', type=str, help="Output folder")
 	parser.add_argument('--label', type=str, help="If running with --files, need to specify a label manually, in lieu of the sample names, for the output file naming.")
 	selection_group = parser.add_mutually_exclusive_group()
@@ -63,7 +64,7 @@ if __name__ == "__main__":
 			#print config.samples[supersample]
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				if "Spin0" in sample:
+				if args.input_type == "skim":
 					sample_files[sample] = config.skims[sample]
 				else:
 					sample_files[sample] = config.sklims[sample]
@@ -73,14 +74,14 @@ if __name__ == "__main__":
 		for supersample in supersamples:
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				if "Spin0" in sample:
+				if args.input_type == "skim":
 					sample_files[sample] = config.skims[sample]
 				else:
 					sample_files[sample] = config.sklims[sample]
 	elif args.samples:
 		samples = args.samples.split(",")
 		for sample in samples:
-			if "Spin0" in sample:
+			if args.input_type == "skim":
 				sample_files[sample] = config.skims[sample]
 			else:
 				sample_files[sample] = config.sklims[sample]
