@@ -150,11 +150,15 @@ if __name__ == "__main__":
 			os.system("mkdir -pv {}".format(submission_directory))
 			os.chdir(submission_directory)
 
-			files_per_job = 1
+			files_per_job = 5
 			if "JetHTRun2016" in sample:
-				files_per_job = 5
+				files_per_job = 30
+			elif "QCD_HT500" in sample:
+				files_per_job = 50
 			elif "QCD" in sample:
-				files_per_job = 4
+				files_per_job = 10
+			elif "ST_t" in sample:
+				files_per_job = 20
 
 			csubjob_index = 0
 			this_job_input_files = []
