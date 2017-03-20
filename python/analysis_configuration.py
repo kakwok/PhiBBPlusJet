@@ -18,8 +18,8 @@ signal_names = []
 #signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 signal_masses = [50,75,100,125,150,200,250,300,350,400,500]
 for mass in signal_masses:
-	signal_names.append("Sbb_{}".format(mass))
-	signal_names.append("PSbb_{}".format(mass))
+	signal_names.append("Sbb{}".format(mass))
+	signal_names.append("PSbb{}".format(mass))
 data_names = ["data_obs"]
 supersamples = []
 supersamples.extend(background_names)
@@ -36,28 +36,28 @@ samples = {
 	"zqq":["DYJetsToQQ"],
 	"vvqq":["WWTo4Q", "WZ", "ZZ"],
 	"data_obs":["JetHTRun2016B","JetHTRun2016C","JetHTRun2016D","JetHTRun2016E","JetHTRun2016F","JetHTRun2016G","JetHTRun2016H"],
-	"Sbb_50":["Spin0_ggPhi12j_g1_50_Scalar"],
-	"Sbb_75":["Spin0_ggPhi12j_g1_75_Scalar"],
-	"Sbb_100":["Spin0_ggPhi12j_g1_100_Scalar"],
-	"Sbb_125":["Spin0_ggPhi12j_g1_125_Scalar"],
-	"Sbb_150":["Spin0_ggPhi12j_g1_150_Scalar"],
-	"Sbb_200":["Spin0_ggPhi12j_g1_200_Scalar"],
-	"Sbb_250":["Spin0_ggPhi12j_g1_250_Scalar"],
-	"Sbb_300":["Spin0_ggPhi12j_g1_300_Scalar"],
-	"Sbb_350":["Spin0_ggPhi12j_g1_350_Scalar"],
-	"Sbb_400":["Spin0_ggPhi12j_g1_400_Scalar"],
-	"Sbb_500":["Spin0_ggPhi12j_g1_500_Scalar"],
-	"PSbb_50":["Spin0_ggPhi12j_g1_50_PseudoScalar"],
-	"PSbb_75":["Spin0_ggPhi12j_g1_75_PseudoScalar"],
-	"PSbb_100":["Spin0_ggPhi12j_g1_100_PseudoScalar"],
-	"PSbb_125":["Spin0_ggPhi12j_g1_125_PseudoScalar"],
-	"PSbb_150":["Spin0_ggPhi12j_g1_150_PseudoScalar"],
-	"PSbb_200":["Spin0_ggPhi12j_g1_200_PseudoScalar"],
-	"PSbb_250":["Spin0_ggPhi12j_g1_250_PseudoScalar"],
-	"PSbb_300":["Spin0_ggPhi12j_g1_300_PseudoScalar"],
-	"PSbb_350":["Spin0_ggPhi12j_g1_350_PseudoScalar"],
-	"PSbb_400":["Spin0_ggPhi12j_g1_400_PseudoScalar"],
-	"PSbb_500":["Spin0_ggPhi12j_g1_500_PseudoScalar"],
+	"Sbb50":["Spin0_ggPhi12j_g1_50_Scalar"],
+	"Sbb75":["Spin0_ggPhi12j_g1_75_Scalar"],
+	"Sbb100":["Spin0_ggPhi12j_g1_100_Scalar"],
+	"Sbb125":["Spin0_ggPhi12j_g1_125_Scalar"],
+	"Sbb150":["Spin0_ggPhi12j_g1_150_Scalar"],
+	"Sbb200":["Spin0_ggPhi12j_g1_200_Scalar"],
+	"Sbb250":["Spin0_ggPhi12j_g1_250_Scalar"],
+	"Sbb300":["Spin0_ggPhi12j_g1_300_Scalar"],
+	"Sbb350":["Spin0_ggPhi12j_g1_350_Scalar"],
+	"Sbb400":["Spin0_ggPhi12j_g1_400_Scalar"],
+	"Sbb500":["Spin0_ggPhi12j_g1_500_Scalar"],
+	"PSbb50":["Spin0_ggPhi12j_g1_50_PseudoScalar"],
+	"PSbb75":["Spin0_ggPhi12j_g1_75_PseudoScalar"],
+	"PSbb100":["Spin0_ggPhi12j_g1_100_PseudoScalar"],
+	"PSbb125":["Spin0_ggPhi12j_g1_125_PseudoScalar"],
+	"PSbb150":["Spin0_ggPhi12j_g1_150_PseudoScalar"],
+	"PSbb200":["Spin0_ggPhi12j_g1_200_PseudoScalar"],
+	"PSbb250":["Spin0_ggPhi12j_g1_250_PseudoScalar"],
+	"PSbb300":["Spin0_ggPhi12j_g1_300_PseudoScalar"],
+	"PSbb350":["Spin0_ggPhi12j_g1_350_PseudoScalar"],
+	"PSbb400":["Spin0_ggPhi12j_g1_400_PseudoScalar"],
+	"PSbb500":["Spin0_ggPhi12j_g1_500_PseudoScalar"],
 }
 #for mass in signal_masses:
 #	for spin in ["Scalar", "PseudoScalar"]:
