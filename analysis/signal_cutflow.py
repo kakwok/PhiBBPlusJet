@@ -52,24 +52,42 @@ class SignalCutflow(AnalysisBase):
 		cut_parameters = {}
 
 		cut_parameters["Min_AK8Puppijet0_pt"] = ROOT.vector("double")()
-		cut_parameters["Min_AK8Puppijet0_pt"].push_back(500.)
+		cut_parameters["Min_AK8Puppijet0_pt"].push_back(450.)
 		self._event_selector.RegisterCut("Min_AK8Puppijet0_pt", ROOT.vector("TString")(), cut_parameters["Min_AK8Puppijet0_pt"])
 
-		cut_parameters["Max_AK8Puppijet0_N2DDT"] = ROOT.vector("double")()
-		cut_parameters["Max_AK8Puppijet0_N2DDT"].push_back(0.)
-		self._event_selector.RegisterCut("Max_AK8Puppijet0_tau21DDT", ROOT.vector("TString")(), cut_parameters["Max_AK8Puppijet0_tau21DDT"])
+		cut_parameters["Min_AK8Puppijet0_msd_puppi"] = ROOT.vector("double")()
+		cut_parameters["Min_AK8Puppijet0_msd_puppi"].push_back(40.)
+		self._event_selector.RegisterCut("Min_AK8Puppijet0_msd_puppi", ROOT.vector("TString")(), cut_parameters["Min_AK8Puppijet0_msd_puppi"])
 
-		cut_parameters["Min_AK8CHSjet0_doublecsv"] = ROOT.vector("double")()
-		cut_parameters["Min_AK8CHSjet0_doublecsv"].push_back(0.90)
-		self._event_selector.RegisterCut("Min_AK8CHSjet0_doublecsv", ROOT.vector("TString")(), cut_parameters["Min_AK8CHSjet0_doublecsv"])
+		self._event_selector.RegisterCut("AK8Puppijet0_isTightVJet", ROOT.vector("TString")(), ROOT.vector("double")())
+
+		cut_parameters["Max_neleLoose"] = ROOT.vector("double")()
+		cut_parameters["Max_neleLoose"].push_back(0)
+		self._event_selector.RegisterCut("Max_neleLoose", ROOT.vector("TString")(), cut_parameters["Max_neleLoose"])
 
 		cut_parameters["Max_nmuLoose"] = ROOT.vector("double")()
 		cut_parameters["Max_nmuLoose"].push_back(0)
 		self._event_selector.RegisterCut("Max_nmuLoose", ROOT.vector("TString")(), cut_parameters["Max_nmuLoose"])
 
-		cut_parameters["Max_neleLoose"] = ROOT.vector("double")()
-		cut_parameters["Max_neleLoose"].push_back(0)
-		self._event_selector.RegisterCut("Max_neleLoose", ROOT.vector("TString")(), cut_parameters["Max_neleLoose"])
+		cut_parameters["Max_ntau"] = ROOT.vector("double")()
+		cut_parameters["Max_ntau"].push_back(0)
+		self._event_selector.RegisterCut("Max_ntau", ROOT.vector("TString")(), cut_parameters["Max_ntau"])
+
+		cut_parameters["Max_pfmet"] = ROOT.vector("double")()
+		cut_parameters["Max_pfmet"].push_back(180.)
+		self._event_selector.RegisterCut("Max_pfmet", ROOT.vector("TString")(), cut_parameters["Max_pfmet"])
+
+		cut_parameters["Max_nAK4PuppijetsPt30dR08_0"] = ROOT.vector("double")()
+		cut_parameters["Max_nAK4PuppijetsPt30dR08_0"].push_back(4)
+		self._event_selector.RegisterCut("Max_nAK4PuppijetsPt30dR08_0", ROOT.vector("TString")(), cut_parameters["Max_nAK4PuppijetsPt30dR08_0"])
+
+		cut_parameters["Max_AK8Puppijet0_N2DDT"] = ROOT.vector("double")()
+		cut_parameters["Max_AK8Puppijet0_N2DDT"].push_back(0.)
+		self._event_selector.RegisterCut("Max_AK8Puppijet0_tau21DDT", ROOT.vector("TString")(), cut_parameters["Max_AK8Puppijet0_tau21DDT"])
+
+		#cut_parameters["Min_AK8CHSjet0_doublecsv"] = ROOT.vector("double")()
+		#cut_parameters["Min_AK8CHSjet0_doublecsv"].push_back(0.90)
+		#self._event_selector.RegisterCut("Min_AK8CHSjet0_doublecsv", ROOT.vector("TString")(), cut_parameters["Min_AK8CHSjet0_doublecsv"])
 
 	def run(self, max_nevents=-1, first_event=0):
 		if max_nevents > 0:
