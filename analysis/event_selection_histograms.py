@@ -534,7 +534,7 @@ if __name__ == "__main__":
 		for sample in samples:
 			start_directory = os.getcwd()
 			job_tag = "job_{}_{}_{}".format(sample, args.jet_type, int(floor(time.time())))
-			submission_directory = "os.path.expandvars($HOME/DAZSLE/data/LimitSetting/condor/{})".format(job_tag)
+			submission_directory = os.path.expandvars("$HOME/DAZSLE/data/LimitSetting/condor/{}".format(job_tag))
 			os.system("mkdir -pv {}".format(submission_directory))
 			os.chdir(submission_directory)
 
