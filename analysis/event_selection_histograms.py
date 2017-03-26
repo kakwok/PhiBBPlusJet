@@ -424,6 +424,7 @@ if __name__ == "__main__":
 	parser.add_argument('--label', type=str, help="If running with --files, need to specify a label manually, in lieu of the sample names, for the output file naming.")
 	parser.add_argument('--luminosity', type=float, default=35900, help="Luminosity in pb^-1")
 	parser.add_argument('--jet_type', type=str, default="AK8", help="AK8 or CA15")
+	parser.add_argument('--skim_inputs', action='store_true', help="Run over skim inputs")
 	args = parser.parse_args()
 
 	# Make a list of input samples and files
@@ -435,18 +436,27 @@ if __name__ == "__main__":
 		for supersample in supersamples:
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				sample_files[sample] = config.sklims[sample]
+				if args.skim_inputs:
+					sample_files[sample] = config.skim[sample]
+				else:
+					sample_files[sample] = config.sklims[sample]
 	elif args.supersamples:
 		supersamples = args.supersamples.split(",")
 		samples = [] 
 		for supersample in supersamples:
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
-				sample_files[sample] = config.sklims[sample]
+				if args.skim_inputs:
+					sample_files[sample] = config.skims[sample]
+				else:
+					sample_files[sample] = config.sklims[sample]
 	elif args.samples:
 		samples = args.samples.split(",")
 		for sample in samples:
-			sample_files[sample] = config.sklims[sample]
+			if args.skim_inputs:
+				sample_files[sample] = config.skims[sample]
+			else:
+				sample_files[sample] = config.sklims[sample]
 	elif args.files:
 		files = args.files.split(",")
 		for filename in files:
@@ -469,10 +479,10 @@ if __name__ == "__main__":
 		#from joblib import delayed
 		for sample in samples:
 			print "\n *** Running sample {}".format(sample)
-			if not "DMSbb" in sample:
-				tree_name = "otree"
-			else:
+			if "DMSbb" in sample or args.skim_inputs:
 				tree_name = "Events"
+			else:
+				tree_name = "otree"
 
 			# Sanity check: make sure tree exists in file
 			for filename in sample_files[sample]:
