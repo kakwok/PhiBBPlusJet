@@ -534,7 +534,7 @@ if __name__ == "__main__":
 		for sample in samples:
 			start_directory = os.getcwd()
 			job_tag = "job_{}_{}_{}".format(sample, args.jet_type, int(floor(time.time())))
-			submission_directory = "/uscms/home/dryu/DAZSLE/data/LimitSetting/condor/{}".format(job_tag)
+			submission_directory = "os.path.expandvars($HOME/DAZSLE/data/LimitSetting/condor/{})".format(job_tag)
 			os.system("mkdir -pv {}".format(submission_directory))
 			os.chdir(submission_directory)
 
@@ -577,11 +577,11 @@ if __name__ == "__main__":
 			hadd_scripts.append("{}/hadd.sh".format(submission_directory))
 			hadd_script = open("{}/hadd.sh".format(submission_directory), "w")
 			hadd_script.write("#!/bin/bash\n")
-			hadd_script.write("hadd /uscms/home/dryu/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root {}/InputHistograms*csubjob*root\n".format(sample, args.jet_type, submission_directory))
+			hadd_script.write(os.path.expandvars("hadd $HOME/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root {}/InputHistograms*csubjob*root\n".format(sample, args.jet_type, submission_directory)))
 			hadd_script.close()
 			os.chdir(start_directory)
 		# One hadd script to rule them all
-		master_hadd_script_path = "/uscms/home/dryu/DAZSLE/data/LimitSetting/condor/master_hadd_{}".format(args.jet_type)
+		master_hadd_script_path = os.path.expandvars("$HOME/DAZSLE/data/LimitSetting/condor/master_hadd_{}".format(args.jet_type))
 		if not args.all:
 			master_hadd_script_path += "_" + str(int(floor(time.time())))
 		master_hadd_script_path += ".sh"
