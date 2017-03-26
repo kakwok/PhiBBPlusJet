@@ -28,8 +28,13 @@ public:
 	Double_t CA15Puppijet0_tau21DDT;
 	Double_t AK8Puppijet0_rho;
 	Double_t AK8Puppijet0_N2DDT;
+	Double_t CA15Puppijet0_N2DDT;
+	Double_t CA15CHSjet0_N2DDT;
 	Double_t AK8Puppijet0_msd_puppi;
-
+	Double_t puppet_JESUp;
+	Double_t puppet_JESDown;
+	Double_t puppet_JERUp;
+	Double_t puppet_JERDown;
 private:
 	TH1D* n2_ddt_transformation_;
 	TF1* puppi_corr_gen_;

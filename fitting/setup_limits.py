@@ -3,6 +3,7 @@ import sys
 import ROOT
 from DAZSLE.PhiBBPlusJet.analysis_base import AnalysisBase
 import DAZSLE.PhiBBPlusJet.analysis_configuration as config
+import DAZSLE.PhiBBPlusJet.event_selections
 from math import ceil, sqrt,floor
 import array
 
@@ -22,14 +23,24 @@ seaborn = Root.SeabornInterface()
 seaborn.Initialize()
 
 class LimitHistograms(AnalysisBase):
-	def __init__(self, label, tree_name="otree"):
+	def __init__(self, sample_name, tree_name="otree"):
 		super(LimitHistograms, self).__init__(tree_name=tree_name)
 		self._output_path = ""
-		self._label = label
+		self._sample_name = sample_name
 		self._input_nevents = 0
 		self._n2_ddt_cut = 0.
 		self._dcsv_cut = 0.9
+		self._dcsv_min = -999.
 		self._jet_type = "AK8"
+		self._selections = ["SR", "muCR"]
+
+		# Weight systematics: these only affect the weights used to fill histograms, so can easily be filled in normal running
+		self._weight_systematics = {
+			"SR":["TriggerUp", "TriggerDown", "PUUp", "PUDown"],
+			"muCR":["MuTriggerUp", "MuTriggerDown", "MuIDUp", "MuIDDown", "MuIsoUp", "MuIsoDown", "PUUp", "PUDown"]
+		}
+		# Jet systematics: these affect the jet pT, so modify the event selection
+		self._jet_systematics = ["JESUp", "JESDown", "JERUp", "JERDown"]
 
 	def set_cut(self, cut_name, cut_value):
 		if cut_name == "n2_ddt":
@@ -37,7 +48,7 @@ class LimitHistograms(AnalysisBase):
 		elif cut_name == "dcsv":
 			self._dcsv_cut = cut_value
 		else:
-			print "[LimitHistograms::set_cut] ERROR : Unknown cut {}. Exiting.".format(cut_name)
+			print "[LimitHistograms::set_cut] ERROR : Unknown customizable cut {}. Exiting.".format(cut_name)
 			sys.exit(1)
 
 	def set_jet_type(self, jet_type):
@@ -61,83 +72,121 @@ class LimitHistograms(AnalysisBase):
 		self._processed_events = 0
 
 		# Histograms
-		self._pt_bins = array.array("d", [500.,550.,600.,675.,800.,1000.])
+		self._pt_bins = array.array("d", [450., 500.,550.,600.,675.,800.,1000.])
 
 		self._histograms = ROOT.Root.HistogramManager()
 		self._histograms.AddPrefix("h_")
 		self._histograms.AddTH1F("input_nevents", "input_nevents", "", 1, -0.5, 0.5)
 		self._histograms.GetTH1F("input_nevents").SetBinContent(1, self._input_nevents)
-		self._histograms.AddTH2F("pass_ak8", "; AK8 m_{SD}^{PUPPI} (GeV); AK8 p_{T} (GeV)", "m_{SD}^{PUPPI} [GeV]", 52, 40, 404, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
-		self._histograms.AddTH2F("fail_ak8", "; AK8 m_{SD}^{PUPPI} (GeV); AK8 p_{T} (GeV)", "m_{SD}^{PUPPI} [GeV]", 52, 40, 404, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 		self._histograms.AddTH1D("processed_nevents", "processed_nevents", "", 1, -0.5, 0.5)
-		self._histograms.AddTH1D("processed_nevents_weighted", "processed_nevents_weighted", "", 1, -0.5, 0.5)
-		self._histograms.AddTH1D("pass_nevents", "pass_nevents", "", 1, -0.5, 0.5)
-		self._histograms.AddTH1D("pass_nevents_weighted", "pass_nevents_weighted", "", 1, -0.5, 0.5)
-		self._histograms.AddTH2D("pt_dcsv", "pt_dcsv", "p_{T} [GeV]", 200, 0., 2000., "Double b-tag", 20, -1., 1.)
 
-		# Event selection
-		self._event_selector = ROOT.EventSelector("BaconData")()
-		ROOT.BaconEventCutFunctions.Configure(self._event_selector)
-		cut_parameters = {}
+		# Histograms for each event selection
+		self._selection_histograms = {}
+		for selection in self._selections:
+			self._selection_histograms[selection] = ROOT.Root.HistogramManager()
+			self._selection_histograms[selection].AddPrefix("h_" + selection + "_" + self._jet_type)
 
-		# General event cuts, independent of jet type
-		cut_parameters["Max_neleLoose"] = ROOT.vector("double")()
-		cut_parameters["Max_neleLoose"].push_back(0)
-		self._event_selector.RegisterCut("Max_neleLoose", ROOT.vector("TString")(), cut_parameters["Max_neleLoose"])
+			self._selection_histograms[selection].AddTH1D("pass_nevents", "pass_nevents", "", 1, -0.5, 0.5)
+			self._selection_histograms[selection].AddTH1D("pass_nevents_weighted", "pass_nevents_weighted", "", 1, -0.5, 0.5)
+			self._selection_histograms[selection].AddTH2D("pt_dcsv", "pt_dcsv", "p_{T} [GeV]", 200, 0., 2000., "Double b-tag", 20, -1., 1.)
 
-		cut_parameters["Max_nmuLoose"] = ROOT.vector("double")()
-		cut_parameters["Max_nmuLoose"].push_back(0)
-		self._event_selector.RegisterCut("Max_nmuLoose", ROOT.vector("TString")(), cut_parameters["Max_nmuLoose"])
+			self._selection_histograms[selection].AddTH2F("pass_{}".format(self._jet_type), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 52, 40, 404, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+			self._selection_histograms[selection].AddTH2F("fail_{}".format(self._jet_type), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 52, 40, 404, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 
-		cut_parameters["Max_ntau"] = ROOT.vector("double")()
-		cut_parameters["Max_ntau"].push_back(0)
-		self._event_selector.RegisterCut("Max_ntau", ROOT.vector("TString")(), cut_parameters["Max_ntau"])
+			for systematic in self._weight_systematics[selection] + self._jet_systematics:
+				self._selection_histograms[selection].AddTH2F("pass_{}_{}".format(self._jet_type, systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 52, 40, 404, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				self._selection_histograms[selection].AddTH2F("fail_{}_{}".format(self._jet_type, systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 52, 40, 404, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 
-		#cut_parameters["Max_nphoLoose"] = ROOT.vector("double")()
-		#cut_parameters["Max_nphoLoose"].push_back(0)
-		#self._event_selector.RegisterCut("Max_nphoLoose", ROOT.vector("TString")(), cut_parameters["Max_nphoLoose"])
+		# Event selections
+		self._event_selectors = {}
+		self._event_selectors["SR"] = event_selections.MakeSRSelector(self._jet_type)
+		self._event_selectors["muCR"] = event_selections.MakeMuCRSelector(self._jet_type)
 
-		cut_parameters["Max_pfmet"] = ROOT.vector("double")()
-		cut_parameters["Max_pfmet"].push_back(180.)
-		self._event_selector.RegisterCut("Max_pfmet", ROOT.vector("TString")(), cut_parameters["Max_pfmet"])
+		# Pileup weight stuff
+		f_pu = TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/puWeights_All.root", "read")
+		self._h_pu_weight = f_pu.Get("puw")
+		self._h_pu_weight.SetDirectory(0)
+		self._h_pu_weight_up = f_pu.Get("puw_p")
+		self._h_pu_weight_up.SetDirectory(0)
+		self._h_pu_weight_down = f_pu.Get("puw_m")
+		self._h_pu_weight_down.SetDirectory(0)
+		f_pu.Close()
 
-		# AK8 or CA15 cuts
-		if self._jet_type == "AK8":
-			cut_parameters["Min_AK8Puppijet0_pt"] = ROOT.vector("double")()
-			cut_parameters["Min_AK8Puppijet0_pt"].push_back(450.)
-			self._event_selector.RegisterCut("Min_AK8Puppijet0_pt", ROOT.vector("TString")(), cut_parameters["Min_AK8Puppijet0_pt"])
+		# Trigger efficiency weight stuff
+		f_trig = ROOT.TFile.Open(
+			"$ZPRIMEPLUSJET_BASE/analysis/ggH/RUNTriggerEfficiencies_SingleMuon_Run2016_V2p1_v03.root", "read")
+		self._trig_den = f_trig.Get("DijetTriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtDenom_cutJet")
+		self._trig_num = f_trig.Get("DijetTriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtPassing_cutJet")
+		self._trig_den.SetDirectory(0)
+		self._trig_num.SetDirectory(0)
+		self._trig_den.RebinX(2)
+		self._trig_num.RebinX(2)
+		self._trig_den.RebinY(5)
+		self._trig_num.RebinY(5)
+		self._trig_eff = ROOT.TEfficiency()
+		if (ROOT.TEfficiency.CheckConsistency(self._trig_num, self._trig_den)):
+			self._trig_eff = ROOT.TEfficiency(self._trig_num, self._trig_den)
+			self._trig_eff.SetDirectory(0)
+		f_trig.Close()
 
-			cut_parameters["Min_AK8Puppijet0_msd"] = ROOT.vector("double")()
-			cut_parameters["Min_AK8Puppijet0_msd"].push_back(40.)
-			self._event_selector.RegisterCut("Min_AK8Puppijet0_pt", ROOT.vector("TString")(), cut_parameters["Min_AK8Puppijet0_pt"])
+		# get muon trigger efficiency object
 
-			cut_parameters["Max_AK8Puppijet0_N2DDT"] = ROOT.vector("double")()
-			cut_parameters["Max_AK8Puppijet0_N2DDT"].push_back(self._n2_ddt_cut)
-			self._event_selector.RegisterCut("Max_AK8Puppijet0_N2DDT", ROOT.vector("TString")(), cut_parameters["Max_AK8Puppijet0_N2DDT"])
+		lumi_GH = 16.146
+		lumi_BCDEF = 19.721
+		lumi_total = lumi_GH + lumi_BCDEF
 
-			cut_parameters["AK8Puppijet0_isTightVJet"] = ROOT.vector("double")()
-			self._event_selector.RegisterCut("AK8Puppijet0_isTightVJet", ROOT.vector("TString")(), cut_parameters["AK8Puppijet0_isTightVJet"])
+		f_mutrig_GH = ROOT.TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/EfficienciesAndSF_Period4.root", "read")
+		self._mutrig_eff_GH = f_mutrig_GH.Get("Mu50_OR_TkMu50_PtEtaBins/efficienciesDATA/pt_abseta_DATA")
+		self._mutrig_eff_GH.Sumw2()
+		self._mutrig_eff_GH.SetDirectory(0)
+		f_mutrig_GH.Close()
 
-			cut_parameters["Max_nAK4PuppijetsPt30dR08_0"] = ROOT.vector("double")()
-			cut_parameters["Max_nAK4PuppijetsPt30dR08_0"].push_back(4)
-			self._event_selector.RegisterCut("Max_nAK4PuppijetsPt30dR08_0", ROOT.vector("TString")(), cut_parameters["Max_nAK4PuppijetsPt30dR08_0"])
+		f_mutrig_BCDEF = ROOT.TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/EfficienciesAndSF_RunBtoF.root", "read")
+		self._mutrig_eff_BCDEF = f_mutrig_BCDEF.Get("Mu50_OR_TkMu50_PtEtaBins/efficienciesDATA/pt_abseta_DATA")
+		self._mutrig_eff_BCDEF.Sumw2()
+		self._mutrig_eff_BCDEF.SetDirectory(0)
+		f_mutrig_BCDEF.Close()
 
-		elif self._jet_type == "CA15":
-			cut_parameters["Max_CA15Puppijet0_N2DDT"] = ROOT.vector("double")()
-			cut_parameters["Max_CA15Puppijet0_N2DDT"].push_back(self._n2_ddt_cut)
-			self._event_selector.RegisterCut("Max_CA15Puppijet0_N2DDT", ROOT.vector("TString")(), cut_parameters["Max_CA15Puppijet0_N2DDT"])
+		self._mutrig_eff = self._mutrig_eff_GH.Clone('pt_abseta_DATA_mutrig_ave')
+		self._mutrig_eff.Scale(lumi_GH / lumi_total)
+		self._mutrig_eff.Add(self._mutrig_eff_BCDEF, lumi_BCDEF / lumi_total)
 
-			cut_parameters["CA15Puppijet0_isTightVJet"] = ROOT.vector("double")()
-			self._event_selector.RegisterCut("CA15Puppijet0_isTightVJet", ROOT.vector("TString")(), cut_parameters["CA15Puppijet0_isTightVJet"])
+		# get muon ID efficiency object
 
-			# Cuts on nearby jets: calculated w.r.t. the AK8 jet. Need to calculate w.r.t. CA15... ask the group to add to BaconTuple?
-			#cut_parameters["Max_nAK4PuppijetsdR08"] = ROOT.vector("double")()
-			#cut_parameters["Max_nAK4PuppijetsdR08"].push_back(4)
-			#self._event_selector.RegisterCut("Max_nAK4PuppijetsdR08", ROOT.vector("TString")(), cut_parameters["Max_nAK4PuppijetsdR08"])
+		f_muid_GH = ROOT.TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/EfficienciesAndSF_GH.root", "read")
+		self._muid_eff_GH = f_muid_GH.Get("MC_NUM_LooseID_DEN_genTracks_PAR_pt_eta/efficienciesDATA/pt_abseta_DATA")
+		self._muid_eff_GH.Sumw2()
+		self._muid_eff_GH.SetDirectory(0)
+		f_muid_GH.Close()
 
-			#cut_parameters["Max_nAK4PuppijetsTdR08"] = ROOT.vector("double")()
-			#cut_parameters["Max_nAK4PuppijetsTdR08"].push_back(2)
-			#self._event_selector.RegisterCut("Max_nAK4PuppijetsTdR08", ROOT.vector("TString")(), cut_parameters["Max_nAK4PuppijetsTdR08"])
+		f_muid_BCDEF = ROOT.TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/EfficienciesAndSF_BCDEF.root", "read")
+		self._muid_eff_BCDEF = f_muid_BCDEF.Get(
+			"MC_NUM_LooseID_DEN_genTracks_PAR_pt_eta/efficienciesDATA/pt_abseta_DATA")
+		self._muid_eff_BCDEF.Sumw2()
+		self._muid_eff_BCDEF.SetDirectory(0)
+		f_muid_BCDEF.Close()
+
+		self._muid_eff = self._muid_eff_GH.Clone('pt_abseta_DATA_muid_ave')
+		self._muid_eff.Scale(lumi_GH / lumi_total)
+		self._muid_eff.Add(self._muid_eff_BCDEF, lumi_BCDEF / lumi_total)
+
+		# get muon ISO efficiency object
+
+		f_muiso_GH = ROOT.TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/EfficienciesAndSF_ISO_GH.root", "read")
+		self._muiso_eff_GH = f_muiso_GH.Get("LooseISO_LooseID_pt_eta/efficienciesDATA/pt_abseta_DATA")
+		self._muiso_eff_GH.Sumw2()
+		self._muiso_eff_GH.SetDirectory(0)
+		f_muiso_GH.Close()
+
+		f_muiso_BCDEF = ROOT.TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/EfficienciesAndSF_ISO_BCDEF.root", "read")
+		self._muiso_eff_BCDEF = f_muiso_BCDEF.Get("LooseISO_LooseID_pt_eta/efficienciesDATA/pt_abseta_DATA")
+		self._muiso_eff_BCDEF.Sumw2()
+		self._muiso_eff_BCDEF.SetDirectory(0)
+		f_muiso_BCDEF.Close()
+
+		self._muiso_eff = self._muiso_eff_GH.Clone('pt_abseta_DATA_muiso_ave')
+		self._muiso_eff.Scale(lumi_GH / lumi_total)
+		self._muiso_eff.Add(self._muiso_eff_BCDEF, lumi_BCDEF / lumi_total)
 
 
 	def run(self, max_nevents=-1, first_event=0):
@@ -154,22 +203,150 @@ class LimitHistograms(AnalysisBase):
 		self.start_timer()
 		for entry in xrange(first_event, limit_nevents):
 			self.print_progress(entry, first_event, limit_nevents, print_every)
+			self._histograms.GetTH1D("processed_nevents").Fill(0)
 			self._processed_events += 1
 			self._data.GetEntry(entry)
-			event_weight = self._data.puWeight # No luminosity weight here. Apply this as a weight to the output histograms later.
-			self._histograms.GetTH1D("processed_nevents").Fill(0)
-			self._histograms.GetTH1D("processed_nevents_weighted").Fill(0, event_weight)
 
-			self._event_selector.ProcessEvent(self._data, event_weight)
-			if self._event_selector.Pass():
-				self._histograms.GetTH1D("pass_nevents").Fill(0)
-				self._histograms.GetTH1D("pass_nevents_weighted").Fill(0, event_weight)
-				self._histograms.GetTH2D("pt_dcsv").Fill(self._data.AK8Puppijet0_pt, self._data.AK8CHSjet0_doublecsv, event_weight)
-				if self._data.AK8Puppijet0_pt > 500.:
-					if self._data.AK8CHSjet0_doublecsv > self._dcsv_cut:
-						self._histograms.GetTH2F("pass_ak8").Fill(self._data.AK8Puppijet0_msd, self._data.AK8Puppijet0_pt, event_weight)
-					else:
-						self._histograms.GetTH2F("fail_ak8").Fill(self._data.AK8Puppijet0_msd, self._data.AK8Puppijet0_pt, event_weight)
+
+
+			for selection in self._selections:
+				# Get weights
+				npu = min(self._data.npu, 49.5)
+				pu_weight = self._h_pu_weight.GetBinContent(self._h_pu_weight.FindBin(npu))
+				pu_weight_up = self._h_pu_weight_up.GetBinContent(self._h_pu_weight_up.FindBin(npu))
+				pu_weight_down = self._h_pu_weight_down.GetBinContent(self._h_pu_weight_down.FindBin(npu))
+
+				k_vjets = 1.
+				if self._sample_name == 'wqq' or self._sample_name == 'W':
+					k_vjets = self._data.kfactor * 1.2  # ==1 for not V+jets events
+				elif self._sample_name == 'zqq' or self._sample_name == 'DY':
+					k_vjets = self._data.kfactor * 1.15  # ==1 for not V+jets events
+
+				if selection == "SR":
+					event_weight = pu_weight * k_vjets * trigger_weight
+					event_weight_syst = {}
+					if self._jet_type == "AK8":
+						trigger_mass = min(self.AK8Puppijet0_msd, 300.)
+						trigger_pt = max(200., min(self.AK8Puppijet0_pt, 1000.))
+					elif self._jet_type == "CA15":
+						trigger_mass = min(self.CA15Puppijet0_msd, 300.)
+						trigger_pt = max(200., min(self.CA15Puppijet0_pt, 1000.))
+					trigger_weight = self._trig_eff.GetEfficiency(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
+					trigger_weight_up = trigger_weight + self._trig_eff.GetEfficiencyErrorUp(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
+					trigger_weight_down = trigger_weight - self._trig_eff.GetEfficiencyErrorLow(
+						self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
+					if trigger_weight <= 0 or trigger_weightDown <= 0 or trigger_weight_up <= 0:
+						print 'trigger_weights are %f, %f, %f, setting all to 1' % (trigger_weight, trigger_weight_up, trigger_weight_down)
+					trigger_weight = 1
+					trigger_weight_down = 1
+					trigger_weight_up = 1
+
+					event_weight_syst["TriggerUp"] = pu_weight * k_vjets * trigger_weight_up
+					event_weight_syst["TriggerDown"] = pu_weight * k_vjets * trigger_weight_down
+					event_weight["PUUp"] = pu_weight_up * k_vjets * trigger_weight
+					event_weight["PUDown"] = pu_weight_down * k_vjets * trigger_weight
+
+				elif selection == "muCR":
+					mutrigweight = 1
+					mutrigweightDown = 1
+					mutrigweightUp = 1
+					if self._data.nmuLoose > 0:
+						muPtForTrig = max(52., min(self._data.vmuoLoose0_pt, 700.))
+						muEtaForTrig = min(abs(self._data.vmuoLoose0_eta), 2.3)
+						mutrigweight = self._mutrig_eff.GetBinContent(self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
+						mutrigweightUp = mutrigweight + self._mutrig_eff.GetBinError(
+							self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
+						mutrigweightDown = mutrigweight - self._mutrig_eff.GetBinError(
+							self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
+						if mutrigweight <= 0 or mutrigweightDown <= 0 or mutrigweightUp <= 0:
+							print 'mutrigweights are %f, %f, %f, setting all to 1' % (
+							mutrigweight, mutrigweightUp, mutrigweightDown)
+							mutrigweight = 1
+							mutrigweightDown = 1
+							mutrigweightUp = 1
+
+					muidweight = 1
+					muidweightDown = 1
+					muidweightUp = 1
+					if self.nmuLoose[0] > 0:
+						muPtForId = max(20., min(self._data.vmuoLoose0_pt, 100.))
+						muEtaForId = min(abs(self._data.vmuoLoose0_eta), 2.3)
+						muidweight = self._muid_eff.GetBinContent(self._muid_eff.FindBin(muPtForId, muEtaForId))
+						muidweightUp = muidweight + self._muid_eff.GetBinError(self._muid_eff.FindBin(muPtForId, muEtaForId))
+						muidweightDown = muidweight - self._muid_eff.GetBinError(self._muid_eff.FindBin(muPtForId, muEtaForId))
+						if muidweight <= 0 or muidweightDown <= 0 or muidweightUp <= 0:
+							print 'muidweights are %f, %f, %f, setting all to 1' % (muidweight, muidweightUp, muidweightDown)
+							muidweight = 1
+							muidweightDown = 1
+							muidweightUp = 1
+
+					muisoweight = 1
+					muisoweightDown = 1
+					muisoweightUp = 1
+					if self.nmuLoose[0] > 0:
+						muPtForIso = max(20., min(self._data.vmuoLoose0_pt, 100.))
+						muEtaForIso = min(abs(self._data.vmuoLoose0_eta), 2.3)
+						muisoweight = self._muiso_eff.GetBinContent(self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
+						muisoweightUp = muisoweight + self._muiso_eff.GetBinError(
+							self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
+						muisoweightDown = muisoweight - self._muiso_eff.GetBinError(
+							self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
+						if muisoweight <= 0 or muisoweightDown <= 0 or muisoweightUp <= 0:
+							print 'muisoweights are %f, %f, %f, setting all to 1' % (
+							muisoweight, muisoweightUp, muisoweightDown)
+							muisoweight = 1
+							muisoweightDown = 1
+							muisoweightUp = 1
+
+					event_weight = pu_weight * k_vjets * mutrigweight * muidweight * muisoweight
+					event_weight_syst = {}
+					event_weight_syst["TriggerUp"] = pu_weight * k_vjets * mutrigweightUp * muidweight * muisoweight
+					event_weight_syst["TriggerDown"] = pu_weight * k_vjets * mutrigweightDown * muidweight * muisoweight
+					event_weight_syst["MuIDUp"] = pu_weight * k_vjets * mutrigweight * muidweightUp * muisoweight
+					event_weight_syst["MuIDDown"] = pu_weight * k_vjets * mutrigweight * muidweightDown * muisoweight
+					event_weight_syst["MuIsoUp"] = pu_weight * k_vjets * mutrigweight * muidweight * muisoweightUp
+					event_weight_syst["MuIsoDown"] = pu_weight * k_vjets * mutrigweight * muidweight * muisoweightDown
+					event_weight_syst["PUUp"] = pu_weight_up * k_vjets * mutrigweight * muidweight * muisoweight
+					event_weight_syst["PUDown"] = pu_weight_down * k_vjets * mutrigweight * muidweight * muisoweight
+
+
+				self._event_selectors[selection].ProcessEvent(self._data, event_weight)
+				if self._event_selectors[selection].Pass():
+					self._selection_histograms[selection].GetTH1D("pass_nevents").Fill(0)
+					self._selection_histograms[selection].GetTH1D("pass_nevents_weighted").Fill(0, event_weight)
+
+					if jet_type == "AK8":
+						fatjet_pt = self._data.AK8Puppijet0_pt
+						fatjet_msd = self._data.AK8Puppijet0_msd_puppi
+						fatjet_dcsv = self._data.AK8CHSjet0_doublecsv
+						fatjet_pt_syst = {}
+						fatjet_pt_syst["JESUp"] = self._data.AK8Puppijet0_pt_JESUp
+						fatjet_pt_syst["JESDown"] = self._data.AK8Puppijet0_pt_JESDown
+						fatjet_pt_syst["JERUp"] = self._data.AK8Puppijet0_pt_JERUp
+						fatjet_pt_syst["JERDown"] = self._data.AK8Puppijet0_pt_JERDown
+					elif jet_type == "CA15":
+						fatjet_pt = self._data.CA15Puppijet0_pt
+						fatjet_msd = self._data.CA15Puppijet0_msd
+						fatjet_dcsv = self._data.CA15CHSjet0_doublecsv
+						fatjet_pt_syst = {}
+						fatjet_pt_syst["JESUp"] = self._data.CA15Puppijet0_pt_JESUp
+						fatjet_pt_syst["JESDown"] = self._data.CA15Puppijet0_pt_JESDown
+						fatjet_pt_syst["JERUp"] = self._data.CA15Puppijet0_pt_JERUp
+						fatjet_pt_syst["JERDown"] = self._data.CA15Puppijet0_pt_JERDown
+					self._selection_histograms[selection].GetTH2D("pt_dcsv").Fill(fatjet_pt, fatjet_dcsv, event_weight)
+
+					if fatjet_dcsv > self._dcsv_cut:
+						self._selection_histograms[selection].GetTH2F("pass_ak8").Fill(fatjet_msd, fatjet_pt, event_weight)
+						for systematic in self._weight_systematics[selection]:
+							self._selection_histograms[selection].GetTH2F("pass_ak8_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+						for systematic in self._jet_systematics:
+							self._selection_histograms[selection].GetTH2F("pass_ak8_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst[systematic], event_weight)
+					elif fatjet_dcsv > self._dcsv_min:
+						self._selection_histograms[selection].GetTH2F("fail_ak8").Fill(fatjet_msd, fatjet_pt, event_weight)
+						for systematic in self._weight_systematics[selection]:
+							self._selection_histograms[selection].GetTH2F("fail_ak8_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+						for systematic in self._jet_systematics:
+							self._selection_histograms[selection].GetTH2F("fail_ak8_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst[systematic], event_weight)
 
 	def finish(self):
 		if self._output_path == "":
@@ -178,8 +355,11 @@ class LimitHistograms(AnalysisBase):
 		print "[SignalCutflow::finish] INFO : Saving histograms to {}".format(self._output_path)
 		f_out = ROOT.TFile(self._output_path, "RECREATE")
 		self._histograms.SaveAll(f_out)
-		self._event_selector.MakeCutflowHistograms(f_out)
-		self._event_selector.SaveNMinusOneHistograms(f_out)
+		for selection, histogrammer in self._selection_histograms.iteritems():
+			histogrammer.SaveAll(f_out)
+		for selection, selector in self._event_selectors.iteritems():
+			selector.MakeCutflowHistograms(f_out)
+			selector.SaveNMinusOneHistograms(f_out)
 		f_out.Close()
 
 # Not using this right now! It was intended for joblib parallel processing, but you weren't able to figure out joblib on condor. 
