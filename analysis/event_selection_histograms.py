@@ -33,6 +33,7 @@ class EventSelectionHistograms(AnalysisBase):
 		self._dcsv_min = -999.
 		self._jet_type = "AK8"
 		self._selections = ["SR", "muCR"]
+		self._do_tau21_opt = False
 
 		# Weight systematics: these only affect the weights used to fill histograms, so can easily be filled in normal running
 		self._weight_systematics = {
@@ -41,6 +42,9 @@ class EventSelectionHistograms(AnalysisBase):
 		}
 		# Jet systematics: these affect the jet pT, so modify the event selection
 		self._jet_systematics = ["JESUp", "JESDown", "JERUp", "JERDown"]
+
+	def do_tau21_opt(do_opt=True):
+		self._do_tau21_opt = do_opt
 
 	def set_cut(self, cut_name, cut_value):
 		if cut_name == "n2_ddt":
@@ -80,6 +84,11 @@ class EventSelectionHistograms(AnalysisBase):
 		self._histograms.GetTH1F("input_nevents").SetBinContent(1, self._input_nevents)
 		self._histograms.AddTH1D("processed_nevents", "processed_nevents", "", 1, -0.5, 0.5)
 
+		# tau21 optimization
+		if self._do_tau21_opt:
+			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
+				self._selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
+
 		# Histograms for each event selection
 		self._selection_histograms = {}
 		for selection in self._selections:
@@ -107,6 +116,14 @@ class EventSelectionHistograms(AnalysisBase):
 		for systematic in self._jet_systematics:
 			self._event_selectors_syst["SR"][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic)
 			self._event_selectors_syst["muCR"][systematic] = event_selections.MakeMuCRSelector(self._jet_type, jet_systematic=systematic)
+
+		if self._do_tau21_opt:
+			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
+				selection_name = "SR_tau21ddt_{}".format(tau21_ddt_cut)
+				self._event_selectors[selection_name] = MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
+				self._event_selectors_syst[selection_name] = {}
+				for systematic in self._jet_systematics:
+					self._event_selectors_syst[selection_name][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
 
 		# Pileup weight stuff
 		f_pu = TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/puWeights_All.root", "read")
@@ -226,7 +243,7 @@ class EventSelectionHistograms(AnalysisBase):
 
 			for selection in self._selections:
 				# Get weights
-				if selection == "SR":
+				if "SR" in selection:
 					if self._jet_type == "AK8":
 						trigger_mass = min(self._data.AK8Puppijet0_msd, 300.)
 						trigger_pt = max(200., min(self._data.AK8Puppijet0_pt, 1000.))
@@ -250,7 +267,7 @@ class EventSelectionHistograms(AnalysisBase):
 					event_weight_syst["PUUp"] = pu_weight_up * k_vjets * trigger_weight
 					event_weight_syst["PUDown"] = pu_weight_down * k_vjets * trigger_weight
 
-				elif selection == "muCR":
+				elif "muCR" in selection:
 					mutrigweight = 1
 					mutrigweightDown = 1
 					mutrigweightUp = 1
