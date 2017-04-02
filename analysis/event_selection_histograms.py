@@ -442,6 +442,7 @@ if __name__ == "__main__":
 	parser.add_argument('--luminosity', type=float, default=35900, help="Luminosity in pb^-1")
 	parser.add_argument('--jet_type', type=str, default="AK8", help="AK8 or CA15")
 	parser.add_argument('--skim_inputs', action='store_true', help="Run over skim inputs")
+	parser.add_argument('--do_tau21_opt', action='store_true', help="Make tau21DDT opt plots")
 	args = parser.parse_args()
 
 	# Make a list of input samples and files
@@ -518,6 +519,8 @@ if __name__ == "__main__":
 						print "[setup_limits] ERROR : Didn't find tree {} in input file, nor {}. Quitting!".format(tree_name, backup_tree_name)
 						sys.exit(1)
 			limit_histogrammer = EventSelectionHistograms(sample, tree_name=tree_name)
+			if args.do_tau21_opt:
+				limit_histogrammer.do_tau21_opt()
 			if args.output_folder:
 				limit_histogrammer.set_output_path("{}/InputHistograms_{}_{}.root".format(args.output_folder, sample, args.jet_type))
 			else:
@@ -581,10 +584,13 @@ if __name__ == "__main__":
 					job_script_path = "{}/run_csubjob{}.sh".format(submission_directory, csubjob_index)
 					job_script = open(job_script_path, 'w')
 					job_script.write("#!/bin/bash\n")
+					job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run ".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index)
 					if args.skim_inputs:
-						job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run --skim_inputs 2>&1\n".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index))
-					else:
-						job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run 2>&1\n".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index))
+						job_command += " --skim_inputs "
+					if args.do_tau21_opt:
+						job_command += " --do_tau21_opt "
+					job_command += " 2>&1\n"
+					job_script.write(job_command)
 					job_script.close()
 					submission_command = "csub {} --cmssw --no_retar".format(job_script_path)
 					if len(input_files_to_transfer) >= 1:
