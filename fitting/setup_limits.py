@@ -33,6 +33,7 @@ class LimitHistograms(AnalysisBase):
 		self._dcsv_min = -999.
 		self._jet_type = "AK8"
 		self._selections = ["SR", "muCR"]
+		self._do_tau21_opt = False
 
 		# Weight systematics: these only affect the weights used to fill histograms, so can easily be filled in normal running
 		self._weight_systematics = {
@@ -41,6 +42,9 @@ class LimitHistograms(AnalysisBase):
 		}
 		# Jet systematics: these affect the jet pT, so modify the event selection
 		self._jet_systematics = ["JESUp", "JESDown", "JERUp", "JERDown"]
+
+	def do_tau21_opt(do_opt=True):
+		self._do_tau21_opt = do_opt
 
 	def set_cut(self, cut_name, cut_value):
 		if cut_name == "n2_ddt":
@@ -80,6 +84,11 @@ class LimitHistograms(AnalysisBase):
 		self._histograms.GetTH1F("input_nevents").SetBinContent(1, self._input_nevents)
 		self._histograms.AddTH1D("processed_nevents", "processed_nevents", "", 1, -0.5, 0.5)
 
+		# tau21 optimization
+		if self._do_tau21_opt:
+			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
+				self._selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
+
 		# Histograms for each event selection
 		self._selection_histograms = {}
 		for selection in self._selections:
@@ -101,6 +110,9 @@ class LimitHistograms(AnalysisBase):
 		self._event_selectors = {}
 		self._event_selectors["SR"] = event_selections.MakeSRSelector(self._jet_type)
 		self._event_selectors["muCR"] = event_selections.MakeMuCRSelector(self._jet_type)
+		if self._do_tau21_opt:
+			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
+				self._event_selectors["SR_tau21ddt_{}".format(tau21_ddt_cut)] = MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
 
 		# Pileup weight stuff
 		f_pu = TFile.Open("$ZPRIMEPLUSJET_BASE/analysis/ggH/puWeights_All.root", "read")
@@ -377,7 +389,7 @@ class LimitHistograms(AnalysisBase):
 
 if __name__ == "__main__":
 	import argparse
-	parser = argparse.ArgumentParser(description='Produce and plot ieta-iphi histograms to look for buggy events')
+	parser = argparse.ArgumentParser(description='Make histograms for Xbb analysis')
 	input_group = parser.add_mutually_exclusive_group() 
 	input_group.add_argument('--all', action="store_true", help="Run over all supersamples")
 	input_group.add_argument('--supersamples', type=str, help="Supersample name(s), comma separated. Must correspond to something in analysis_configuration.(background_names, signal_names, or data_names).")
@@ -392,7 +404,8 @@ if __name__ == "__main__":
 	action_group.add_argument('--datacards', action="store_true", help="Create datacards for combine")
 	parser.add_argument('--output_folder', type=str, help="Output folder")
 	parser.add_argument('--label', type=str, help="If running with --files, need to specify a label manually, in lieu of the sample names, for the output file naming.")
-	parser.add_argument('--luminosity', type=float, default=34207, help="Luminosity in pb^-1")
+	parser.add_argument('--luminosity', type=float, default=35900, help="Luminosity in pb^-1")
+	parser.add_argument('--do_tau21_opt', action='store_true', help="Make tau21DDT opt plots")
 	args = parser.parse_args()
 
 	# Make a list of input samples and files
@@ -439,6 +452,9 @@ if __name__ == "__main__":
 		for sample in samples:
 			print "\n *** Running sample {}".format(sample)
 			limit_histogrammer = LimitHistograms(sample, tree_name="Events")
+			if args.do_tau21_opt:
+				limit_histogrammer.do_tau21_opt()
+
 			if args.output_folder:
 				limit_histogrammer.set_output_path("{}/InputHistograms_{}.root".format(args.output_folder, sample))
 			else:
@@ -499,7 +515,10 @@ if __name__ == "__main__":
 					job_script_path = "{}/run_csubjob{}.sh".format(submission_directory, csubjob_index)
 					job_script = open(job_script_path, 'w')
 					job_script.write("#!/bin/bash\n")
-					job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/fitting/setup_limits.py --files {} --label {}_csubjob{} --output_folder . --run 2>&1\n".format(",".join(this_job_input_files), sample, csubjob_index))
+					if args.do_tau21_opt:
+						job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/fitting/setup_limits.py --files {} --label {}_csubjob{} --do_tau21_opt --output_folder . --run 2>&1\n".format(",".join(this_job_input_files), sample, csubjob_index))
+					else:
+						job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/fitting/setup_limits.py --files {} --label {}_csubjob{} --output_folder . --run 2>&1\n".format(",".join(this_job_input_files), sample, csubjob_index))
 					job_script.close()
 					submission_command = "csub {} --cmssw --no_retar".format(job_script_path)
 					if len(input_files_to_transfer) >= 1:

@@ -6,7 +6,7 @@ ROOT.gInterpreter.Declare("#include \"MyTools/AnalysisTools/interface/EventSelec
 ROOT.gSystem.Load(os.path.expandvars("$CMSSW_BASE/lib/$SCRAM_ARCH/libMyToolsAnalysisTools.so"))
 ROOT.gSystem.Load(os.path.expandvars("$CMSSW_BASE/lib/$SCRAM_ARCH/libDAZSLEPhiBBPlusJet.so"))
 
-def MakeSRSelector(jet_type, n2_ddt_cut=0., jet_systematic="nominal"):
+def MakeSRSelector(jet_type, n2_ddt_cut=0., tau21_ddt_cut=None, jet_systematic="nominal"):
 	event_selector = ROOT.EventSelector("BaconData")()
 	selector_name = "EventSelector_SR"
 	if jet_systematic != "nominal":
@@ -68,9 +68,14 @@ def MakeSRSelector(jet_type, n2_ddt_cut=0., jet_systematic="nominal"):
 
 	# AK8 or CA15 cuts
 	if jet_type == "AK8":
-		cut_parameters["Max_AK8Puppijet0_N2DDT"] = ROOT.vector("double")()
-		cut_parameters["Max_AK8Puppijet0_N2DDT"].push_back(n2_ddt_cut)
-		event_selector.RegisterCut("Max_AK8Puppijet0_N2DDT", ROOT.vector("TString")(), cut_parameters["Max_AK8Puppijet0_N2DDT"])
+		if tau21_ddt_cut != None:
+			cut_parameters["Max_AK8Puppijet0_tau21DDT"] = ROOT.vector("double")()
+			cut_parameters["Max_AK8Puppijet0_tau21DDT"].push_back(tau21_ddt_cut)
+			event_selector.RegisterCut("Max_AK8Puppijet0_tau21DDT", ROOT.vector("TString")(), cut_parameters["Max_AK8Puppijet0_tau21DDT"])
+		else:
+			cut_parameters["Max_AK8Puppijet0_N2DDT"] = ROOT.vector("double")()
+			cut_parameters["Max_AK8Puppijet0_N2DDT"].push_back(n2_ddt_cut)
+			event_selector.RegisterCut("Max_AK8Puppijet0_N2DDT", ROOT.vector("TString")(), cut_parameters["Max_AK8Puppijet0_N2DDT"])
 	elif jet_type == "CA15":
 		pass
 		# CA15 jets don't have an N2 branch in latest skims!
