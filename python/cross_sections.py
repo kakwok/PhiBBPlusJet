@@ -305,6 +305,7 @@ cross_sections = {
 "DMSpin0_ggPhibb1j_100":			1,
 "DMSpin0_ggPhibb1j_125":			1,
 "DMSpin0_ggPhibb1j_150":			1,
+"DMSpin0_ggPhibb1j_200":			1,
 "DMSpin0_ggPhibb1j_250":			1,
 "DMSpin0_ggPhibb1j_300":			1,
 "DMSpin0_ggPhibb1j_400":			1,

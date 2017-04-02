@@ -564,7 +564,10 @@ if __name__ == "__main__":
 					job_script_path = "{}/run_csubjob{}.sh".format(submission_directory, csubjob_index)
 					job_script = open(job_script_path, 'w')
 					job_script.write("#!/bin/bash\n")
-					job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run 2>&1\n".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index))
+					if args.skim_inputs:
+						job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run --skim_inputs 2>&1\n".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index))
+					else:
+						job_script.write("python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run 2>&1\n".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index))
 					job_script.close()
 					submission_command = "csub {} --cmssw --no_retar".format(job_script_path)
 					if len(input_files_to_transfer) >= 1:
@@ -606,7 +609,7 @@ if __name__ == "__main__":
 			fail_histograms_syst = {}
 			# data_obs, data_singlemu - not ready yet
 			# "zll", "wlnu", "vvqq" - you need to find the cross sections, and split into appropriate samples
-			for supersample in ["qcd", "tqq", "wqq", "zqq", "hbb", "DMSbb50", "DMSbb75", "DMSbb100", "DMSbb125", "DMSbb150", "DMSbb200", "DMSbb250", "DMSbb300", "DMSbb400", "DMSbb500"]:
+			for supersample in ["qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq", "DMSbb50", "DMSbb75", "DMSbb100", "DMSbb125", "DMSbb150", "DMSbb200", "DMSbb250", "DMSbb300", "DMSbb400", "DMSbb500"]:
 				first = True
 				pass_histograms_syst[supersample] = {}
 				fail_histograms_syst[supersample] = {}
@@ -681,6 +684,9 @@ if __name__ == "__main__":
 				output_file.cd()
 				pass_histograms[supersample].Write()
 				fail_histograms[supersample].Write()
+				for systematic in systematics[selection]:
+					pass_histograms_syst[supersample][systematic].Write()
+					fail_histograms_syst[supersample][systematic].Write()
 			output_file.Close()
 
 	#if args.rhalphabet:
