@@ -331,8 +331,8 @@ class EventSelectionHistograms(AnalysisBase):
 					event_weight_syst["PUDown"] = pu_weight_down * k_vjets * mutrigweight * muidweight * muisoweight
 
 				# Run selection and fill histograms
-				self._event_selectors[selection].ProcessEvent(self._data, event_weight)
-				if self._event_selectors[selection].Pass():
+				self._event_selectors[selection].process_event(self._data, event_weight)
+				if self._event_selectors[selection].event_pass():
 					self._selection_histograms[selection].GetTH1D("pass_nevents").Fill(0)
 					self._selection_histograms[selection].GetTH1D("pass_nevents_weighted").Fill(0, event_weight)
 
@@ -359,8 +359,8 @@ class EventSelectionHistograms(AnalysisBase):
 
 				# Run systematics that affect event selection
 				for systematic in self._jet_systematics:
-					self._event_selectors_syst[selection][systematic].ProcessEvent(self._data, event_weight)
-					if self._event_selectors_syst[selection][systematic].Pass():
+					self._event_selectors_syst[selection][systematic].process_event(self._data, event_weight)
+					if self._event_selectors_syst[selection][systematic].event_pass():
 						if self._jet_type == "AK8":
 							if systematic == "JESUp":
 								fatjet_pt = self._data.AK8Puppijet0_pt_JESUp
@@ -405,8 +405,9 @@ class EventSelectionHistograms(AnalysisBase):
 		for selection, histogrammer in self._selection_histograms.iteritems():
 			histogrammer.SaveAll(f_out)
 		for selection, selector in self._event_selectors.iteritems():
-			selector.MakeCutflowHistograms(f_out)
-			selector.SaveNMinusOneHistograms(f_out)
+			selector.print_cutflow()
+			selector.make_cutflow_histograms(f_out)
+			selector.save_nminusone_histograms(f_out)
 		f_out.Close()
 
 # Not using this right now! It was intended for joblib parallel processing, but you weren't able to figure out joblib on condor. 
@@ -504,7 +505,7 @@ if __name__ == "__main__":
 
 			# Sanity check: make sure tree exists in file
 			for filename in sample_files[sample]:
-				f = TFile(filename, "READ")
+				f = ROOT.TFile.Open(filename, "READ")
 				t = f.Get(tree_name)
 				if not t:
 					if tree_name == "otree":
