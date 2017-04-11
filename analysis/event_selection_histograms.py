@@ -43,7 +43,7 @@ class EventSelectionHistograms(AnalysisBase):
 		# Jet systematics: these affect the jet pT, so modify the event selection
 		self._jet_systematics = ["JESUp", "JESDown", "JERUp", "JERDown"]
 
-	def do_tau21_opt(do_opt=True):
+	def do_tau21_opt(self, do_opt=True):
 		self._do_tau21_opt = do_opt
 
 	def set_cut(self, cut_name, cut_value):
