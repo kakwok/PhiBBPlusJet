@@ -523,6 +523,16 @@ if __name__ == "__main__":
 					else:
 						print "[setup_limits] ERROR : Didn't find tree {} in input file, nor {}. Quitting!".format(tree_name, backup_tree_name)
 						sys.exit(1)
+				# Check that the "NEvents" histogram is present
+				h_NEvents = f.Get("NEvents")
+				if not h_NEvents:
+					if "data" in sample:
+						print "[setup_limits] ERROR : NEvents histogram in not in this file! It is probably corrupt. This is data, so this problem is fatal."
+						sys.exit(1)
+					else:
+						print "[setup_limits] WARNING : NEvents histogram in not in this file! It is probably corrupt. This is MC, so I am skipping the file. But, you probably want to remove from the input list."
+						sample_files[sample].remove(filename)
+				
 			limit_histogrammer = EventSelectionHistograms(sample, tree_name=tree_name)
 			if args.do_tau21_opt:
 				limit_histogrammer.do_tau21_opt()
@@ -603,6 +613,15 @@ if __name__ == "__main__":
 					if len(input_files_to_transfer) >= 1:
 						submission_command += " -F " + ",".join(input_files_to_transfer)
 					print submission_command
+
+					# Save csub command for resubmission attempts
+					submission_script_path = "{}/csub_command{}.sh".format(submission_directory, csubjob_index)
+					submission_script = open(submission_script_path, "w")
+					submission_script.write("#!/bin/bash\n")
+					submission_script.write(submission_command + "\n")
+					submission_script.close()
+
+					# Submit jobs
 					os.system(submission_command)
 					this_job_input_files = []
 					input_files_to_transfer = []
