@@ -88,6 +88,7 @@ class EventSelectionHistograms(AnalysisBase):
 		if self._do_tau21_opt:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
 				self._selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
+				self._weight_systematics["SR_tau21ddt_{}".format(tau21_ddt_cut)] = ["TriggerUp", "TriggerDown", "PUUp", "PUDown"]
 
 		# Histograms for each event selection
 		self._selection_histograms = {}
@@ -120,7 +121,7 @@ class EventSelectionHistograms(AnalysisBase):
 		if self._do_tau21_opt:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
 				selection_name = "SR_tau21ddt_{}".format(tau21_ddt_cut)
-				self._event_selectors[selection_name] = MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
+				self._event_selectors[selection_name] = event_selections.MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
 				self._event_selectors_syst[selection_name] = {}
 				for systematic in self._jet_systematics:
 					self._event_selectors_syst[selection_name][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
