@@ -6,10 +6,12 @@ ROOT.gSystem.Load(os.path.expandvars("$CMSSW_BASE/lib/$SCRAM_ARCH/libMyToolsAnal
 ROOT.gSystem.Load(os.path.expandvars("$CMSSW_BASE/lib/$SCRAM_ARCH/libDAZSLEPhiBBPlusJet.so"))
 from DAZSLE.PhiBBPlusJet.bacon_event_selector import *
 
-def MakeSRSelector(jet_type, n2_ddt_cut=0., tau21_ddt_cut=None, jet_systematic="nominal"):
+def MakeSRSelector(jet_type, n2_ddt_cut=0., tau21_ddt_cut=None, jet_systematic="nominal", tag=None):
 	selector_name = "EventSelector_SR"
 	if jet_systematic != "nominal":
 		selector_name += "_" + jet_systematic
+	if tag:
+		selector_name += "_" + tag
 	event_selector = BaconEventSelector(selector_name)
 
 	if jet_type == "AK8":

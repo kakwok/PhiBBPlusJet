@@ -121,10 +121,10 @@ class EventSelectionHistograms(AnalysisBase):
 		if self._do_tau21_opt:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
 				selection_name = "SR_tau21ddt_{}".format(tau21_ddt_cut)
-				self._event_selectors[selection_name] = event_selections.MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
+				self._event_selectors[selection_name] = event_selections.MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut, tag="tau21ddt{}".format(tau21_ddt_cut))
 				self._event_selectors_syst[selection_name] = {}
 				for systematic in self._jet_systematics:
-					self._event_selectors_syst[selection_name][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut)
+					self._event_selectors_syst[selection_name][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut, tag="tau21ddt{}".format(tau21_ddt_cut))
 
 		# Pileup weight stuff
 		f_pu = TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/puWeights_All.root", "read")
@@ -490,6 +490,8 @@ if __name__ == "__main__":
 		samples = sample_files.keys()
 	print "List of input samples: ",
 	print samples
+	print "List of samples and files: ",
+	print sample_files
 	#print "List of sample => input files:",
 	#print sample_files
 
@@ -506,6 +508,7 @@ if __name__ == "__main__":
 
 			# Sanity check: make sure tree exists in file
 			for filename in sample_files[sample]:
+				print "[event_selection_histograms] INFO : Checking contents of file {}".format(filename)
 				f = ROOT.TFile.Open(filename, "READ")
 				t = f.Get(tree_name)
 				if not t:
@@ -563,6 +566,8 @@ if __name__ == "__main__":
 			files_per_job = 1
 			if "JetHTRun2016" in sample:
 				files_per_job = 10
+			elif "QCD_HT500to700" in sample:
+				files_per_job = 20
 			elif "QCD" in sample:
 				files_per_job = 3
 			elif "Spin0" in sample or "Sbb" in sample:
@@ -626,7 +631,11 @@ if __name__ == "__main__":
 			"SR":["JESUp", "JESDown", "JERUp", "JERDown", "TriggerUp", "TriggerDown", "PUUp", "PUDown"],
 			"muCR":["JESUp", "JESDown", "JERUp", "JERDown", "MuTriggerUp", "MuTriggerDown", "MuIDUp", "MuIDDown", "MuIsoUp", "MuIsoDown", "PUUp", "PUDown"]
 		}
-		for selection in ["SR", "muCR"]:
+		selections = ["SR", "muCR"]
+		if args.do_tau21_opt:
+			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
+				selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
+		for selection in selections:
 			output_file = ROOT.TFile("/uscms/home/dryu/DAZSLE/data/LimitSetting/histograms_{}_{}.root".format(selection, args.jet_type), "RECREATE")
 			pass_histograms = {}
 			pass_histograms_syst = {}
