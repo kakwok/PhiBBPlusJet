@@ -431,7 +431,7 @@ if __name__ == "__main__":
 	input_group.add_argument('--supersamples', type=str, help="Supersample name(s), comma separated. Must correspond to something in analysis_configuration.(background_names, signal_names, or data_names).")
 	input_group.add_argument('--samples', type=str, help="Sample name(s), comma separated. Must be a key in analysis_configuration.skims.")
 	input_group.add_argument('--files', type=str, help="Input file name(s), comma separated")
-	input_group.add_argument('--n_jobs', type=int, default=4, help="For --run, specify the number of parallel jobs.")
+	parser.add_argument('--n_jobs', type=int, default=4, help="For --run, specify the number of parallel jobs.")
 	action_group = parser.add_mutually_exclusive_group() 
 	action_group.add_argument('--combine_outputs', action="store_true", help="Compile results into one file for next step (buildRhalphabet). Also applies luminosity weights to MC.")
 	action_group.add_argument('--run', action="store_true", help="Run")
