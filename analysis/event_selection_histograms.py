@@ -567,9 +567,9 @@ if __name__ == "__main__":
 			if "JetHTRun2016" in sample:
 				files_per_job = 10
 			elif "QCD_HT500to700" in sample:
-				files_per_job = 20
+				files_per_job = 30
 			elif "QCD" in sample:
-				files_per_job = 3
+				files_per_job = 10
 			elif "Spin0" in sample or "Sbb" in sample:
 				files_per_job = 3
 
