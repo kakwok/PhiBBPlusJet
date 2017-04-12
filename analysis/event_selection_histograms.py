@@ -654,6 +654,7 @@ if __name__ == "__main__":
 		if args.do_tau21_opt:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
 				selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
+				systematics["SR_tau21ddt_{}".format(tau21_ddt_cut)] = ["JESUp", "JESDown", "JERUp", "JERDown", "TriggerUp", "TriggerDown", "PUUp", "PUDown"]
 		for selection in selections:
 			output_file = ROOT.TFile("/uscms/home/dryu/DAZSLE/data/LimitSetting/histograms_{}_{}.root".format(selection, args.jet_type), "RECREATE")
 			pass_histograms = {}
