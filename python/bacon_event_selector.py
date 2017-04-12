@@ -1,4 +1,4 @@
-from MyTools.AnalysisTools.event_selector import EventSelector
+from DAZSLE.PhiBBPlusJet.event_selector import EventSelector
 import math
 
 class BaconEventSelector(EventSelector):
