@@ -111,7 +111,7 @@ class TestPyEventSelector(AnalysisBase):
 					self._histograms.GetTH2D("fail_unweighted").Fill(fatjet_msd, fatjet_pt)
 	def finish(self):
 		if self._output_path == "":
-			self._output_path = "/uscms/home/dryu/DAZSLE/data/LimitSetting/TestPyEventSelector.root".format(time.time)
+			self._output_path = os.path.expandvars("$HOME/TestPyEventSelector.root".format(time.time))
 			print "[SignalCutflow::finish] WARNING : Output path was not provided! Saving to {}".format(self._output_path)
 		print "[SignalCutflow::finish] INFO : Saving histograms to {}".format(self._output_path)
 		f_out = ROOT.TFile(self._output_path, "RECREATE")
