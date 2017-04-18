@@ -58,7 +58,7 @@ class Cutflow:
 	def add_nminusone_histogram(self, cut_name, variable_name, xtitle, nbins, xmin, xmax):
 		if not cut_name in self._nminusone_histograms:
 			self._nminusone_histograms[cut_name] = {}
-		self._nminusone_histograms[cut_name][variable_name] = TH1D("h_nminusone_{}_{}".format(cut_name, variable_name), "h_nminusone_{}_{}".format(cut_name, variable_name), nbins, xmin, xmax)
+		self._nminusone_histograms[cut_name][variable_name] = TH1D("h_nminusone_{}_{}_{}".format(self._name, cut_name, variable_name), "h_nminusone_{}_{}_{}".format(self._name, cut_name, variable_name), nbins, xmin, xmax)
 		self._nminusone_histograms[cut_name][variable_name].SetDirectory(0)
 		self._nminusone_histograms[cut_name][variable_name].Sumw2()
 		self._nminusone_histograms[cut_name][variable_name].GetXaxis().SetTitle(xtitle)

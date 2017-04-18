@@ -55,7 +55,7 @@ class EventSelector(Cutflow):
 			for cut2 in self._cut_list:
 				if cut == cut2:
 					continue
-				if not self._cut_results[cut]:
+				if not self._cut_results[cut2]:
 					self._event_pass_nminusone[cut] = False
 					break
 
