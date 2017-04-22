@@ -33,7 +33,7 @@ class EventSelectionHistograms(AnalysisBase):
 		self._dcsv_min = -999.
 		self._jet_type = "AK8"
 		self._selections = ["SR", "muCR"]
-		self._do_tau21_opt = False
+		self._do_optimization = False
 
 		# Weight systematics: these only affect the weights used to fill histograms, so can easily be filled in normal running
 		self._weight_systematics = {
@@ -43,8 +43,8 @@ class EventSelectionHistograms(AnalysisBase):
 		# Jet systematics: these affect the jet pT, so modify the event selection
 		self._jet_systematics = ["JESUp", "JESDown", "JERUp", "JERDown"]
 
-	def do_tau21_opt(self, do_opt=True):
-		self._do_tau21_opt = do_opt
+	def do_optimization(self, do_opt=True):
+		self._do_optimization = do_opt
 
 	def set_cut(self, cut_name, cut_value):
 		if cut_name == "n2_ddt":
@@ -85,10 +85,13 @@ class EventSelectionHistograms(AnalysisBase):
 		self._histograms.AddTH1D("processed_nevents", "processed_nevents", "", 1, -0.5, 0.5)
 
 		# tau21 optimization
-		if self._do_tau21_opt:
+		if self._do_optimization:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
 				self._selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
 				self._weight_systematics["SR_tau21ddt_{}".format(tau21_ddt_cut)] = ["TriggerUp", "TriggerDown", "PUUp", "PUDown"]
+
+			# dcsv optimization
+			self._dcsv_cuts = [0.7, 0.75, 0.8, 0.85, 0.875, 0.9, 0.925, 0.95, 0.975]
 
 		# Histograms for each event selection
 		self._selection_histograms = {}
@@ -104,6 +107,12 @@ class EventSelectionHistograms(AnalysisBase):
 			self._selection_histograms[selection].AddTH2D("pass_unweighted", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 			self._selection_histograms[selection].AddTH2D("fail", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 			self._selection_histograms[selection].AddTH2D("fail_unweighted", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+			if self._do_optimization:
+				for dcsv_cut in self._dcsv_cuts:
+					self._selection_histograms[selection].AddTH2D("pass_dcsv{}".format(dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+					self._selection_histograms[selection].AddTH2D("pass_unweighted_dcsv{}".format(dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+					self._selection_histograms[selection].AddTH2D("fail_dcsv{}".format(dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+					self._selection_histograms[selection].AddTH2D("fail_unweighted_dcsv{}".format(dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 
 			for systematic in self._weight_systematics[selection] + self._jet_systematics:
 				self._selection_histograms[selection].AddTH2D("pass_{}".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
@@ -118,7 +127,7 @@ class EventSelectionHistograms(AnalysisBase):
 			self._event_selectors_syst["SR"][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic)
 			self._event_selectors_syst["muCR"][systematic] = event_selections.MakeMuCRSelector(self._jet_type, jet_systematic=systematic)
 
-		if self._do_tau21_opt:
+		if self._do_optimization:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
 				selection_name = "SR_tau21ddt_{}".format(tau21_ddt_cut)
 				self._event_selectors[selection_name] = event_selections.MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut, tag="tau21ddt{}".format(tau21_ddt_cut))
@@ -358,6 +367,15 @@ class EventSelectionHistograms(AnalysisBase):
 						for systematic in self._weight_systematics[selection]:
 							self._selection_histograms[selection].GetTH2D("fail_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
 
+					if self._do_optimization:
+						for dcsv_cut in self._dcsv_cuts:
+							if fatjet_dcsv > self._dcsv_cut:
+								self._selection_histograms[selection].GetTH2D("pass_dcsv{}".format(dcsv_cut)).Fill(fatjet_msd, fatjet_pt, event_weight)
+								self._selection_histograms[selection].GetTH2D("pass_unweighted_dcsv{}".format(dcsv_cut)).Fill(fatjet_msd, fatjet_pt)
+							elif fatjet_dcsv > self._dcsv_min:
+								self._selection_histograms[selection].GetTH2D("fail_dcsv{}".format(dcsv_cut)).Fill(fatjet_msd, fatjet_pt, event_weight)
+								self._selection_histograms[selection].GetTH2D("fail_unweighted_dcsv{}".format(dcsv_cut)).Fill(fatjet_msd, fatjet_pt)
+
 				# Run systematics that affect event selection
 				for systematic in self._jet_systematics:
 					self._event_selectors_syst[selection][systematic].process_event(self._data, event_weight)
@@ -444,7 +462,7 @@ if __name__ == "__main__":
 	parser.add_argument('--luminosity', type=float, default=35900, help="Luminosity in pb^-1")
 	parser.add_argument('--jet_type', type=str, default="AK8", help="AK8 or CA15")
 	parser.add_argument('--skim_inputs', action='store_true', help="Run over skim inputs")
-	parser.add_argument('--do_tau21_opt', action='store_true', help="Make tau21DDT opt plots")
+	parser.add_argument('--do_optimization', action='store_true', help="Make tau21DDT opt plots")
 	args = parser.parse_args()
 
 	# Make a list of input samples and files
@@ -534,8 +552,8 @@ if __name__ == "__main__":
 						sample_files[sample].remove(filename)
 				
 			limit_histogrammer = EventSelectionHistograms(sample, tree_name=tree_name)
-			if args.do_tau21_opt:
-				limit_histogrammer.do_tau21_opt()
+			if args.do_optimization:
+				limit_histogrammer.do_optimization()
 			if args.output_folder:
 				limit_histogrammer.set_output_path("{}/InputHistograms_{}_{}.root".format(args.output_folder, sample, args.jet_type))
 			else:
@@ -604,8 +622,8 @@ if __name__ == "__main__":
 					job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run ".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index)
 					if args.skim_inputs:
 						job_command += " --skim_inputs "
-					if args.do_tau21_opt:
-						job_command += " --do_tau21_opt "
+					if args.do_optimization:
+						job_command += " --do_optimization "
 					job_command += " 2>&1\n"
 					job_script.write(job_command)
 					job_script.close()
@@ -651,8 +669,8 @@ if __name__ == "__main__":
 			"muCR":["JESUp", "JESDown", "JERUp", "JERDown", "MuTriggerUp", "MuTriggerDown", "MuIDUp", "MuIDDown", "MuIsoUp", "MuIsoDown", "PUUp", "PUDown"]
 		}
 		selections = ["SR", "muCR"]
-		if args.do_tau21_opt:
-			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
+		if args.do_optimization:
+			for tau21_ddt_cut in [0.3, 0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7, 0.8]:
 				selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
 				systematics["SR_tau21ddt_{}".format(tau21_ddt_cut)] = ["JESUp", "JESDown", "JERUp", "JERDown", "TriggerUp", "TriggerDown", "PUUp", "PUDown"]
 		for selection in selections:
