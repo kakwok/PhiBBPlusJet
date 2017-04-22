@@ -24,7 +24,7 @@ for mass in signal_masses:
 	signal_names.append("DMSbb{}".format(mass))
 	#signal_names.append("Sbb{}".format(mass))
 	#signal_names.append("PSbb{}".format(mass))
-data_names = ["data_obs"]
+data_names = ["data_obs", "data_singlemu"]
 supersamples = []
 supersamples.extend(background_names)
 supersamples.extend(signal_names)
