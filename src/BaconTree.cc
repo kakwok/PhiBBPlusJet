@@ -1,5 +1,6 @@
+#ifndef BaconTree_cxx
 #define BaconTree_cxx
-#include "BaconTree.h"
+#include "DAZSLE/PhiBBPlusJet/interface/BaconTree.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -41,3 +42,6 @@ void BaconTree::Loop()
       // if (Cut(ientry) < 0) continue;
    }
 }
+
+
+#endif
