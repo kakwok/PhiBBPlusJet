@@ -26,7 +26,7 @@ def MakeSRSelector(jet_type, n2_ddt_cut=0., tau21_ddt_cut=None, jet_systematic="
 	event_selector.add_cut("Max_neleLoose", 0)
 	event_selector.add_cut("Max_nmuLoose", 0)
 	event_selector.add_cut("Max_ntau", 0)
-	event_selector.add_cut("Max_puppet", {"Max_puppet":180., "systematic":jet_systematic})
+	event_selector.add_cut("Max_pfmet", {"Max_pfmet":140., "systematic":jet_systematic})
 
 	if jet_type == "CA15":
 		print "[setup_limits::start] WARNING : Adding cut on njets near CA15 jet. These are calculated w.r.t. AK8 jet, so might not be consistent!"

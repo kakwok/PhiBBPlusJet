@@ -140,14 +140,6 @@ class BaconEventSelector(EventSelector):
 		self._return_data["AK8Puppijet0_isTightVJet"] = self._event.AK8Puppijet0_isTightVJet
 		return (self._event.AK8Puppijet0_isTightVJet == 1)
 
-	def Min_pfmet(self):
-		self._return_data["Min_pfmet"] = self._event.pfmet
-		return (self._event.pfmet >= self._cut_parameters["Min_pfmet"])
-
-	def Max_pfmet(self):
-		self._return_data["Max_pfmet"] = self._event.pfmet
-		return (self._event.pfmet <= self._cut_parameters["Max_pfmet"])
-
 	def Min_puppet(self):
 		this_puppet = 0.
 		systematic = self._cut_parameters["Min_puppet"]["systematic"].lower()
@@ -185,6 +177,44 @@ class BaconEventSelector(EventSelector):
 			exit(1)
 		self._return_data["Max_puppet"] = this_puppet
 		return (this_puppet <= self._cut_parameters["Max_puppet"]["Max_puppet"])
+
+	def Min_pfmet(self):
+		this_pfmet = 0.
+		systematic = self._cut_parameters["Min_pfmet"]["systematic"].lower()
+		if (systematic == "nominal"):
+			this_pfmet = self._event.pfmet
+		elif (systematic == "jesup"):
+			this_pfmet = self._event.pfmet_JESUp
+		elif (systematic == "jesdown"):
+			this_pfmet = self._event.pfmet_JESDown
+		elif (systematic == "jerup"):
+			this_pfmet = self._event.pfmet_JERUp
+		elif (systematic == "jerdown"):
+			this_pfmet = self._event.pfmet_JERDown
+		else:
+			print "[Min_pfmet] ERROR : Systematic " + systematic + " not known." 
+			exit(1)
+		self._return_data["Min_pfmet"] = this_pfmet
+		return (this_pfmet >= self._cut_parameters["Min_pfmet"]["Min_pfmet"])
+
+	def Max_pfmet(self):
+		this_pfmet = 0.
+		systematic = self._cut_parameters["Max_pfmet"]["systematic"].lower()
+		if (systematic == "nominal"):
+			this_pfmet = self._event.pfmet
+		elif (systematic == "jesup"):
+			this_pfmet = self._event.pfmet_JESUp
+		elif (systematic == "jesdown"):
+			this_pfmet = self._event.pfmet_JESDown
+		elif (systematic == "jerup"):
+			this_pfmet = self._event.pfmet_JERUp
+		elif (systematic == "jerdown"):
+			this_pfmet = self._event.pfmet_JERDown
+		else:
+			print "[Max_pfmet] ERROR : Systematic " + systematic + " not known." 
+			exit(1)
+		self._return_data["Max_pfmet"] = this_pfmet
+		return (this_pfmet <= self._cut_parameters["Max_pfmet"]["Max_pfmet"])
 
 	def Max_nAK4PuppijetsPt30dR08_0(self):
 		self._return_data["Max_nAK4PuppijetsPt30dR08_0"] = self._event.nAK4PuppijetsPt30dR08_0
@@ -508,9 +538,9 @@ class BaconEventSelector(EventSelector):
 		elif cut_name == "CA15Puppijet0_isTightVJet":
 			self.add_nminusone_histogram(cut_name, cut_name, "Is tight VJet", 2, -0.5, 1.5);
 		elif cut_name == "Min_pfmet":
-			self.add_nminusone_histogram(cut_name, cut_name, "MET [GeV]", 100, 0., 1000.); 
+			self.add_nminusone_histogram(cut_name, cut_name, "PF MET [GeV]", 100, 0., 1000.); 
 		elif cut_name == "Max_pfmet":
-			self.add_nminusone_histogram(cut_name, cut_name, "MET [GeV]", 100, 0., 1000.); 
+			self.add_nminusone_histogram(cut_name, cut_name, "PF MET [GeV]", 100, 0., 1000.); 
 		elif cut_name == "Min_puppet":
 			self.add_nminusone_histogram(cut_name, cut_name, "PUPPET [GeV]", 100, 0., 1000.); 
 		elif cut_name == "Max_puppet":

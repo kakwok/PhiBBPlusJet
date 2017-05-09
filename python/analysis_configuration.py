@@ -19,7 +19,7 @@ background_names = [
 # First 12.05 signal processing. Some samples are missing.
 signal_names = []
 signal_masses_scalar = [10,20,50,100,200,300,350,400,500] 
-signal_masses_pseudoscalar = [10,20,50,100,125,300,350,400,500]
+signal_masses_pseudoscalar = [10,50,100,125,300,350,400,500]
 #signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
 #signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 #signal_masses = [50,75,100,125,150,200,250,300,400,500]
