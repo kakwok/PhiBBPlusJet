@@ -45,6 +45,10 @@ BaconData::BaconData(TTree *tree) : BaconTree(tree) {
 	puppet_JESDown = 0.;
 	puppet_JERUp = 0.;
 	puppet_JERDown = 0.;
+	pfmet_JESUp = 0.;
+	pfmet_JESDown = 0.;
+	pfmet_JERUp = 0.;
+	pfmet_JERDown = 0.;
 }
 
 BaconData::~BaconData() {
@@ -108,7 +112,12 @@ Int_t BaconData::GetEntry(Long64_t entry) {
     puppet_JERUp = TMath::Sqrt((puppet_x + MetXCorrjerUp) * (puppet_x + MetXCorrjerUp) + (puppet_y + MetYCorrjerUp) * (puppet_y + MetYCorrjerUp));
     puppet_JERDown = TMath::Sqrt((puppet_x + MetXCorrjerDown) * (puppet_x + MetXCorrjerDown) + (puppet_y + MetYCorrjerDown) * (puppet_y + MetYCorrjerDown));
 
-
+    double pfmet_x = pfmet * TMath::Cos(pfmetphi);
+    double pfmet_y = pfmet * TMath::Sin(pfmetphi);
+    pfmet_JESUp = TMath::Sqrt(TMath::Power(met_x + MetXCorrjesUp, 2) + TMath::Power(met_y + MetYCorrjesUp, 2));
+    pfmet_JESDown = TMath::Sqrt(TMath::Power(met_x + MetXCorrjesDown, 2) + TMath::Power(met_y + MetYCorrjesDown, 2));
+    pfmet_JERUp = TMath::Sqrt(TMath::Power(met_x + MetXCorrjerUp, 2) + TMath::Power(met_y + MetYCorrjerUp, 2));
+    pfmet_JERDown = TMath::Sqrt(TMath::Power(met_x + MetXCorrjerDown, 2) + TMath::Power(met_y + MetYCorrjerDown, 2));
 
 	return ret;
 }

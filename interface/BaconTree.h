@@ -1,13 +1,13 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Dec 20 17:09:53 2016 by ROOT version 6.06/01
+// Tue May  9 14:23:08 2017 by ROOT version 6.02/05
 // from TTree BaconTree/BaconTree
-// found on file: /eos/uscms/store/user/jduarte1/zprimebits-v11.061/DMSpin0_ggPhibb1j_150.root
+// found on file: Output.root_job0_file0.root
 //////////////////////////////////////////////////////////
 
 #ifndef BaconTree_h
 #define BaconTree_h
-using namespace std;
+
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
@@ -118,6 +118,7 @@ public :
    Double_t        AK8Puppijet0_pt_JESDown;
    Double_t        AK8Puppijet0_pt_JERUp;
    Double_t        AK8Puppijet0_pt_JERDown;
+   Double_t        AK8Puppijet0_mass;
    Double_t        AK8Puppijet1_csv;
    Double_t        AK8Puppijet1_CHF;
    Double_t        AK8Puppijet1_NHF;
@@ -325,6 +326,7 @@ public :
    Double_t        CA15Puppijet0_pt_JESDown;
    Double_t        CA15Puppijet0_pt_JERUp;
    Double_t        CA15Puppijet0_pt_JERDown;
+   Double_t        CA15Puppijet0_mass;
    Double_t        CA15Puppijet1_csv;
    Double_t        CA15Puppijet1_CHF;
    Double_t        CA15Puppijet1_NHF;
@@ -494,7 +496,7 @@ public :
    Int_t           nAK4PuppijetsTPt50dR08_0;
    Int_t           nAK4PuppijetsLPt100dR08_0;
    Int_t           nAK4PuppijetsMPt100dR08_0;
-   Int_t           nAK4PuppijetsTPt100dR08_0;
+   Int_t           nAK4PuppijetsTPt100dR08_ 0;
    Int_t           nAK4PuppijetsLPt150dR08_0;
    Int_t           nAK4PuppijetsMPt150dR08_0;
    Int_t           nAK4PuppijetsTPt150dR08_0;
@@ -508,7 +510,7 @@ public :
    Int_t           nAK4PuppijetsTPt50dR08_1;
    Int_t           nAK4PuppijetsLPt100dR08_1;
    Int_t           nAK4PuppijetsMPt100dR08_1;
-   Int_t           nAK4PuppijetsTPt100dR08_1;
+   Int_t           nAK4PuppijetsTPt100dR08_ 1;
    Int_t           nAK4PuppijetsLPt150dR08_1;
    Int_t           nAK4PuppijetsMPt150dR08_1;
    Int_t           nAK4PuppijetsTPt150dR08_1;
@@ -522,7 +524,7 @@ public :
    Int_t           nAK4PuppijetsTPt50dR08_2;
    Int_t           nAK4PuppijetsLPt100dR08_2;
    Int_t           nAK4PuppijetsMPt100dR08_2;
-   Int_t           nAK4PuppijetsTPt100dR08_2;
+   Int_t           nAK4PuppijetsTPt100dR08_ 2;
    Int_t           nAK4PuppijetsLPt150dR08_2;
    Int_t           nAK4PuppijetsMPt150dR08_2;
    Int_t           nAK4PuppijetsTPt150dR08_2;
@@ -713,6 +715,7 @@ public :
    TBranch        *b_AK8Puppijet0_pt_JESDown;   //!
    TBranch        *b_AK8Puppijet0_pt_JERUp;   //!
    TBranch        *b_AK8Puppijet0_pt_JERDown;   //!
+   TBranch        *b_AK8Puppijet0_mass;   //!
    TBranch        *b_AK8Puppijet1_csv;   //!
    TBranch        *b_AK8Puppijet1_CHF;   //!
    TBranch        *b_AK8Puppijet1_NHF;   //!
@@ -920,6 +923,7 @@ public :
    TBranch        *b_CA15Puppijet0_pt_JESDown;   //!
    TBranch        *b_CA15Puppijet0_pt_JERUp;   //!
    TBranch        *b_CA15Puppijet0_pt_JERDown;   //!
+   TBranch        *b_CA15Puppijet0_mass;   //!
    TBranch        *b_CA15Puppijet1_csv;   //!
    TBranch        *b_CA15Puppijet1_CHF;   //!
    TBranch        *b_CA15Puppijet1_NHF;   //!
@@ -1089,7 +1093,7 @@ public :
    TBranch        *b_nAK4PuppijetsTPt50dR08_0;   //!
    TBranch        *b_nAK4PuppijetsLPt100dR08_0;   //!
    TBranch        *b_nAK4PuppijetsMPt100dR08_0;   //!
-   TBranch        *b_nAK4PuppijetsTPt100dR08_0;   //!
+   TBranch        *b_nAK4PuppijetsTPt100dR08_ 0;   //!
    TBranch        *b_nAK4PuppijetsLPt150dR08_0;   //!
    TBranch        *b_nAK4PuppijetsMPt150dR08_0;   //!
    TBranch        *b_nAK4PuppijetsTPt150dR08_0;   //!
@@ -1103,7 +1107,7 @@ public :
    TBranch        *b_nAK4PuppijetsTPt50dR08_1;   //!
    TBranch        *b_nAK4PuppijetsLPt100dR08_1;   //!
    TBranch        *b_nAK4PuppijetsMPt100dR08_1;   //!
-   TBranch        *b_nAK4PuppijetsTPt100dR08_1;   //!
+   TBranch        *b_nAK4PuppijetsTPt100dR08_ 1;   //!
    TBranch        *b_nAK4PuppijetsLPt150dR08_1;   //!
    TBranch        *b_nAK4PuppijetsMPt150dR08_1;   //!
    TBranch        *b_nAK4PuppijetsTPt150dR08_1;   //!
@@ -1117,7 +1121,7 @@ public :
    TBranch        *b_nAK4PuppijetsTPt50dR08_2;   //!
    TBranch        *b_nAK4PuppijetsLPt100dR08_2;   //!
    TBranch        *b_nAK4PuppijetsMPt100dR08_2;   //!
-   TBranch        *b_nAK4PuppijetsTPt100dR08_2;   //!
+   TBranch        *b_nAK4PuppijetsTPt100dR08_ 2;   //!
    TBranch        *b_nAK4PuppijetsLPt150dR08_2;   //!
    TBranch        *b_nAK4PuppijetsMPt150dR08_2;   //!
    TBranch        *b_nAK4PuppijetsTPt150dR08_2;   //!
@@ -1230,9 +1234,9 @@ BaconTree::BaconTree(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/eos/uscms/store/user/jduarte1/zprimebits-v11.061/DMSpin0_ggPhibb1j_150.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Output.root_job0_file0.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/eos/uscms/store/user/jduarte1/zprimebits-v11.061/DMSpin0_ggPhibb1j_150.root");
+         f = new TFile("Output.root_job0_file0.root");
       }
       f->GetObject("BaconTree",tree);
 
@@ -1377,6 +1381,7 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("AK8Puppijet0_pt_JESDown", &AK8Puppijet0_pt_JESDown, &b_AK8Puppijet0_pt_JESDown);
    fChain->SetBranchAddress("AK8Puppijet0_pt_JERUp", &AK8Puppijet0_pt_JERUp, &b_AK8Puppijet0_pt_JERUp);
    fChain->SetBranchAddress("AK8Puppijet0_pt_JERDown", &AK8Puppijet0_pt_JERDown, &b_AK8Puppijet0_pt_JERDown);
+//    fChain->SetBranchAddress("AK8Puppijet0_mass", &AK8Puppijet0_mass, &b_AK8Puppijet0_mass);
    fChain->SetBranchAddress("AK8Puppijet1_csv", &AK8Puppijet1_csv, &b_AK8Puppijet1_csv);
    fChain->SetBranchAddress("AK8Puppijet1_CHF", &AK8Puppijet1_CHF, &b_AK8Puppijet1_CHF);
    fChain->SetBranchAddress("AK8Puppijet1_NHF", &AK8Puppijet1_NHF, &b_AK8Puppijet1_NHF);
@@ -1584,6 +1589,7 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("CA15Puppijet0_pt_JESDown", &CA15Puppijet0_pt_JESDown, &b_CA15Puppijet0_pt_JESDown);
    fChain->SetBranchAddress("CA15Puppijet0_pt_JERUp", &CA15Puppijet0_pt_JERUp, &b_CA15Puppijet0_pt_JERUp);
    fChain->SetBranchAddress("CA15Puppijet0_pt_JERDown", &CA15Puppijet0_pt_JERDown, &b_CA15Puppijet0_pt_JERDown);
+//    fChain->SetBranchAddress("CA15Puppijet0_mass", &CA15Puppijet0_mass, &b_CA15Puppijet0_mass);
    fChain->SetBranchAddress("CA15Puppijet1_csv", &CA15Puppijet1_csv, &b_CA15Puppijet1_csv);
    fChain->SetBranchAddress("CA15Puppijet1_CHF", &CA15Puppijet1_CHF, &b_CA15Puppijet1_CHF);
    fChain->SetBranchAddress("CA15Puppijet1_NHF", &CA15Puppijet1_NHF, &b_CA15Puppijet1_NHF);
@@ -1753,7 +1759,7 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("nAK4PuppijetsTPt50dR08_0", &nAK4PuppijetsTPt50dR08_0, &b_nAK4PuppijetsTPt50dR08_0);
    fChain->SetBranchAddress("nAK4PuppijetsLPt100dR08_0", &nAK4PuppijetsLPt100dR08_0, &b_nAK4PuppijetsLPt100dR08_0);
    fChain->SetBranchAddress("nAK4PuppijetsMPt100dR08_0", &nAK4PuppijetsMPt100dR08_0, &b_nAK4PuppijetsMPt100dR08_0);
-   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_0", &nAK4PuppijetsTPt100dR08_0, &b_nAK4PuppijetsTPt100dR08_0);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_ 0", &nAK4PuppijetsTPt100dR08_ 0, &b_nAK4PuppijetsTPt100dR08_ 0);
    fChain->SetBranchAddress("nAK4PuppijetsLPt150dR08_0", &nAK4PuppijetsLPt150dR08_0, &b_nAK4PuppijetsLPt150dR08_0);
    fChain->SetBranchAddress("nAK4PuppijetsMPt150dR08_0", &nAK4PuppijetsMPt150dR08_0, &b_nAK4PuppijetsMPt150dR08_0);
    fChain->SetBranchAddress("nAK4PuppijetsTPt150dR08_0", &nAK4PuppijetsTPt150dR08_0, &b_nAK4PuppijetsTPt150dR08_0);
@@ -1767,7 +1773,7 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("nAK4PuppijetsTPt50dR08_1", &nAK4PuppijetsTPt50dR08_1, &b_nAK4PuppijetsTPt50dR08_1);
    fChain->SetBranchAddress("nAK4PuppijetsLPt100dR08_1", &nAK4PuppijetsLPt100dR08_1, &b_nAK4PuppijetsLPt100dR08_1);
    fChain->SetBranchAddress("nAK4PuppijetsMPt100dR08_1", &nAK4PuppijetsMPt100dR08_1, &b_nAK4PuppijetsMPt100dR08_1);
-   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_1", &nAK4PuppijetsTPt100dR08_1, &b_nAK4PuppijetsTPt100dR08_1);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_ 1", &nAK4PuppijetsTPt100dR08_ 1, &b_nAK4PuppijetsTPt100dR08_ 1);
    fChain->SetBranchAddress("nAK4PuppijetsLPt150dR08_1", &nAK4PuppijetsLPt150dR08_1, &b_nAK4PuppijetsLPt150dR08_1);
    fChain->SetBranchAddress("nAK4PuppijetsMPt150dR08_1", &nAK4PuppijetsMPt150dR08_1, &b_nAK4PuppijetsMPt150dR08_1);
    fChain->SetBranchAddress("nAK4PuppijetsTPt150dR08_1", &nAK4PuppijetsTPt150dR08_1, &b_nAK4PuppijetsTPt150dR08_1);
@@ -1781,7 +1787,7 @@ void BaconTree::Init(TTree *tree)
    fChain->SetBranchAddress("nAK4PuppijetsTPt50dR08_2", &nAK4PuppijetsTPt50dR08_2, &b_nAK4PuppijetsTPt50dR08_2);
    fChain->SetBranchAddress("nAK4PuppijetsLPt100dR08_2", &nAK4PuppijetsLPt100dR08_2, &b_nAK4PuppijetsLPt100dR08_2);
    fChain->SetBranchAddress("nAK4PuppijetsMPt100dR08_2", &nAK4PuppijetsMPt100dR08_2, &b_nAK4PuppijetsMPt100dR08_2);
-   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_2", &nAK4PuppijetsTPt100dR08_2, &b_nAK4PuppijetsTPt100dR08_2);
+   fChain->SetBranchAddress("nAK4PuppijetsTPt100dR08_ 2", &nAK4PuppijetsTPt100dR08_ 2, &b_nAK4PuppijetsTPt100dR08_ 2);
    fChain->SetBranchAddress("nAK4PuppijetsLPt150dR08_2", &nAK4PuppijetsLPt150dR08_2, &b_nAK4PuppijetsLPt150dR08_2);
    fChain->SetBranchAddress("nAK4PuppijetsMPt150dR08_2", &nAK4PuppijetsMPt150dR08_2, &b_nAK4PuppijetsMPt150dR08_2);
    fChain->SetBranchAddress("nAK4PuppijetsTPt150dR08_2", &nAK4PuppijetsTPt150dR08_2, &b_nAK4PuppijetsTPt150dR08_2);

@@ -35,6 +35,10 @@ public:
 	Double_t puppet_JESDown;
 	Double_t puppet_JERUp;
 	Double_t puppet_JERDown;
+	Double_t pfmet_JESUp;
+	Double_t pfmet_JESDown;
+	Double_t pfmet_JERUp;
+	Double_t pfmet_JERDown;
 private:
 	TH1D* n2_ddt_transformation_;
 	TF1* puppi_corr_gen_;

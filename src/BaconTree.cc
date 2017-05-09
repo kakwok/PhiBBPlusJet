@@ -1,5 +1,5 @@
 #define BaconTree_cxx
-#include "DAZSLE/PhiBBPlusJet/interface/BaconTree.h"
+#include "BaconTree.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
