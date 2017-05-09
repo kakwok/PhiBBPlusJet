@@ -104,16 +104,16 @@ if __name__ == "__main__":
 	# Generate list of selections	
 	if args.single_point:
 		opt_var_values["jet_type"] = [args.single_point[0]]
-		opt_var_values["n2_ddt"] = [float(args.single_point[1])]
+		opt_var_values["tau21_ddt"] = [float(args.single_point[1])]
 		opt_var_values["dcsv"] = [float(args.single_point[2])]
 	selection_names = []
 	selection_values = {}
 	for jet_type_value in opt_var_values["jet_type"]:
-		for n2_ddt_value in opt_var_values["n2_ddt"]:
+		for tau21_ddt_value in opt_var_values["tau21_ddt"]:
 			for dcsv_value in opt_var_values["dcsv"]:
-				selection_name = "jet_type_{}_n2_ddt_{}_dcsv_{}".format(jet_type_value, round(n2_ddt_value, 2), round(dcsv_value, 2))
+				selection_name = "jet_type_{}_tau21_ddt_{}_dcsv_{}".format(jet_type_value, round(tau21_ddt_value, 2), round(dcsv_value, 2))
 				selection_names.append(selection_name)
-				selection_values[selection_name] = {"jet_type":jet_type_value, "n2_ddt":n2_ddt_value, "dcsv":dcsv_value}
+				selection_values[selection_name] = {"jet_type":jet_type_value, "tau21_ddt":n2_ddt_value, "dcsv":dcsv_value}
 
 	if args.run:
 		for selection_name in selection_names:
