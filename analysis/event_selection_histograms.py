@@ -258,8 +258,8 @@ class EventSelectionHistograms(AnalysisBase):
 						trigger_mass = min(self._data.AK8Puppijet0_msd, 300.)
 						trigger_pt = max(200., min(self._data.AK8Puppijet0_pt, 1000.))
 					elif self._jet_type == "CA15":
-						trigger_mass = min(self._data.CA15CHSjet0_msd, 300.)
-						trigger_pt = max(200., min(self._data.CA15CHSjet0_pt, 1000.))
+						trigger_mass = min(self._data.CA15Puppijet0_msd, 300.)
+						trigger_pt = max(200., min(self._data.CA15Puppijet0_pt, 1000.))
 					trigger_weight = self._trig_eff.GetEfficiency(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
 					trigger_weight_up = trigger_weight + self._trig_eff.GetEfficiencyErrorUp(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
 					trigger_weight_down = trigger_weight - self._trig_eff.GetEfficiencyErrorLow(
@@ -349,11 +349,11 @@ class EventSelectionHistograms(AnalysisBase):
 					if self._jet_type == "AK8":
 						fatjet_pt = self._data.AK8Puppijet0_pt
 						fatjet_msd = self._data.AK8Puppijet0_msd_puppi
-						fatjet_dcsv = self._data.AK8CHSjet0_doublecsv
+						fatjet_dcsv = self._data.AK8Puppijet0_doublecsv
 					elif self._jet_type == "CA15":
-						fatjet_pt = self._data.CA15CHSjet0_pt
-						fatjet_msd = self._data.CA15CHSjet0_msd
-						fatjet_dcsv = self._data.CA15CHSjet0_doublecsv
+						fatjet_pt = self._data.CA15Puppijet0_pt
+						fatjet_msd = self._data.CA15Puppijet0_msd
+						fatjet_dcsv = self._data.CA15Puppijet0_doublecsv
 					self._selection_histograms[selection].GetTH2D("pt_dcsv").Fill(fatjet_pt, fatjet_dcsv, event_weight)
 
 					if fatjet_dcsv > self._dcsv_cut:
@@ -393,21 +393,21 @@ class EventSelectionHistograms(AnalysisBase):
 								print "ERROR : Systematic not recognized: " + systematic
 								sys.exit(1)
 							fatjet_msd = self._data.AK8Puppijet0_msd_puppi
-							fatjet_dcsv = self._data.AK8CHSjet0_doublecsv
+							fatjet_dcsv = self._data.AK8Puppijet0_doublecsv
 						elif self._jet_type == "CA15":
 							if systematic == "JESUp":
-								fatjet_pt = self._data.CA15CHSjet0_pt_JESUp
+								fatjet_pt = self._data.CA15Puppijet0_pt_JESUp
 							elif systematic == "JESDown":
-								fatjet_pt = self._data.CA15CHSjet0_pt_JESDown
+								fatjet_pt = self._data.CA15Puppijet0_pt_JESDown
 							elif systematic == "JERUp":
-								fatjet_pt = self._data.CA15CHSjet0_pt_JERUp
+								fatjet_pt = self._data.CA15Puppijet0_pt_JERUp
 							elif systematic == "JERDown":
-								fatjet_pt = self._data.CA15CHSjet0_pt_JERDown
+								fatjet_pt = self._data.CA15Puppijet0_pt_JERDown
 							else:
 								print "ERROR : Systematic not recognized: " + systematic
 								sys.exit(1)
-							fatjet_msd = self._data.CA15CHSjet0_msd
-							fatjet_dcsv = self._data.CA15CHSjet0_doublecsv
+							fatjet_msd = self._data.CA15Puppijet0_msd
+							fatjet_dcsv = self._data.CA15Puppijet0_doublecsv
 
 						if fatjet_dcsv > self._dcsv_cut:
 							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
