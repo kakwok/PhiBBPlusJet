@@ -603,7 +603,7 @@ if __name__ == "__main__":
 			os.chdir(submission_directory)
 
 			files_per_job = 1
-			if "JetHTRun2016" in sample:
+			if "JetHTRun2016" in sample or "SingleMuRun2016" in sample:
 				files_per_job = 10
 			elif "QCD_HT500to700" in sample:
 				files_per_job = 30
