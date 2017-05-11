@@ -11,10 +11,10 @@ class BaconEventSelector(EventSelector):
 		phi_jet = 0.
 		if self._cut_parameters["Min_dphi_mu_jet"]["jet_type"] == "AK8":
 			phi_jet = self._event.AK8Puppijet0_phi
-		elif self._cut_parameters["Min_dphi_mu_jet"] == "CA15":
+		elif self._cut_parameters["Min_dphi_mu_jet"]["jet_type"] == "CA15":
 			phi_jet = self._event.CA15Puppijet0_phi
 		else:
-			print "[BaconEventCutFunctions.Min_dphi_mu_jet] ERROR : Cut descriptor [0] must be AK8 or CA15." 
+			print "[BaconEventCutFunctions.Min_dphi_mu_jet] ERROR : Cut parameter jet_type must be AK8 or CA15. Found " +  self._cut_parameters["Min_dphi_mu_jet"]["jet_type"]
 			exit(1)
 		delta_phi = math.acos(math.cos(phi_mu - phi_jet))
 		self._return_data["Min_dphi_mu_jet"] = delta_phi
