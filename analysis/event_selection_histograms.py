@@ -447,6 +447,8 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Produce and plot ieta-iphi histograms to look for buggy events')
 	input_group = parser.add_mutually_exclusive_group() 
 	input_group.add_argument('--all', action="store_true", help="Run over all supersamples")
+	input_group.add_argument('--all_lxplus', action="store_true", help="Run over all supersamples")
+	input_group.add_argument('--all_cmslpc', action="store_true", help="Run over all supersamples")
 	input_group.add_argument('--supersamples', type=str, help="Supersample name(s), comma separated. Must correspond to something in analysis_configuration.(background_names, signal_names, or data_names).")
 	input_group.add_argument('--samples', type=str, help="Sample name(s), comma separated. Must be a key in analysis_configuration.skims.")
 	input_group.add_argument('--files', type=str, help="Input file name(s), comma separated")
@@ -468,8 +470,17 @@ if __name__ == "__main__":
 	# Make a list of input samples and files
 	samples = []
 	sample_files = {} # Dictionary is sample : [list of files in sample]
-	if args.all:
-		supersamples = config.supersamples
+	if args.all or args.all_lxplus or args.all_cmslpc:
+		if args.all:
+			supersamples = config.supersamples
+		elif args.all_lxplus:
+			# lxplus: JetHT, SingleMuon, QCD, signal
+			supersamples = ["data_obs", "data_singlemu", "qcd"]
+			supersamples.extend(analysis_configuration.signal_names)
+			args.skim_inputs = True
+		elif args.all_cmslpc:
+			supersamples = ["stqq", "tqq", "wqq", "zqq", "zll", "wlnu", "vvqq", "hbb"]
+			args.skim_inputs = False
 		samples = [] 
 		for supersample in supersamples:
 			samples.extend(config.samples[supersample])
