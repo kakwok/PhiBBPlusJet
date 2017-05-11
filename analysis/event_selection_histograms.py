@@ -486,7 +486,7 @@ if __name__ == "__main__":
 			samples.extend(config.samples[supersample])
 			for sample in config.samples[supersample]:
 				if args.skim_inputs:
-					sample_files[sample] = config.skim[sample]
+					sample_files[sample] = config.skims[sample]
 				else:
 					sample_files[sample] = config.sklims[sample]
 	elif args.supersamples:
