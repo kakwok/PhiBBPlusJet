@@ -58,7 +58,7 @@ def MakeMuCRSelector(jet_type, n2_ddt_cut=0., jet_systematic="nominal"):
 		event_selector.add_cut("Min_AK8Puppijet0_msd_puppi", 40.)
 		event_selector.add_cut("AK8Puppijet0_isTightVJet")
 	elif jet_type == "CA15":
-		event_selector.add_cut("Min_CA15CHSjet0_pt", {"Min_CA15CHSjet0_pt":400., systematic:jet_systematic})
+		event_selector.add_cut("Min_CA15CHSjet0_pt", {"Min_CA15CHSjet0_pt":400., "systematic":jet_systematic})
 		event_selector.add_cut("Min_CA15CHSjet0_msd", 40.)
 		event_selector.add_cut("CA15CHSjet0_isTightVJet")
 
