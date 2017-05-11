@@ -476,7 +476,7 @@ if __name__ == "__main__":
 		elif args.all_lxplus:
 			# lxplus: JetHT, SingleMuon, QCD, signal
 			supersamples = ["data_obs", "data_singlemu", "qcd"]
-			supersamples.extend(analysis_configuration.signal_names)
+			supersamples.extend(config.signal_names)
 			args.skim_inputs = True
 		elif args.all_cmslpc:
 			supersamples = ["stqq", "tqq", "wqq", "zqq", "zll", "wlnu", "vvqq", "hbb"]
