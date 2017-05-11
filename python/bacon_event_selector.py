@@ -287,6 +287,14 @@ class BaconEventSelector(EventSelector):
 		self._return_data["Max_CA15Puppijet0_msd"] = self._event.CA15Puppijet0_msd
 		return (self._event.CA15Puppijet0_msd <= self._cut_parameters["Max_CA15Puppijet0_msd"])
 
+	def Min_CA15Puppijet0_msd_puppi(self):
+		self._return_data["Min_CA15Puppijet0_msd_puppi"] = self._event.CA15Puppijet0_msd_puppi
+		return (self._event.CA15Puppijet0_msd_puppi >= self._cut_parameters["Min_CA15Puppijet0_msd_puppi"])
+
+	def Max_CA15Puppijet0_msd_puppi(self):
+		self._return_data["Max_CA15Puppijet0_msd_puppi"] = self._event.CA15Puppijet0_msd_puppi
+		return (self._event.CA15Puppijet0_msd_puppi <= self._cut_parameters["Max_CA15Puppijet0_msd_puppi"])
+
 	def CA15Puppijet0_isTightVJet(self):
 		self._return_data["CA15Puppijet0_isTightVJet"] = self._event.CA15Puppijet0_isTightVJet
 		return (self._event.CA15Puppijet0_isTightVJet == 1)
@@ -500,7 +508,7 @@ class BaconEventSelector(EventSelector):
 		elif cut_name == "Min_AK8Puppijet0_msd_puppi":
 			self.add_nminusone_histogram(cut_name, cut_name, "m_{SD}^{(PUPPI)} [GeV]", 200, 0., 2000.);
 		elif cut_name == "Max_AK8Puppijet0_msd_puppi":
-			self.add_nminusone_histogram(cut_name, cut_name, "m_{SD} [GeV]", 200, 0., 2000.);
+			self.add_nminusone_histogram(cut_name, cut_name, "m_{SD}^{(PUPPI)} [GeV]", 200, 0., 2000.);
 		elif cut_name == "Min_AK8Puppijet0_pt":
 			self.add_nminusone_histogram(cut_name, cut_name, "p_{T} [GeV]", 200, 0., 2000.);
 		elif cut_name == "Max_AK8Puppijet0_pt":
@@ -569,6 +577,10 @@ class BaconEventSelector(EventSelector):
 			self.add_nminusone_histogram(cut_name, cut_name, "m_{SD} [GeV]", 200, 0., 2000.);
 		elif cut_name == "Max_CA15Puppijet0_msd":
 			self.add_nminusone_histogram(cut_name, cut_name, "m_{SD} [GeV]", 200, 0., 2000.);
+		elif cut_name == "Min_CA15Puppijet0_msd_puppi":
+			self.add_nminusone_histogram(cut_name, cut_name, "m_{SD}^{(PUPPI)} [GeV]", 200, 0., 2000.);
+		elif cut_name == "Max_CA15Puppijet0_msd_puppi":
+			self.add_nminusone_histogram(cut_name, cut_name, "m_{SD}^{(PUPPI)} [GeV]", 200, 0., 2000.);
 		elif cut_name == "Min_CA15CHSjet0_doublecsv":
 			self.add_nminusone_histogram(cut_name, cut_name, "Double b-tag", 40, -2., 2.);
 		elif cut_name == "Max_CA15CHSjet0_doublecsv":

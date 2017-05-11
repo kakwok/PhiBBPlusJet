@@ -40,6 +40,7 @@ BaconData::BaconData(TTree *tree) : BaconTree(tree) {
 	AK8Puppijet0_N2DDT = 0.;
 	CA15Puppijet0_N2DDT = 0.;
 	AK8Puppijet0_msd_puppi = 0.;
+	CA15Puppijet0_msd_puppi = 0.;
 
 	puppet_JESUp = 0.;
 	puppet_JESDown = 0.;
@@ -61,17 +62,17 @@ Int_t BaconData::GetEntry(Long64_t entry) {
 	Int_t ret = fChain->GetEntry(entry);
 
 	/*** Computed variables ***/
-	// AK8Puppijet0_msd_puppi
 	AK8Puppijet0_msd_puppi = AK8Puppijet0_msd * PUPPIweight(AK8Puppijet0_pt, AK8Puppijet0_eta);
 
-	// AK8Puppijet0_tau21DDT
+	CA15Puppijet0_msd_puppi = CA15Puppijet0_msd * PUPPIweight(CA15Puppijet0_pt, CA15Puppijet0_eta);
+
 	AK8Puppijet0_tau21DDT = AK8Puppijet0_tau21 + 0.063*TMath::Log(AK8Puppijet0_msd_puppi*AK8Puppijet0_msd_puppi/AK8Puppijet0_pt);
 
-	// CA15Puppijet0_tau21DDT
 	CA15Puppijet0_tau21DDT = CA15Puppijet0_tau21 + 0.063*TMath::Log(CA15Puppijet0_msd*CA15Puppijet0_msd/CA15Puppijet0_pt);
 
-	// AK8Puppijet0_rho
 	AK8Puppijet0_rho = 2 * TMath::Log(AK8Puppijet0_msd_puppi/ AK8Puppijet0_pt);
+
+	CA15Puppijet0_rho = 2 * TMath::Log(CA15Puppijet0_msd_puppi/ CA15Puppijet0_pt);
 
 	// AK8Puppijet0_N2DDT
 	int rho_index = n2_ddt_transformation_->GetXaxis()->FindBin(AK8Puppijet0_rho);
