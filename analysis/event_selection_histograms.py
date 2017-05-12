@@ -65,6 +65,9 @@ class EventSelectionHistograms(AnalysisBase):
 	def add_file(self, filename):
 		super(EventSelectionHistograms, self).add_file(filename)
 		f = ROOT.TFile.Open(filename, "READ")
+		if f.Get("NEvents").Integral() == 0:
+			print "[EventSelectionHistograms::add_file] ERROR : NEvents.Integral() == 0 for file " + filename
+			sys.exit(1)
 		self._input_nevents += f.Get("NEvents").Integral()
 		f.Close()
 
@@ -692,7 +695,9 @@ if __name__ == "__main__":
 			fail_histograms_syst = {}
 			# data_obs, data_singlemu - not ready yet
 			# "zll", "wlnu", "vvqq" - you need to find the cross sections, and split into appropriate samples
-			for supersample in ["qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq", "DMSbb50", "DMSbb75", "DMSbb100", "DMSbb125", "DMSbb150", "DMSbb200", "DMSbb250", "DMSbb300", "DMSbb400", "DMSbb500"]:
+			supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq"]
+			supersamples.extend(config.signal_names)
+			for supersample in supersamples:
 				first = True
 				pass_histograms_syst[supersample] = {}
 				fail_histograms_syst[supersample] = {}
