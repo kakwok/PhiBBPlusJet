@@ -20,13 +20,16 @@ background_names = [
 signal_names = []
 signal_masses_scalar = [10,20,50,100,200,300,350]  # 400,500
 signal_masses_pseudoscalar = [10,50,100,300,350] # 125, 400,500
+signal_masses = {}
 #signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
 #signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 #signal_masses = [50,75,100,125,150,200,250,300,400,500]
 for mass in signal_masses_scalar:
 	signal_names.append("Sbb{}".format(mass))
+	signal_masses["Sbb{}".format(mass)] = mass
 for mass in signal_masses_pseudoscalar:
 	signal_names.append("PSbb{}".format(mass))
+	signal_masses["PSbb{}".format(mass)] = mass
 data_names = ["data_obs", "data_singlemu"]
 supersamples = []
 supersamples.extend(background_names)
@@ -165,7 +168,7 @@ for mass in signal_masses_pseudoscalar:
 #	return found_sample
 
 # Sklims
-sklim_directory = "root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/"
+sklim_directory = "root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/sklim2/"
 sklims = { 
 	'hqq125'            : [sklim_directory+'/GluGluHToBB_M125_13TeV_powheg_pythia8_all_1000pb_weighted_corrected.root'], 
 	'vbfhqq125'         : [sklim_directory+'/VBFHToBB_M_125_13TeV_powheg_pythia8_weightfix_all_1000pb_weighted.root'], 
