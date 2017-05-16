@@ -274,10 +274,10 @@ class EventSelectionHistograms(AnalysisBase):
 					trigger_weight_down = trigger_weight - self._trig_eff.GetEfficiencyErrorLow(
 						self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
 					if trigger_weight <= 0 or trigger_weight_down <= 0 or trigger_weight_up <= 0:
-						print 'trigger_weights are %f, %f, %f, setting all to 1' % (trigger_weight, trigger_weight_up, trigger_weight_down)
-					trigger_weight = 1
-					trigger_weight_down = 1
-					trigger_weight_up = 1
+						#print 'trigger_weights are %f, %f, %f, setting all to 1' % (trigger_weight, trigger_weight_up, trigger_weight_down)
+						trigger_weight = 1
+						trigger_weight_down = 1
+						trigger_weight_up = 1
 
 					event_weight = pu_weight * k_vjets * trigger_weight
 					event_weight_syst = {}
@@ -717,7 +717,7 @@ if __name__ == "__main__":
 			fail_histograms_syst = {}
 			# data_obs, data_singlemu - not ready yet
 			# "zll", "wlnu", "vvqq" - you need to find the cross sections, and split into appropriate samples
-			supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq"]
+			supersamples = ["data_obs", "data_singlemu", "qcd", "wqq", "zqq", "hbb", "stqq", "vvqq"] # tqq
 			supersamples.extend(config.signal_names)
 			for supersample in supersamples:
 				first = True
@@ -740,13 +740,19 @@ if __name__ == "__main__":
 					this_pass_histogram_syst = {}
 					this_fail_histogram_syst = {}
 					for systematic in systematics[selection]:
-						this_pass_histogram_syst[systematic] = input_file.Get("h_{}_{}_pass_{}".format(selection, args.jet_type, systematic))
-						this_fail_histogram_syst[systematic] = input_file.Get("h_{}_{}_fail_{}".format(selection, args.jet_type, systematic))
+						if selection in selection_tau21s:
+							pass_histogram_name = "h_SR_tau21ddt{}_{}_pass_{}_dcsv{}".format(selection_tau21s[selection], args.jet_type, systematic, selection_dcsvs[selection])
+							fail_histogram_name = "h_SR_tau21ddt{}_{}_fail_{}_dcsv{}".format(selection_tau21s[selection], args.jet_type, systematic, selection_dcsvs[selection])
+						else:
+							pass_histogram_name = "h_{}_{}_pass_{}".format(selection, args.jet_type, systematic)
+							fail_histogram_name = "h_{}_{}_fail_{}".format(selection, args.jet_type, systematic)
+						this_pass_histogram_syst[systematic] = input_file.Get(pass_histogram_name)
+						this_fail_histogram_syst[systematic] = input_file.Get(fail_histogram_name)
 					if supersample in config.background_names or supersample in config.signal_names:
 						n_input_events = input_file.Get("h_input_nevents").Integral()
 						print "\tSample input events = {}".format(n_input_events)
 						print "\tSample processed events = {}".format(input_file.Get("h_processed_nevents").Integral())
-						print "\tSample pass events = {}".format(input_file.Get("h_SR_tau21ddt_{}_{}_pass_nevents".format(selection, args.jet_type)).Integral())
+						print "\tSample pass events = {}".format(input_file.Get(nevents_histogram_name).Integral())
 						print "\tScaled nevents ({} pb-1) = {}".format(luminosity, luminosity * cross_sections[sample])
 						if input_file.Get("h_processed_nevents").Integral() == 0:
 							print "[setup_limits] ERROR : Processed zero events for sample {}. This is fatal, fix it!"
