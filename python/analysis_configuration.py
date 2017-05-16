@@ -170,25 +170,25 @@ for mass in signal_masses_pseudoscalar:
 # Sklims
 sklim_directory = "root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/sklim2/"
 sklims = { 
-	'hqq125'            : [sklim_directory+'/GluGluHToBB_M125_13TeV_powheg_pythia8_all_1000pb_weighted_corrected.root'], 
+	'hqq125'            : [sklim_directory+'/GluGluHToBB_M125_13TeV_powheg_pythia8_all_1000pb_weighted.root'], 
 	'vbfhqq125'         : [sklim_directory+'/VBFHToBB_M_125_13TeV_powheg_pythia8_weightfix_all_1000pb_weighted.root'], 
 	'zhqq125'           : [sklim_directory+'/ZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root', sklim_directory+'/ggZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_1000pb_weighted.root', sklim_directory+'/ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_ext_1000pb_weighted.root', sklim_directory+'/ggZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root'], 
 	'whqq125'           : [sklim_directory+'/WminusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root', sklim_directory+'/WplusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root'], 
 	'tthqq125'          : [sklim_directory+'/ttHTobb_M125_13TeV_powheg_pythia8_1000pb_weighted.root'],#ttHTobb_M125_TuneCUETP8M2_ttHtranche3_13TeV_powheg_pythia8_1000pb_weighted.root'],
-	'WWTo4Q'            : [sklim_directory+'/WWTo4Q_13TeV_powheg_1000pb_weighted.root'],
-	'ZZ'                : [sklim_directory+'/ZZ_13TeV_pythia8_1000pb_weighted.root'],
-	'WZ'                : [sklim_directory+'/WZ_13TeV_pythia8_1000pb_weighted.root'], 
-	'zqq'               : [sklim_directory+'/DYJetsToQQ_HT180_13TeV_1000pb_weighted_v1204.root'],
-	'zll'               : [sklim_directory + "/DYJetsToLL_M_50_13TeV_ext_1000pb_weighted.root"],
-	'ST_t_antitop'      : [sklim_directory+'/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root'],
-	'ST_t_top'          : [sklim_directory+'/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root'],
-	'ST_tW_antitop'     : [sklim_directory+'/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4_1000pb_weighted.root'],
-	'ST_tW_top'         : [sklim_directory+'/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4_1000pb_weighted.root'], 
+	'WWTo4Q'            : [sklim_directory+'/WWTo4Q_13TeV_powheg.root'],
+	'ZZ'                : [sklim_directory+'/ZZ_13TeV_pythia8.root'],
+	'WZ'                : [sklim_directory+'/WZ_13TeV_pythia8.root'], 
+	'zqq'               : [sklim_directory+'/DYJetsToQQ_HT180_13TeV.root'],
+	'zll'               : [sklim_directory + "/DYJetsToLL_M_50_13TeV_ext.root"],
+	'ST_t_antitop'      : [sklim_directory+'/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.root'],
+	'ST_t_top'          : [sklim_directory+'/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.root'],
+	'ST_tW_antitop'     : [sklim_directory+'/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.root'],
+	'ST_tW_top'         : [sklim_directory+'/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.root'], 
 	#'W'                : [sklim_directory+'/WJetsToQQ_HT_600ToInf_13TeV_1000pb_weighted.root'], 
-	'wqq'               : [sklim_directory+'/WJetsToQQ_HT180_13TeV_1000pb_weighted_v1204.root'], 
-	'wlnu'              : [sklim_directory+'WJetsToLNu_HT_100To200_13TeV_1000pb_weighted.root', sklim_directory+'/WJetsToLNu_HT_200To400_13TeV_1000pb_weighted.root', sklim_directory+'/WJetsToLNu_HT_400To600_13TeV_1000pb_weighted.root', sklim_directory+'/WJetsToLNu_HT_600To800_13TeV_1000pb_weighted.root', sklim_directory+'/WJetsToLNu_HT_800To1200_13TeV_1000pb_weighted.root', sklim_directory+'/WJetsToLNu_HT_1200To2500_13TeV_1000pb_weighted.root'], 
+	'wqq'               : [sklim_directory+'/WJetsToQQ_HT180_13TeV.root'], 
+	'wlnu'              : [sklim_directory+'WJetsToLNu_HT_70To100_13TeV.root', sklim_directory+'WJetsToLNu_HT_100To200_13TeV.root', sklim_directory+'/WJetsToLNu_HT_200To400_13TeV.root', sklim_directory+'/WJetsToLNu_HT_400To600_13TeV.root', sklim_directory+'/WJetsToLNu_HT_600To800_13TeV.root'], 
 	#'TTbar'            : [sklim_directory+'/TTJets_13TeV_1000pb_weighted.root'], #MadGraph is the old default 
-	'tqq'             : [sklim_directory+'/TT_powheg_1000pb_weighted_v1204.root'], #Powheg is the new default 
+	'tqq'             : [sklim_directory+'/TT_powheg.root'], #Powheg is the new default 
 	"QCD_HT100to200"    : [sklim_directory+'/QCD_HT100to200_13TeV_1000pb_weighted.root'],
 	"QCD_HT200to300"    : [sklim_directory+'/QCD_HT200to300_13TeV_all_1000pb_weighted.root'],
 	"QCD_HT300to500"    : [sklim_directory+'/QCD_HT300to500_13TeV_all_1000pb_weighted.root'],
