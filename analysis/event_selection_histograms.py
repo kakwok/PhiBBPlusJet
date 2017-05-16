@@ -90,8 +90,8 @@ class EventSelectionHistograms(AnalysisBase):
 		# tau21 optimization
 		if self._do_optimization:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
-				self._selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
-				self._weight_systematics["SR_tau21ddt_{}".format(tau21_ddt_cut)] = ["TriggerUp", "TriggerDown", "PUUp", "PUDown"]
+				self._selections.append("SR_tau21ddt{}".format(tau21_ddt_cut))
+				self._weight_systematics["SR_tau21ddt{}".format(tau21_ddt_cut)] = ["TriggerUp", "TriggerDown", "PUUp", "PUDown"]
 
 			# dcsv optimization
 			self._dcsv_cuts = [0.7, 0.75, 0.8, 0.85, 0.875, 0.9, 0.925, 0.95, 0.975]
@@ -120,6 +120,12 @@ class EventSelectionHistograms(AnalysisBase):
 			for systematic in self._weight_systematics[selection] + self._jet_systematics:
 				self._selection_histograms[selection].AddTH2D("pass_{}".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 				self._selection_histograms[selection].AddTH2D("fail_{}".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				if self._do_optimization:
+					for dcsv_cut in self._dcsv_cuts:
+						self._selection_histograms[selection].AddTH2D("pass_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+						self._selection_histograms[selection].AddTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)						
+						self._selection_histograms[selection].AddTH2D("fail_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+						self._selection_histograms[selection].AddTH2D("fail_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 
 		# Event selections
 		self._event_selectors = {}
@@ -132,7 +138,7 @@ class EventSelectionHistograms(AnalysisBase):
 
 		if self._do_optimization:
 			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
-				selection_name = "SR_tau21ddt_{}".format(tau21_ddt_cut)
+				selection_name = "SR_tau21ddt{}".format(tau21_ddt_cut)
 				self._event_selectors[selection_name] = event_selections.MakeSRSelector(self._jet_type, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut, tag="tau21ddt{}".format(tau21_ddt_cut))
 				self._event_selectors_syst[selection_name] = {}
 				for systematic in self._jet_systematics:
@@ -372,7 +378,7 @@ class EventSelectionHistograms(AnalysisBase):
 
 					if self._do_optimization:
 						for dcsv_cut in self._dcsv_cuts:
-							if fatjet_dcsv > self._dcsv_cut:
+							if fatjet_dcsv > dcsv_cut:
 								self._selection_histograms[selection].GetTH2D("pass_dcsv{}".format(dcsv_cut)).Fill(fatjet_msd, fatjet_pt, event_weight)
 								self._selection_histograms[selection].GetTH2D("pass_unweighted_dcsv{}".format(dcsv_cut)).Fill(fatjet_msd, fatjet_pt)
 							elif fatjet_dcsv > self._dcsv_min:
@@ -416,6 +422,16 @@ class EventSelectionHistograms(AnalysisBase):
 							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
 						elif fatjet_dcsv > self._dcsv_min:
 							self._selection_histograms[selection].GetTH2D("fail_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+
+						if self._do_optimization:
+							for dcsv_cut in self._dcsv_cuts:
+								if fatjet_dcsv > dcsv_cut:
+									self._selection_histograms[selection].GetTH2D("pass_{}_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt, event_weight)
+									self._selection_histograms[selection].GetTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt)
+								elif fatjet_dcsv > self._dcsv_min:
+									self._selection_histograms[selection].GetTH2D("fail_{}_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt, event_weight)
+									self._selection_histograms[selection].GetTH2D("fail_{}_unweighted_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt)
+
 
 	def finish(self):
 		if self._output_path == "":
@@ -470,62 +486,63 @@ if __name__ == "__main__":
 	parser.add_argument('--do_optimization', action='store_true', help="Make tau21DDT opt plots")
 	args = parser.parse_args()
 
-	# Make a list of input samples and files
-	samples = []
-	sample_files = {} # Dictionary is sample : [list of files in sample]
-	if args.all or args.all_lxplus or args.all_cmslpc:
-		if args.all:
-			supersamples = config.supersamples
-		elif args.all_lxplus:
-			# lxplus: JetHT, SingleMuon, QCD, signal
-			supersamples = ["data_obs", "data_singlemu", "qcd"]
-			supersamples.extend(config.signal_names)
-			args.skim_inputs = True
-		elif args.all_cmslpc:
-			supersamples = ["stqq", "tqq", "wqq", "zqq", "zll", "wlnu", "vvqq", "hbb"]
-			args.skim_inputs = False
-		samples = [] 
-		for supersample in supersamples:
-			samples.extend(config.samples[supersample])
-			for sample in config.samples[supersample]:
+	if args.run or args.condor_run:
+		# Make a list of input samples and files
+		samples = []
+		sample_files = {} # Dictionary is sample : [list of files in sample]
+		if args.all or args.all_lxplus or args.all_cmslpc:
+			if args.all:
+				supersamples = config.supersamples
+			elif args.all_lxplus:
+				# lxplus: JetHT, SingleMuon, QCD, signal
+				supersamples = ["data_obs", "data_singlemu", "qcd"]
+				supersamples.extend(config.signal_names)
+				args.skim_inputs = True
+			elif args.all_cmslpc:
+				supersamples = ["stqq", "tqq", "wqq", "zqq", "zll", "wlnu", "vvqq", "hbb"]
+				args.skim_inputs = False
+			samples = [] 
+			for supersample in supersamples:
+				samples.extend(config.samples[supersample])
+				for sample in config.samples[supersample]:
+					if args.skim_inputs:
+						sample_files[sample] = config.skims[sample]
+					else:
+						sample_files[sample] = config.sklims[sample]
+		elif args.supersamples:
+			supersamples = args.supersamples.split(",")
+			samples = [] 
+			for supersample in supersamples:
+				samples.extend(config.samples[supersample])
+				for sample in config.samples[supersample]:
+					if args.skim_inputs:
+						sample_files[sample] = config.skims[sample]
+					else:
+						sample_files[sample] = config.sklims[sample]
+		elif args.samples:
+			samples = args.samples.split(",")
+			for sample in samples:
 				if args.skim_inputs:
 					sample_files[sample] = config.skims[sample]
 				else:
 					sample_files[sample] = config.sklims[sample]
-	elif args.supersamples:
-		supersamples = args.supersamples.split(",")
-		samples = [] 
-		for supersample in supersamples:
-			samples.extend(config.samples[supersample])
-			for sample in config.samples[supersample]:
-				if args.skim_inputs:
-					sample_files[sample] = config.skims[sample]
+		elif args.files:
+			files = args.files.split(",")
+			for filename in files:
+				if args.label:
+					this_sample = args.label
 				else:
-					sample_files[sample] = config.sklims[sample]
-	elif args.samples:
-		samples = args.samples.split(",")
-		for sample in samples:
-			if args.skim_inputs:
-				sample_files[sample] = config.skims[sample]
-			else:
-				sample_files[sample] = config.sklims[sample]
-	elif args.files:
-		files = args.files.split(",")
-		for filename in files:
-			if args.label:
-				this_sample = args.label
-			else:
-				this_sample = "UnknownSample"
-			if not this_sample in sample_files:
-				sample_files[this_sample] = []
-			sample_files[this_sample].append(filename)
-		samples = sample_files.keys()
-	print "List of input samples: ",
-	print samples
-	print "List of samples and files: ",
-	print sample_files
-	#print "List of sample => input files:",
-	#print sample_files
+					this_sample = "UnknownSample"
+				if not this_sample in sample_files:
+					sample_files[this_sample] = []
+				sample_files[this_sample].append(filename)
+			samples = sample_files.keys()
+		print "List of input samples: ",
+		print samples
+		print "List of samples and files: ",
+		print sample_files
+		#print "List of sample => input files:",
+		#print sample_files
 
 
 	if args.run:
@@ -683,10 +700,15 @@ if __name__ == "__main__":
 			"muCR":["JESUp", "JESDown", "JERUp", "JERDown", "MuTriggerUp", "MuTriggerDown", "MuIDUp", "MuIDDown", "MuIsoUp", "MuIsoDown", "PUUp", "PUDown"]
 		}
 		selections = ["SR", "muCR"]
+		selection_tau21s = {}
+		selection_dcsvs = {}
 		if args.do_optimization:
-			for tau21_ddt_cut in [0.3, 0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7, 0.8]:
-				selections.append("SR_tau21ddt_{}".format(tau21_ddt_cut))
-				systematics["SR_tau21ddt_{}".format(tau21_ddt_cut)] = ["JESUp", "JESDown", "JERUp", "JERDown", "TriggerUp", "TriggerDown", "PUUp", "PUDown"]
+			for tau21_ddt_cut in [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]:
+				for dcsv_cut in [0.7, 0.75, 0.8, 0.85, 0.875, 0.9, 0.925, 0.95, 0.975]:
+					selections.append("SR_tau21ddt{}_dcsv{}".format(tau21_ddt_cut, dcsv_cut))
+					systematics["SR_tau21ddt{}_dcsv{}".format(tau21_ddt_cut, dcsv_cut)] = ["JESUp", "JESDown", "JERUp", "JERDown", "TriggerUp", "TriggerDown", "PUUp", "PUDown"]
+					selection_tau21s["SR_tau21ddt{}_dcsv{}".format(tau21_ddt_cut, dcsv_cut)] = tau21_ddt_cut
+					selection_dcsvs["SR_tau21ddt{}_dcsv{}".format(tau21_ddt_cut, dcsv_cut)] = dcsv_cut
 		for selection in selections:
 			output_file = ROOT.TFile("/uscms/home/dryu/DAZSLE/data/LimitSetting/histograms_{}_{}.root".format(selection, args.jet_type), "RECREATE")
 			pass_histograms = {}
@@ -705,8 +727,16 @@ if __name__ == "__main__":
 					input_histogram_filename = "/uscms/home/dryu/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, args.jet_type)
 					print "Opening {}".format(input_histogram_filename)
 					input_file = ROOT.TFile(input_histogram_filename, "READ")
-					this_pass_histogram = input_file.Get("h_{}_{}_pass".format(selection, args.jet_type))
-					this_fail_histogram = input_file.Get("h_{}_{}_fail".format(selection, args.jet_type))
+					if selection in selection_tau21s:
+						pass_histogram_name = "h_SR_tau21ddt{}_{}_pass_dcsv{}".format(selection_tau21s[selection], args.jet_type, selection_dcsvs[selection])
+						fail_histogram_name = "h_SR_tau21ddt{}_{}_fail_dcsv{}".format(selection_tau21s[selection], args.jet_type, selection_dcsvs[selection])
+						nevents_histogram_name = "h_SR_tau21ddt{}_{}_pass_nevents".format(selection_tau21s[selection], args.jet_type)
+					else:
+						pass_histogram_name = "h_SR_{}_pass".format(args.jet_type)
+						fail_histogram_name = "h_SR_{}_fail".format(args.jet_type)
+						nevents_histogram_name = "h_SR_{}_pass_nevents".format(args.jet_type)
+					this_pass_histogram = input_file.Get(pass_histogram_name)
+					this_fail_histogram = input_file.Get(fail_histogram_name)
 					this_pass_histogram_syst = {}
 					this_fail_histogram_syst = {}
 					for systematic in systematics[selection]:
@@ -716,7 +746,7 @@ if __name__ == "__main__":
 						n_input_events = input_file.Get("h_input_nevents").Integral()
 						print "\tSample input events = {}".format(n_input_events)
 						print "\tSample processed events = {}".format(input_file.Get("h_processed_nevents").Integral())
-						print "\tSample pass events = {}".format(input_file.Get("h_{}_{}_pass_nevents".format(selection, args.jet_type)).Integral())
+						print "\tSample pass events = {}".format(input_file.Get("h_SR_tau21ddt_{}_{}_pass_nevents".format(selection, args.jet_type)).Integral())
 						print "\tScaled nevents ({} pb-1) = {}".format(luminosity, luminosity * cross_sections[sample])
 						if input_file.Get("h_processed_nevents").Integral() == 0:
 							print "[setup_limits] ERROR : Processed zero events for sample {}. This is fatal, fix it!"
