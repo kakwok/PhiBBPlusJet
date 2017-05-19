@@ -717,7 +717,7 @@ if __name__ == "__main__":
 			fail_histograms_syst = {}
 			# data_obs, data_singlemu - not ready yet
 			# "zll", "wlnu", "vvqq" - you need to find the cross sections, and split into appropriate samples
-			supersamples = ["data_obs", "data_singlemu", "qcd", "wqq", "zqq", "hbb", "stqq", "vvqq"] # tqq
+			supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq"]
 			supersamples.extend(config.signal_names)
 			for supersample in supersamples:
 				first = True
