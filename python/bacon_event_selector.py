@@ -322,12 +322,42 @@ class BaconEventSelector(EventSelector):
 		return (self._event.CA15Puppijet0_doublesub <= self._cut_parameters["Max_CA15Puppijet0_doublesub"])
 	
 	def Min_CA15Puppijet0_pt(self):
-		self._return_data["Min_CA15Puppijet0_pt"] = self._event.CA15Puppijet0_pt
-		return (self._event.CA15Puppijet0_pt >= self._cut_parameters["Min_CA15Puppijet0_pt"])
+		jet_pt = 0.
+		systematic = self._cut_parameters["Min_CA15Puppijet0_pt"]["systematic"].lower()
+		if (systematic == "nominal"):
+			jet_pt = self._event.CA15Puppijet0_pt
+		elif (systematic == "jesup"):
+			jet_pt = self._event.CA15Puppijet0_pt_JESUp
+		elif (systematic == "jesdown"):
+			jet_pt = self._event.CA15Puppijet0_pt_JESDown
+		elif (systematic == "jerup"):
+			jet_pt = self._event.CA15Puppijet0_pt_JERUp
+		elif (systematic == "jerdown"):
+			jet_pt = self._event.CA15Puppijet0_pt_JERDown
+		else:
+			print "[Min_CA15Puppijet0_pt] ERROR : Systematic " + systematic + " not known, or not implemented for CA15Puppi jets." 
+			exit(1)
+		self._return_data["Min_CA15Puppijet0_pt"] = jet_pt
+		return (jet_pt >= self._cut_parameters["Min_CA15Puppijet0_pt"]["Min_CA15Puppijet0_pt"])
 	
 	def Max_CA15Puppijet0_pt(self):
-		self._return_data["Max_CA15Puppijet0_pt"] = self._event.CA15Puppijet0_pt
-		return (self._event.CA15Puppijet0_pt <= self._cut_parameters["Max_CA15Puppijet0_pt"])
+		jet_pt = 0.
+		systematic = self._cut_parameters["Max_CA15Puppijet0_pt"]["systematic"].lower()
+		if (systematic == "nominal"):
+			jet_pt = self._event.CA15Puppijet0_pt
+		elif (systematic == "jesup"):
+			jet_pt = self._event.CA15Puppijet0_pt_JESUp
+		elif (systematic == "jesdown"):
+			jet_pt = self._event.CA15Puppijet0_pt_JESDown
+		elif (systematic == "jerup"):
+			jet_pt = self._event.CA15Puppijet0_pt_JERUp
+		elif (systematic == "jerdown"):
+			jet_pt = self._event.CA15Puppijet0_pt_JERDown
+		else:
+			print "[Max_CA15Puppijet0_pt] ERROR : Systematic " + systematic + " not known, or not implemented for CA15Puppi jets." 
+			exit(1)
+		self._return_data["Max_CA15Puppijet0_pt"] = jet_pt
+		return (jet_pt <= self._cut_parameters["Max_CA15Puppijet0_pt"]["Max_CA15Puppijet0_pt"])
 	
 	def Min_CA15CHSjet0_pt(self):
 		jet_pt = 0.
@@ -346,7 +376,7 @@ class BaconEventSelector(EventSelector):
 			print "[Min_CA15CHSjet0_pt] ERROR : Systematic " + systematic + " not known, or not implemented for CA15CHS jets." 
 			exit(1)
 		self._return_data["Min_CA15CHSjet0_pt"] = jet_pt
-		return (jet_pt >= self._cut_parameters["Min_CA15CHSjet0_pt"])
+		return (jet_pt >= self._cut_parameters["Min_CA15CHSjet0_pt"]["Min_CA15CHSjet0_pt"])
 	
 	def Max_CA15CHSjet0_pt(self):
 		jet_pt = 0.
@@ -365,7 +395,7 @@ class BaconEventSelector(EventSelector):
 			print "[Max_CA15CHSjet0_pt] ERROR : Systematic " + systematic + " not known, or not implemented for CA15CHS jets." 
 			exit(1)
 		self._return_data["Max_CA15CHSjet0_pt"] = jet_pt
-		return (jet_pt <= self._cut_parameters["Max_CA15CHSjet0_pt"])
+		return (jet_pt <= self._cut_parameters["Max_CA15CHSjet0_pt"]["Max_CA15CHSjet0_pt"])
 	
 	def Min_CA15Puppijet0_abseta(self):
 		self._return_data["Min_CA15Puppijet0_abseta"] = self._event.CA15Puppijet0_eta
