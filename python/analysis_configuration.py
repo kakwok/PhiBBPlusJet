@@ -47,7 +47,7 @@ samples = {
 	"wlnu":["wlnu"],
 	"vvqq":["WWTo4Q", "WZ", "ZZ"],
 	#"vvqq":["vvqq"],
-	"hbb":["hqq125","vbfhqq125","zhqq125","whqq125","tthqq125"],
+	"hbb":["hqq125"],#,"vbfhqq125","zhqq125","whqq125","tthqq125"
 	"data_obs":["JetHTRun2016B","JetHTRun2016C","JetHTRun2016D","JetHTRun2016E","JetHTRun2016F","JetHTRun2016G","JetHTRun2016H"],
 	"data_singlemu":["SingleMuRun2016B","SingleMuRun2016C","SingleMuRun2016D","SingleMuRun2016E","SingleMuRun2016F","SingleMuRun2016G","SingleMuRun2016H"],
 	"DMSbb50":["DMSbb50"],
