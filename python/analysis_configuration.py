@@ -18,18 +18,18 @@ background_names = [
 ]
 # First 12.05 signal processing. Some samples are missing.
 signal_names = []
-signal_masses_scalar = [10,20,50,100,200,300,350]  # 400,500
-signal_masses_pseudoscalar = [10,50,100,300,350] # 125, 400,500
+signal_models = ["Sbb", "PSbb"]
+signal_model_masses = {}
+signal_model_masses["Sbb"] = [20,50,100,200,300,350]  # 400,500
+signal_model_masses["PSbb"] = [50,100,300,350] # 125, 400,500
 signal_masses = {}
 #signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
 #signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 #signal_masses = [50,75,100,125,150,200,250,300,400,500]
-for mass in signal_masses_scalar:
-	signal_names.append("Sbb{}".format(mass))
-	signal_masses["Sbb{}".format(mass)] = mass
-for mass in signal_masses_pseudoscalar:
-	signal_names.append("PSbb{}".format(mass))
-	signal_masses["PSbb{}".format(mass)] = mass
+for model in ["Sbb", "PSbb"]:
+	for mass in signal_model_masses[model]:
+		signal_names.append("{}{}".format(model, mass))
+		signal_masses["{}{}".format(model, mass)] = mass
 data_names = ["data_obs", "data_singlemu"]
 supersamples = []
 supersamples.extend(background_names)
@@ -127,9 +127,9 @@ skims["WWTo4Q"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/D
 skims["WZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WZ_13TeV_pythia8.txt"), "r")]
 skims["ZZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ZZ_13TeV_pythia8.txt"), "r")]
 
-for mass in signal_masses_scalar:
+for mass in signal_model_masses["Sbb"]:
 	skims["Sbb{}".format(mass)] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/Spin0_ggPhibb1j_g1_{}_Scalar.txt".format(mass)))]
-for mass in signal_masses_pseudoscalar:
+for mass in signal_model_masses["PSbb"]:
 	skims["PSbb{}".format(mass)] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/Spin0_ggPhibb1j_g1_{}_PseudoScalar.txt".format(mass)))]
 
 # Function to infer the sample from a file path... removing for now, because this doesn't work well on the batch system. E.g. if you have subfiles with generic names (e.g. Output_subjob1.root), there is no way to get the sample.

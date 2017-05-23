@@ -39,11 +39,10 @@ def MakeSRSelector(jet_type, n2_ddt_cut=0., tau21_ddt_cut=None, jet_systematic="
 		else:
 			event_selector.add_cut("Max_AK8Puppijet0_N2DDT", n2_ddt_cut)
 	elif jet_type == "CA15":
-		pass
-		# CA15 jets don't have an N2 branch in latest skims!
-		#cut_parameters["Max_CA15Puppijet0_N2DDT"] = ROOT.vector("double")()
-		#cut_parameters["Max_CA15Puppijet0_N2DDT"].push_back(n2_ddt_cut)
-		#event_selector.add_cut("Max_CA15Puppijet0_N2DDT", X
+		if tau21_ddt_cut != None:
+			event_selector.add_cut("Max_CA15Puppijet0_tau21DDT", tau21_ddt_cut)
+		else:
+			event_selector.add_cut("Max_CA15Puppijet0_N2DDT", n2_ddt_cut)
 
 	return event_selector
 
