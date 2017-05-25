@@ -676,6 +676,8 @@ if __name__ == "__main__":
 				files_per_job = 15
 			elif "QCD_HT500to700" in sample:
 				files_per_job = 30
+			elif "QCD_HT700to1000" in sample:
+				files_per_job = 5
 			elif "QCD" in sample:
 				files_per_job = 10
 			elif "Spin0" in sample or "Sbb" in sample:
@@ -700,7 +702,7 @@ if __name__ == "__main__":
 					job_script = open(job_script_path, 'w')
 					job_script.write("#!/bin/bash\n")
 					job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run ".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index)
-					if args.skim_inputs:
+					if args.skim_inputs or args.all_lxplus:
 						job_command += " --skim_inputs "
 					if args.do_optimization:
 						job_command += " --do_optimization "
@@ -749,6 +751,7 @@ if __name__ == "__main__":
 			"muCR":["JESUp", "JESDown", "JERUp", "JERDown", "MuTriggerUp", "MuTriggerDown", "MuIDUp", "MuIDDown", "MuIsoUp", "MuIsoDown", "PUUp", "PUDown"]
 		}
 		selections = ["SR", "muCR"]
+		extra_vars = ["pfmet", "dcsv", "n2ddt", "pt", "eta", "rho"]
 		selection_tau21s = {}
 		selection_dcsvs = {}
 		if args.do_optimization:
@@ -806,29 +809,30 @@ if __name__ == "__main__":
 						if input_file.Get("h_processed_nevents").Integral() == 0:
 							print "[setup_limits] ERROR : Processed zero events for sample {}. This is fatal, fix it!"
 							sys.exit(1)
+
+						# Normalize histograms
 						if "Spin0" in sample or "Sbb" in sample:
 							# Normalize to visible cross section of 1 pb
 							print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
 							if this_pass_histogram.GetEntries():
-								print "\tLuminosity scale factor = {}".format(luminosity / this_pass_histogram.GetEntries())
-								this_pass_histogram.Scale(luminosity / this_pass_histogram.GetEntries())
-								this_fail_histogram.Scale(luminosity / this_pass_histogram.GetEntries())
-								for systematic in systematics[selection]:
-									this_pass_histogram_syst[systematic].Scale(luminosity / this_pass_histogram.GetEntries())
-									this_fail_histogram_syst[systematic].Scale(luminosity / this_pass_histogram.GetEntries())
+								lumi_sf = luminosity / this_pass_histogram.GetEntries()
+								print "\tLuminosity scale factor = {}".format(lumi_sf)
 							else:
 								print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
+								lumi_sf = 0.
 						else:
 							if n_input_events > 0:
 								print sample
-								print "\tLuminosity scale factor = {}".format(luminosity * cross_sections[sample] / n_input_events)
-								this_pass_histogram.Scale(luminosity * cross_sections[sample] / n_input_events)
-								this_fail_histogram.Scale(luminosity * cross_sections[sample] / n_input_events)
-								for systematic in systematics[selection]:
-									this_pass_histogram_syst[systematic].Scale(luminosity * cross_sections[sample] / n_input_events)
-									this_fail_histogram_syst[systematic].Scale(luminosity * cross_sections[sample] / n_input_events)
+								lumi_sf = luminosity * cross_sections[sample] / n_input_events
+								print "\tLuminosity scale factor = {}".format(lumi_sf)
 							else:
 								print "[setup_limits] WARNING : Found zero input events for sample {}. Something went wrong in an earlier step. I'll continue, but you need to fix this.".format(sample)
+								lumi_sf = 0.
+						this_pass_histogram.Scale(luminosity * cross_sections[sample] / n_input_events)
+						this_fail_histogram.Scale(luminosity * cross_sections[sample] / n_input_events)
+						for systematic in systematics[selection]:
+							this_pass_histogram_syst[systematic].Scale(luminosity * cross_sections[sample] / n_input_events)
+							this_fail_histogram_syst[systematic].Scale(luminosity * cross_sections[sample] / n_input_events)
 
 					if first:
 						pass_histograms[supersample] = this_pass_histogram.Clone()
@@ -860,6 +864,65 @@ if __name__ == "__main__":
 				for systematic in systematics[selection]:
 					pass_histograms_syst[supersample][systematic].Write()
 					fail_histograms_syst[supersample][systematic].Write()
+
+				# Now do the extra histograms for plots
+				extra_histograms = {}
+				extra_histograms_pass = {}
+				extra_histograms_fail = {}
+				for var in extra_vars:
+					first = True
+					for sample in config.samples[supersample]:
+						input_histogram_filename = "/uscms/home/dryu/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, args.jet_type)
+						print "Opening {}".format(input_histogram_filename)
+						f = TFile(input_histogram_filename, "READ")
+						this_histogram = f.Get("h_{}_{}_{}".format(selection, args.jet_type, var))
+						this_histogram_pass = f.Get("h_{}_{}_pass_{}".format(selection, args.jet_type, var))
+						this_histogram_fail = f.Get("h_{}_{}_fail_{}".format(selection, args.jet_type, var))
+						# Normalize histograms
+						if supersample in config.background_names or supersample in config.signal_names:
+							n_input_events = input_file.Get("h_input_nevents").Integral()
+							if "Spin0" in sample or "Sbb" in sample:
+								# Normalize to visible cross section of 1 pb
+								print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
+								if this_pass_histogram.GetEntries():
+									lumi_sf = luminosity / this_pass_histogram.GetEntries()
+									print "\tLuminosity scale factor = {}".format(lumi_sf)
+								else:
+									print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
+									lumi_sf = 0.
+							else:
+								if n_input_events > 0:
+									print sample
+									lumi_sf = luminosity * cross_sections[sample] / n_input_events
+									print "\tLuminosity scale factor = {}".format(lumi_sf)
+								else:
+									print "[setup_limits] WARNING : Found zero input events for sample {}. Something went wrong in an earlier step. I'll continue, but you need to fix this.".format(sample)
+									lumi_sf = 0.
+							this_histogram.Scale(lumi_sf)
+							this_histogram_pass.Scale(lumi_sf)
+							this_histogram_fail.Scale(lumi_sf)
+
+						# Add up
+						if first:
+							extra_histograms[var] = this_histogram.Clone()
+							extra_histograms[var].SetDirectory(0)
+							extra_histograms[var].SetName(supersample + "_" + var)
+							extra_histograms_pass[var] = this_histogram_pass.Clone()
+							extra_histograms_pass[var].SetDirectory(0)
+							extra_histograms_pass[var].SetName(supersample + "_" + var + "_pass")
+							extra_histograms_fail[var] = this_histogram_fail.Clone()
+							extra_histograms_fail[var].SetDirectory(0)
+							extra_histograms_fail[var].SetName(supersample + "_" + var + "_fail")
+						else:
+							extra_histograms[var].Add(this_histogram)
+							extra_histograms_pass[var].Add(this_histogram_pass)
+							extra_histograms_fail[var].Add(this_histogram_fail)
+						f.Close()
+					extra_histograms[var].Write()
+					extra_histograms_pass[var].Write()
+					extra_histograms_fail[var].Write()
+				# End loop over extra vars
+			# End loop over supersamples
 			output_file.Close()
 
 	#if args.rhalphabet:
