@@ -295,7 +295,7 @@ class EventSelectionHistograms(AnalysisBase):
 
 			for selection in self._selections:
 				# Get weights
-				if "SR" in selection:
+				if "SR" in selection or "Preselection" in selection:
 					if self._jet_type == "AK8":
 						trigger_mass = min(self._data.AK8Puppijet0_msd, 300.)
 						trigger_pt = max(200., min(self._data.AK8Puppijet0_pt, 1000.))
