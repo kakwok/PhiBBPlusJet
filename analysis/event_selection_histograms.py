@@ -32,7 +32,7 @@ class EventSelectionHistograms(AnalysisBase):
 		self._dcsv_cut = 0.9
 		self._dcsv_min = -999.
 		self._jet_type = "AK8"
-		self._selections = ["SR", "muCR"]
+		self._selections = ["Preselection", "SR", "muCR"]
 		self._do_optimization = False
 
 		# Weight systematics: these only affect the weights used to fill histograms, so can easily be filled in normal running
@@ -169,6 +169,20 @@ class EventSelectionHistograms(AnalysisBase):
 				for systematic in self._jet_systematics:
 					self._event_selectors_syst[selection_name][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut, tag="tau21ddt{}".format(tau21_ddt_cut))
 
+		self._event_selectors["Preselection"] = BaconEventSelector("Preselection")
+		if jet_type == "AK8":
+			self._event_selectors["Preselection"].add_cut("Min_AK8Puppijet0_pt", {"Min_AK8Puppijet0_pt":450., "systematic":jet_systematic})
+			self._event_selectors["Preselection"].add_cut("Min_AK8Puppijet0_msd_puppi", 40.)
+			self._event_selectors["Preselection"].add_cut("AK8Puppijet0_isTightVJet")
+		elif jet_type == "CA15":
+			self._event_selectors["Preselection"].add_cut("Min_CA15Puppijet0_pt", {"Min_CA15Puppijet0_pt":450., "systematic":jet_systematic})
+			self._event_selectors["Preselection"].add_cut("Min_CA15Puppijet0_msd_puppi", 40.)
+			self._event_selectors["Preselection"].add_cut("CA15Puppijet0_isTightVJet")
+		self._event_selectors["Preselection"].add_cut("Max_neleLoose", 0)
+		self._event_selectors["Preselection"].add_cut("Max_nmuLoose", 0)
+		self._event_selectors["Preselection"].add_cut("Max_ntau", 0)
+		self._event_selectors["Preselection"].add_cut("Max_pfmet", {"Max_pfmet":140., "systematic":jet_systematic})
+
 		# Pileup weight stuff
 		f_pu = TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/puWeights_All.root", "read")
 		self._h_pu_weight = f_pu.Get("puw")
@@ -180,8 +194,10 @@ class EventSelectionHistograms(AnalysisBase):
 		f_pu.Close()
 
 		# Trigger efficiency weight stuff
-		f_trig = ROOT.TFile.Open(
-			"$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/RUNTriggerEfficiencies_SingleMuon_Run2016_V2p1_v03.root", "read")
+		if jet_type == "AK8":
+			f_trig = ROOT.TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/RUNTriggerEfficiencies_AK8_SingleMuon_Run2016_V2p1_v03.root", "read")
+		elif jet_type == "CA15":
+			f_trig = ROOT.TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/RUNTriggerEfficiencies_CA15_SingleMuon_Run2016_V2p4_v08.root", "read")
 		self._trig_den = f_trig.Get("DijetTriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtDenom_cutJet")
 		self._trig_num = f_trig.Get("DijetTriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtPassing_cutJet")
 		self._trig_den.SetDirectory(0)
@@ -866,62 +882,69 @@ if __name__ == "__main__":
 					fail_histograms_syst[supersample][systematic].Write()
 
 				# Now do the extra histograms for plots
-				extra_histograms = {}
-				extra_histograms_pass = {}
-				extra_histograms_fail = {}
-				for var in extra_vars:
-					first = True
-					for sample in config.samples[supersample]:
-						input_histogram_filename = "/uscms/home/dryu/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, args.jet_type)
-						print "Opening {}".format(input_histogram_filename)
-						f = TFile(input_histogram_filename, "READ")
-						this_histogram = f.Get("h_{}_{}_{}".format(selection, args.jet_type, var))
-						this_histogram_pass = f.Get("h_{}_{}_pass_{}".format(selection, args.jet_type, var))
-						this_histogram_fail = f.Get("h_{}_{}_fail_{}".format(selection, args.jet_type, var))
-						# Normalize histograms
-						if supersample in config.background_names or supersample in config.signal_names:
-							n_input_events = input_file.Get("h_input_nevents").Integral()
-							if "Spin0" in sample or "Sbb" in sample:
-								# Normalize to visible cross section of 1 pb
-								print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
-								if this_pass_histogram.GetEntries():
-									lumi_sf = luminosity / this_pass_histogram.GetEntries()
-									print "\tLuminosity scale factor = {}".format(lumi_sf)
+				if selection in ["SR", "muCR"]:
+					extra_histograms = {}
+					extra_histograms_pass = {}
+					extra_histograms_fail = {}
+					for var in extra_vars:
+						first = True
+						for sample in config.samples[supersample]:
+							input_histogram_filename = "/uscms/home/dryu/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, args.jet_type)
+							print "Opening {}".format(input_histogram_filename)
+							input_file = TFile(input_histogram_filename, "READ")
+							this_histogram = input_file.Get("h_{}_{}_{}".format(selection, args.jet_type, var))
+							if not this_histogram:
+								print "ERROR : Couldn't find histogram {} in file {}".format("h_{}_{}_{}".format(selection, args.jet_type, var), input_histogram_filename)
+							this_histogram_pass = input_file.Get("h_{}_{}_pass_{}".format(selection, args.jet_type, var))
+							this_histogram_fail = input_file.Get("h_{}_{}_fail_{}".format(selection, args.jet_type, var))
+							# Normalize histograms
+							if supersample in config.background_names or supersample in config.signal_names:
+								n_input_events = input_file.Get("h_input_nevents").Integral()
+								if "Spin0" in sample or "Sbb" in sample:
+									# Normalize to visible cross section of 1 pb
+									print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
+									pass_events = input_file.Get("h_SR_{}_pass".format(args.jet_type)).Integral()
+									if pass_events:
+										lumi_sf = luminosity / pass_events
+										print "\tLuminosity scale factor = {}".format(lumi_sf)
+									else:
+										print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
+										lumi_sf = 0.
 								else:
-									print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
-									lumi_sf = 0.
-							else:
-								if n_input_events > 0:
-									print sample
-									lumi_sf = luminosity * cross_sections[sample] / n_input_events
-									print "\tLuminosity scale factor = {}".format(lumi_sf)
-								else:
-									print "[setup_limits] WARNING : Found zero input events for sample {}. Something went wrong in an earlier step. I'll continue, but you need to fix this.".format(sample)
-									lumi_sf = 0.
-							this_histogram.Scale(lumi_sf)
-							this_histogram_pass.Scale(lumi_sf)
-							this_histogram_fail.Scale(lumi_sf)
+									if n_input_events > 0:
+										print sample
+										lumi_sf = luminosity * cross_sections[sample] / n_input_events
+										print "\t{} luminosity scale factor = {}*{}/{}={}".format(sample, luminosity, cross_sections[sample], n_input_events, lumi_sf)
+									else:
+										print "[setup_limits] WARNING : Found zero input events for sample {}. Something went wrong in an earlier step. I'll continue, but you need to fix this.".format(sample)
+										lumi_sf = 0.
+								this_histogram.Scale(lumi_sf)
+								this_histogram_pass.Scale(lumi_sf)
+								this_histogram_fail.Scale(lumi_sf)
 
-						# Add up
-						if first:
-							extra_histograms[var] = this_histogram.Clone()
-							extra_histograms[var].SetDirectory(0)
-							extra_histograms[var].SetName(supersample + "_" + var)
-							extra_histograms_pass[var] = this_histogram_pass.Clone()
-							extra_histograms_pass[var].SetDirectory(0)
-							extra_histograms_pass[var].SetName(supersample + "_" + var + "_pass")
-							extra_histograms_fail[var] = this_histogram_fail.Clone()
-							extra_histograms_fail[var].SetDirectory(0)
-							extra_histograms_fail[var].SetName(supersample + "_" + var + "_fail")
-						else:
-							extra_histograms[var].Add(this_histogram)
-							extra_histograms_pass[var].Add(this_histogram_pass)
-							extra_histograms_fail[var].Add(this_histogram_fail)
-						f.Close()
-					extra_histograms[var].Write()
-					extra_histograms_pass[var].Write()
-					extra_histograms_fail[var].Write()
-				# End loop over extra vars
+							# Add up
+							if first:
+								first = False
+								extra_histograms[var] = this_histogram.Clone()
+								extra_histograms[var].SetDirectory(0)
+								extra_histograms[var].SetName(supersample + "_" + var)
+								extra_histograms_pass[var] = this_histogram_pass.Clone()
+								extra_histograms_pass[var].SetDirectory(0)
+								extra_histograms_pass[var].SetName(supersample + "_" + var + "_pass")
+								extra_histograms_fail[var] = this_histogram_fail.Clone()
+								extra_histograms_fail[var].SetDirectory(0)
+								extra_histograms_fail[var].SetName(supersample + "_" + var + "_fail")
+							else:
+								extra_histograms[var].Add(this_histogram)
+								extra_histograms_pass[var].Add(this_histogram_pass)
+								extra_histograms_fail[var].Add(this_histogram_fail)
+							input_file.Close()
+						output_file.cd()
+						extra_histograms[var].Write()
+						extra_histograms_pass[var].Write()
+						extra_histograms_fail[var].Write()
+					# End loop over extra vars
+				# End if SR or muCR
 			# End loop over supersamples
 			output_file.Close()
 
