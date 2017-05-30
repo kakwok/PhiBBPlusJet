@@ -172,11 +172,11 @@ class EventSelectionHistograms(AnalysisBase):
 					self._event_selectors_syst[selection_name][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut, tag="tau21ddt{}".format(tau21_ddt_cut))
 
 		self._event_selectors["Preselection"] = BaconEventSelector("Preselection")
-		if jet_type == "AK8":
+		if self._jet_type == "AK8":
 			self._event_selectors["Preselection"].add_cut("Min_AK8Puppijet0_pt", {"Min_AK8Puppijet0_pt":450., "systematic":jet_systematic})
 			self._event_selectors["Preselection"].add_cut("Min_AK8Puppijet0_msd_puppi", 40.)
 			self._event_selectors["Preselection"].add_cut("AK8Puppijet0_isTightVJet")
-		elif jet_type == "CA15":
+		elif self._jet_type == "CA15":
 			self._event_selectors["Preselection"].add_cut("Min_CA15Puppijet0_pt", {"Min_CA15Puppijet0_pt":450., "systematic":jet_systematic})
 			self._event_selectors["Preselection"].add_cut("Min_CA15Puppijet0_msd_puppi", 40.)
 			self._event_selectors["Preselection"].add_cut("CA15Puppijet0_isTightVJet")
@@ -196,11 +196,11 @@ class EventSelectionHistograms(AnalysisBase):
 		f_pu.Close()
 
 		# Trigger efficiency weight stuff
-		if jet_type == "AK8":
+		if self._jet_type == "AK8":
 			f_trig = ROOT.TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/RUNTriggerEfficiencies_AK8_SingleMuon_Run2016_V2p1_v03.root", "read")
 			self._trig_den = f_trig.Get("DijetTriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtDenom_cutJet")
 			self._trig_num = f_trig.Get("DijetTriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtPassing_cutJet")
-		elif jet_type == "CA15":
+		elif self._jet_type == "CA15":
 			f_trig = ROOT.TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/RUNTriggerEfficiencies_CA15_SingleMuon_Run2016_V2p4_v08.root", "read")
 			self._trig_den = f_trig.Get("DijetCA15TriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtDenom_cutJet")
 			self._trig_num = f_trig.Get("DijetCA15TriggerEfficiencySeveralTriggers/jet1SoftDropMassjet1PtPassing_cutJet")
