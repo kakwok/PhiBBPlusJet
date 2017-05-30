@@ -690,16 +690,17 @@ if __name__ == "__main__":
 			os.chdir(submission_directory)
 
 			files_per_job = 1
-			if "JetHTRun2016" in sample or "SingleMuRun2016" in sample:
-				files_per_job = 15
-			elif "QCD_HT500to700" in sample:
-				files_per_job = 30
-			elif "QCD_HT700to1000" in sample:
-				files_per_job = 5
-			elif "QCD" in sample:
-				files_per_job = 10
-			elif "Spin0" in sample or "Sbb" in sample:
-				files_per_job = 3
+			if args.skim_inputs:
+				if "JetHTRun2016" in sample or "SingleMuRun2016" in sample:
+					files_per_job = 15
+				elif "QCD_HT500to700" in sample:
+					files_per_job = 30
+				elif "QCD_HT700to1000" in sample:
+					files_per_job = 5
+				elif "QCD" in sample:
+					files_per_job = 10
+				elif "Spin0" in sample or "Sbb" in sample:
+					files_per_job = 3
 
 			csubjob_index = 0
 			this_job_input_files = []

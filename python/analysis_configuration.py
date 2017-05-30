@@ -198,13 +198,13 @@ sklims = {
 	"QCD_HT1000to1500"  : [sklim_directory+'/QCD_HT1000to1500_13TeV_all_1000pb_weighted.root'],
 	"QCD_HT1500to2000"  : [sklim_directory+'/QCD_HT1500to2000_13TeV_all_1000pb_weighted.root'],
 	"QCD_HT2000toInf"   : [sklim_directory+'/QCD_HT2000toInf_13TeV_1000pb_weighted.root'],
-	'JetHTRun2016B'     : [sklim_directory+'JetHTRun2016B_23Sep2016_v1.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_0.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_1.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_2.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_3.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_4.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_5.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_6.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_7.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_8.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_9.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_10.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_11.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_12.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_13.root', sklim_directory+'JetHTRun2016B_23Sep2016_v3_14.root'], 
-	"JetHTRun2016C"     : [sklim_directory+'JetHTRun2016C_23Sep2016_v1_v2.root'], 
-	"JetHTRun2016D"     : [sklim_directory+'JetHTRun2016D_23Sep2016_v1_0.root', sklim_directory+'JetHTRun2016D_23Sep2016_v1_1.root', sklim_directory+'JetHTRun2016D_23Sep2016_v1_2.root', sklim_directory+'JetHTRun2016D_23Sep2016_v1_3.root', sklim_directory+'JetHTRun2016D_23Sep2016_v1_4.root', sklim_directory+'JetHTRun2016D_23Sep2016_v1_5.root', sklim_directory+'JetHTRun2016D_23Sep2016_v1_6.root', sklim_directory+'JetHTRun2016D_23Sep2016_v1_7.root'], 
-	"JetHTRun2016E"     : [sklim_directory+'JetHTRun2016E_23Sep2016_v1_0.root', sklim_directory+'JetHTRun2016E_23Sep2016_v1_1.root', sklim_directory+'JetHTRun2016E_23Sep2016_v1_2.root', sklim_directory+'JetHTRun2016E_23Sep2016_v1_3.root', sklim_directory+'JetHTRun2016E_23Sep2016_v1_4.root', sklim_directory+'JetHTRun2016E_23Sep2016_v1_5.root', sklim_directory+'JetHTRun2016E_23Sep2016_v1_6.root', sklim_directory+'JetHTRun2016E_23Sep2016_v1_7.root'], 
-	"JetHTRun2016F"     : [sklim_directory+'JetHTRun2016F_23Sep2016_v1.root'], 
-	"JetHTRun2016G"     : [sklim_directory+'JetHTRun2016G_23Sep2016_v1_v2.root'], 
-	"JetHTRun2016H"     : [sklim_directory+'JetHTRun2016H_PromptReco_v2.root', sklim_directory+'JetHTRun2016H_PromptReco_v3.root'], 
+	"JetHTRun2016B":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016B.txt"))]
+	"JetHTRun2016C":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016C.txt"))]
+	"JetHTRun2016D":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016D.txt"))]
+	"JetHTRun2016E":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016E.txt"))]
+	"JetHTRun2016F":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016F.txt"))]
+	"JetHTRun2016G":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016G.txt"))]
+	"JetHTRun2016H":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016H.txt"))]
 	'SingleMuRun2016B': [sklim_directory+'/SingleMuonRun2016B_03Feb2017_ver1_v1_fixtrig.root', sklim_directory+'/SingleMuonRun2016B_03Feb2017_ver2_v2_fixtrig.root'], 
 	'SingleMuRun2016C': [sklim_directory+'/SingleMuonRun2016C_03Feb2017_v1_fixtrig.root'], 
 	'SingleMuRun2016D': [sklim_directory+'/SingleMuonRun2016D_03Feb2017_v1_fixtrig.root'],
@@ -234,4 +234,3 @@ def get_sample_from_sklim(sklim):
 
 def get_histogram_file(selection, jet_type):
 	return paths["LimitSetting"] + "/Xbb_inputs/histograms_{}_{}.root".format(selection, jet_type)
-	
