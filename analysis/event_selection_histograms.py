@@ -4,6 +4,7 @@ import ROOT
 from DAZSLE.PhiBBPlusJet.analysis_base import AnalysisBase
 import DAZSLE.PhiBBPlusJet.analysis_configuration as config
 import DAZSLE.PhiBBPlusJet.event_selections as event_selections
+from DAZSLE.PhiBBPlusJet.bacon_event_selector import *
 from math import ceil, sqrt,floor
 import array
 
