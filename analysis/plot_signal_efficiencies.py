@@ -60,5 +60,7 @@ PlotOptimizationEfficiencies("AK8")
 PlotOptimizationEfficiencies("CA15")
 PlotEfficiencyVsMass("Sbb", "AK8")
 PlotEfficiencyVsMass("PSbb", "AK8")
+PlotEfficiencyVsMass("Sbb", "CA15")
+PlotEfficiencyVsMass("PSbb", "CA15")
 
 
