@@ -38,6 +38,7 @@ class EventSelectionHistograms(AnalysisBase):
 		# Weight systematics: these only affect the weights used to fill histograms, so can easily be filled in normal running
 		self._weight_systematics = {
 			"SR":["TriggerUp", "TriggerDown", "PUUp", "PUDown"],
+			"Preselection":["TriggerUp", "TriggerDown", "PUUp", "PUDown"],
 			"muCR":["MuTriggerUp", "MuTriggerDown", "MuIDUp", "MuIDDown", "MuIsoUp", "MuIsoDown", "PUUp", "PUDown"]
 		}
 		# Jet systematics: these affect the jet pT, so modify the event selection
@@ -767,9 +768,10 @@ if __name__ == "__main__":
 		from DAZSLE.PhiBBPlusJet.cross_sections import cross_sections
 		systematics = {
 			"SR":["JESUp", "JESDown", "JERUp", "JERDown", "TriggerUp", "TriggerDown", "PUUp", "PUDown"],
+			"Preselection":["JESUp", "JESDown", "JERUp", "JERDown", "TriggerUp", "TriggerDown", "PUUp", "PUDown"],
 			"muCR":["JESUp", "JESDown", "JERUp", "JERDown", "MuTriggerUp", "MuTriggerDown", "MuIDUp", "MuIDDown", "MuIsoUp", "MuIsoDown", "PUUp", "PUDown"]
 		}
-		selections = ["SR", "muCR"]
+		selections = ["SR", "muCR", "Preselection"]
 		extra_vars = ["pfmet", "dcsv", "n2ddt", "pt", "eta", "rho"]
 		selection_tau21s = {}
 		selection_dcsvs = {}
