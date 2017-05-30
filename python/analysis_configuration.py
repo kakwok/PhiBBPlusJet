@@ -198,13 +198,13 @@ sklims = {
 	"QCD_HT1000to1500"  : [sklim_directory+'/QCD_HT1000to1500_13TeV_all_1000pb_weighted.root'],
 	"QCD_HT1500to2000"  : [sklim_directory+'/QCD_HT1500to2000_13TeV_all_1000pb_weighted.root'],
 	"QCD_HT2000toInf"   : [sklim_directory+'/QCD_HT2000toInf_13TeV_1000pb_weighted.root'],
-	"JetHTRun2016B":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016B.txt"))]
-	"JetHTRun2016C":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016C.txt"))]
-	"JetHTRun2016D":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016D.txt"))]
-	"JetHTRun2016E":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016E.txt"))]
-	"JetHTRun2016F":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016F.txt"))]
-	"JetHTRun2016G":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016G.txt"))]
-	"JetHTRun2016H":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016H.txt"))]
+	"JetHTRun2016B":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016B.txt"))],
+	"JetHTRun2016C":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016C.txt"))],
+	"JetHTRun2016D":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016D.txt"))],
+	"JetHTRun2016E":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016E.txt"))],
+	"JetHTRun2016F":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016F.txt"))],
+	"JetHTRun2016G":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016G.txt"))],
+	"JetHTRun2016H":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016H.txt"))],
 	'SingleMuRun2016B': [sklim_directory+'/SingleMuonRun2016B_03Feb2017_ver1_v1_fixtrig.root', sklim_directory+'/SingleMuonRun2016B_03Feb2017_ver2_v2_fixtrig.root'], 
 	'SingleMuRun2016C': [sklim_directory+'/SingleMuonRun2016C_03Feb2017_v1_fixtrig.root'], 
 	'SingleMuRun2016D': [sklim_directory+'/SingleMuonRun2016D_03Feb2017_v1_fixtrig.root'],
