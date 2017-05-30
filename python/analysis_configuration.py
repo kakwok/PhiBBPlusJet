@@ -1,6 +1,7 @@
 import os
 
 paths = {
+	"data":os.path.expandvars("$HOME/DAZSLE/data/"),
 	"LimitSetting":os.path.expandvars("$HOME/DAZSLE/data/LimitSetting")
 }
 
@@ -231,3 +232,6 @@ def get_sample_from_sklim(sklim):
 			break
 	return found_sample
 
+def get_histogram_file(selection, jet_type):
+	return paths["LimitSetting"] + "/Xbb_inputs/histograms_{}_{}.root".format(selection, jet_type)
+	
