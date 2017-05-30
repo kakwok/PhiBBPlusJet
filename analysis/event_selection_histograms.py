@@ -159,7 +159,7 @@ class EventSelectionHistograms(AnalysisBase):
 		self._event_selectors["SR"] = event_selections.MakeSRSelector(self._jet_type)
 		self._event_selectors["Preselection"] = event_selections.MakePreselectionSelector(self._jet_type)
 		self._event_selectors["muCR"] = event_selections.MakeMuCRSelector(self._jet_type)
-		self._event_selectors_syst = {"SR":{}, "muCR":{}}
+		self._event_selectors_syst = {"SR":{}, "muCR":{}, "Preselection":{}}
 		for systematic in self._jet_systematics:
 			self._event_selectors_syst["SR"][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic)
 			self._event_selectors_syst["Preselection"][systematic] = event_selections.MakePreselectionSelector(self._jet_type, jet_systematic=systematic)
