@@ -28,10 +28,6 @@ def MakeSRSelector(jet_type, n2_ddt_cut=0., tau21_ddt_cut=None, jet_systematic="
 	event_selector.add_cut("Max_ntau", 0)
 	event_selector.add_cut("Max_pfmet", {"Max_pfmet":140., "systematic":jet_systematic})
 
-	if jet_type == "CA15":
-		print "[setup_limits::start] WARNING : Adding cut on njets near CA15 jet. These are calculated w.r.t. AK8 jet, so might not be consistent!"
-	event_selector.add_cut("Max_nAK4PuppijetsPt30dR08_0", 100)
-
 	# AK8 or CA15 cuts
 	if jet_type == "AK8":
 		if tau21_ddt_cut != None:
@@ -78,4 +74,28 @@ def MakeMuCRSelector(jet_type, n2_ddt_cut=0., jet_systematic="nominal"):
 	elif jet_type == "CA15":
 		event_selector.add_cut("Max_CA15Puppijet0_N2DDT", n2_ddt_cut)
 		event_selector.add_cut("CA15Puppijet0_isTightVJet")
+	return event_selector
+
+def MakePreselectionSelector(jet_type, n2_ddt_cut=0., tau21_ddt_cut=None, jet_systematic="nominal", tag=None):
+	selector_name = "EventSelector_Preselection"
+	if jet_systematic != "nominal":
+		selector_name += "_" + jet_systematic
+	if tag:
+		selector_name += "_" + tag
+	event_selector = BaconEventSelector(selector_name)
+
+	if jet_type == "AK8":
+		event_selector.add_cut("Min_AK8Puppijet0_pt", {"Min_AK8Puppijet0_pt":450., "systematic":jet_systematic})
+		event_selector.add_cut("Min_AK8Puppijet0_msd_puppi", 40.)
+		event_selector.add_cut("AK8Puppijet0_isTightVJet")
+	elif jet_type == "CA15":
+		event_selector.add_cut("Min_CA15Puppijet0_pt", {"Min_CA15Puppijet0_pt":450., "systematic":jet_systematic})
+		event_selector.add_cut("Min_CA15Puppijet0_msd_puppi", 40.)
+		event_selector.add_cut("CA15Puppijet0_isTightVJet")
+
+	event_selector.add_cut("Max_neleLoose", 0)
+	event_selector.add_cut("Max_nmuLoose", 0)
+	event_selector.add_cut("Max_ntau", 0)
+	event_selector.add_cut("Max_pfmet", {"Max_pfmet":140., "systematic":jet_systematic})
+
 	return event_selector

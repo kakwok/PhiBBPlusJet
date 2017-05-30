@@ -157,10 +157,12 @@ class EventSelectionHistograms(AnalysisBase):
 		# Event selections
 		self._event_selectors = {}
 		self._event_selectors["SR"] = event_selections.MakeSRSelector(self._jet_type)
+		self._event_selectors["Preselection"] = event_selections.MakePreselectionSelector(self._jet_type)
 		self._event_selectors["muCR"] = event_selections.MakeMuCRSelector(self._jet_type)
 		self._event_selectors_syst = {"SR":{}, "muCR":{}}
 		for systematic in self._jet_systematics:
 			self._event_selectors_syst["SR"][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic)
+			self._event_selectors_syst["Preselection"][systematic] = event_selections.MakePreselectionSelector(self._jet_type, jet_systematic=systematic)
 			self._event_selectors_syst["muCR"][systematic] = event_selections.MakeMuCRSelector(self._jet_type, jet_systematic=systematic)
 
 		if self._do_optimization:
@@ -170,20 +172,6 @@ class EventSelectionHistograms(AnalysisBase):
 				self._event_selectors_syst[selection_name] = {}
 				for systematic in self._jet_systematics:
 					self._event_selectors_syst[selection_name][systematic] = event_selections.MakeSRSelector(self._jet_type, jet_systematic=systematic, n2_ddt_cut=None, tau21_ddt_cut=tau21_ddt_cut, tag="tau21ddt{}".format(tau21_ddt_cut))
-
-		self._event_selectors["Preselection"] = BaconEventSelector("Preselection")
-		if self._jet_type == "AK8":
-			self._event_selectors["Preselection"].add_cut("Min_AK8Puppijet0_pt", {"Min_AK8Puppijet0_pt":450., "systematic":jet_systematic})
-			self._event_selectors["Preselection"].add_cut("Min_AK8Puppijet0_msd_puppi", 40.)
-			self._event_selectors["Preselection"].add_cut("AK8Puppijet0_isTightVJet")
-		elif self._jet_type == "CA15":
-			self._event_selectors["Preselection"].add_cut("Min_CA15Puppijet0_pt", {"Min_CA15Puppijet0_pt":450., "systematic":jet_systematic})
-			self._event_selectors["Preselection"].add_cut("Min_CA15Puppijet0_msd_puppi", 40.)
-			self._event_selectors["Preselection"].add_cut("CA15Puppijet0_isTightVJet")
-		self._event_selectors["Preselection"].add_cut("Max_neleLoose", 0)
-		self._event_selectors["Preselection"].add_cut("Max_nmuLoose", 0)
-		self._event_selectors["Preselection"].add_cut("Max_ntau", 0)
-		self._event_selectors["Preselection"].add_cut("Max_pfmet", {"Max_pfmet":140., "systematic":jet_systematic})
 
 		# Pileup weight stuff
 		f_pu = TFile.Open("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ggH/puWeights_All.root", "read")
