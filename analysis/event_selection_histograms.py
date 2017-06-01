@@ -876,7 +876,7 @@ if __name__ == "__main__":
 					fail_histograms_syst[supersample][systematic].Write()
 
 				# Now do the extra histograms for plots
-				if selection in ["SR", "muCR"]:
+				if selection in ["SR", "Preselection", "muCR"]:
 					extra_histograms = {}
 					extra_histograms_pass = {}
 					extra_histograms_fail = {}

@@ -190,13 +190,14 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 
 if __name__ == "__main__":
 	vars = ["pfmet","dcsv","n2ddt","pt","eta","rho", "msd"]
-	selections = ["SR"]#, "muCR"]
+	selections = ["SR", "Preselection"]#, "muCR"]
 	backgrounds = {
 		"SR":["qcd","tqq","wqq","zqq","hbb","stqq","vvqq"],
+		"Preselection":["qcd","tqq","wqq","zqq","hbb","stqq","vvqq"],
 		"muCR":["qcd","zll","wlnu","tqq","wqq","zqq","hbb","stqq","vvqq"]
 	}
 	jet_types = ["AK8", "CA15"]
-	data_names = {"SR":"data_obs", "muCR":"data_singlemu"}
+	data_names = {"SR":"data_obs", "Preselection":"data_obs", "muCR":"data_singlemu"}
 	for var in vars:
 		for selection in selections:
 			for jet_type in jet_types:
