@@ -46,6 +46,7 @@ samples = {
 	"zqq":["zqq"],
 	"zll":["zll"],
 	"wlnu":["wlnu"],
+	"wlnu":['wlnu_HT_100To200','wlnu_HT_200To400','wlnu_HT_400To600','wlnu_HT_600To800','wlnu_HT_800To1200','wlnu_HT_1200To2500'],
 	"vvqq":["WWTo4Q", "WZ", "ZZ"],
 	#"vvqq":["vvqq"],
 	"hbb":["hqq125"],#,"vbfhqq125","zhqq125","whqq125","tthqq125"
@@ -187,7 +188,14 @@ sklims = {
 	'ST_tW_top'         : [sklim_directory+'/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.root'], 
 	#'W'                : [sklim_directory+'/WJetsToQQ_HT_600ToInf_13TeV_1000pb_weighted.root'], 
 	'wqq'               : [sklim_directory+'/WJetsToQQ_HT180_13TeV.root'], 
-	'wlnu'              : [sklim_directory+'WJetsToLNu_HT_70To100_13TeV.root', sklim_directory+'WJetsToLNu_HT_100To200_13TeV.root', sklim_directory+'/WJetsToLNu_HT_200To400_13TeV.root', sklim_directory+'/WJetsToLNu_HT_400To600_13TeV.root', sklim_directory+'/WJetsToLNu_HT_600To800_13TeV.root'], 
+	#'wlnu'              : [sklim_directory+'WJetsToLNu_HT_70To100_13TeV.root', sklim_directory+'WJetsToLNu_HT_100To200_13TeV.root', sklim_directory+'/WJetsToLNu_HT_200To400_13TeV.root', sklim_directory+'/WJetsToLNu_HT_400To600_13TeV.root', sklim_directory+'/WJetsToLNu_HT_600To800_13TeV.root'], 
+	'wlnu_HT_100To200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_100To200_13TeV.root"],
+	'wlnu_HT_200To400':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_200To400_13TeV.root"],
+	'wlnu_HT_400To600':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_400To600_13TeV.root"],
+	'wlnu_HT_600To800':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_600To800_13TeV.root"],
+	'wlnu_HT_800To1200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_800To1200_13TeV.root"],
+	'wlnu_HT_1200To2500':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_1200To2500_13TeV.root"],
+
 	#'TTbar'            : [sklim_directory+'/TTJets_13TeV_1000pb_weighted.root'], #MadGraph is the old default 
 	'tqq'             : [sklim_directory+'/TT_powheg.root'], #Powheg is the new default 
 	"QCD_HT100to200"    : [sklim_directory+'/QCD_HT100to200_13TeV_1000pb_weighted.root'],

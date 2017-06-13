@@ -5,6 +5,7 @@ import pickle
 import time
 from ROOT import *
 import DAZSLE.PhiBBPlusJet.analysis_configuration as config
+from DAZSLE.PhiBBPlusJet.cuts import cuts
 
 signal_efficiencies = pickle.load(open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/python/signal_efficiencies.pkl"), "rb"))
 signal_efficiencies_opt = pickle.load(open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/python/signal_efficiencies_opt.pkl"), "rb"))
@@ -24,7 +25,6 @@ if __name__ == "__main__":
 		for model in models:
 			this_signal_efficiencies[jet_type][model] = {}
 			for mass in masses[model]:
-				
 				histogram_file = TFile("~/DAZSLE/data/LimitSetting/InputHistograms_{}{}_{}.root".format(model, mass, jet_type), "READ")
 				cutflow_histogram = histogram_file.Get("CutFlowCounter_EventSelector_SR_weighted")
 				inclusive = cutflow_histogram.GetBinContent(1)
@@ -32,7 +32,11 @@ if __name__ == "__main__":
 				if not pass_histogram:
 					print "ERROR : Couldn't get histogram {} from file {}".format("h_SR_{}_pass".format(jet_type), histogram_file.GetPath())
 					sys.exit(1)
-				final = pass_histogram.Integral()
+				xbin_min = pass_histogram.GetXaxis().FindBin(cuts[jet_type]["MSD"][0]+1.e-5)
+				xbin_max = pass_histogram.GetXaxis().FindBin(cuts[jet_type]["MSD"][1]-1.e-5)
+				ybin_min = pass_histogram.GetYaxis().FindBin(cuts[jet_type]["PT"][0]+1.e-5)
+				ybin_max = pass_histogram.GetYaxis().FindBin(cuts[jet_type]["PT"][1]-1.e-5)
+				final = pass_histogram.Integral(xbin_min, xbin_max, ybin_min, ybin_max)
 				this_signal_efficiencies[jet_type][model][mass] = float(final)/float(inclusive)
 	pickle.dump(this_signal_efficiencies, open("signal_efficiencies.pkl.{}".format(timestamp), "wb"))
 	# tau21 optimization
@@ -55,6 +59,7 @@ if __name__ == "__main__":
 						if not pass_histogram:
 							print "ERROR : Couldn't get histogram {} from file {}".format("h_SR_tau21ddt{}_{}_pass_dcsv{}".format(tau21_value, jet_type, dcsv_value), histogram_file.GetPath())
 							sys.exit(1)
+
 						final = pass_histogram.Integral()
 						this_signal_efficiencies_opt[tau21_value][dcsv_value][jet_type][model][mass] = float(final)/float(inclusive)
 	pickle.dump(this_signal_efficiencies_opt, open("signal_efficiencies_opt.pkl.{}".format(timestamp), "wb"))

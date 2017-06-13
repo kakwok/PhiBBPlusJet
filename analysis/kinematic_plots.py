@@ -44,6 +44,8 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 				elif what == "fail":
 					hname += "_fail"
 				background_histograms[background] = histogram_file.Get(hname)
+			if not background_histograms[background]:
+				print "[DataMCPlot] ERROR : Couldn't find histogram {} in file {}".format(hname, histogram_file.GetPath())
 			background_histograms[background].SetDirectory(0)
 			background_histograms[background].SetFillColor(style.background_colors[background])
 			if first:
@@ -190,7 +192,7 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 
 if __name__ == "__main__":
 	vars = ["pfmet","dcsv","n2ddt","pt","eta","rho", "msd"]
-	selections = ["SR", "Preselection"]#, "muCR"]
+	selections = ["SR", "Preselection", "muCR"]
 	backgrounds = {
 		"SR":["qcd","tqq","wqq","zqq","hbb","stqq","vvqq"],
 		"Preselection":["qcd","tqq","wqq","zqq","hbb","stqq","vvqq"],

@@ -399,7 +399,7 @@ class EventSelectionHistograms(AnalysisBase):
 						fatjet_pt = self._data.CA15Puppijet0_pt
 						fatjet_eta = self._data.CA15Puppijet0_eta
 						fatjet_msd = self._data.CA15Puppijet0_msd
-						fatjet_dcsv = self._data.CA15Puppijet0_doublecsv
+						fatjet_dcsv = self._data.CA15Puppijet0_doublesub
 						fatjet_n2ddt = self._data.CA15Puppijet0_N2DDT
 						fatjet_rho = self._data.CA15Puppijet0_rho
 					self._selection_histograms[selection].GetTH2D("pt_dcsv").Fill(fatjet_pt, fatjet_dcsv, event_weight)
@@ -779,7 +779,10 @@ if __name__ == "__main__":
 			fail_histograms_syst = {}
 			# data_obs, data_singlemu - not ready yet
 			# "zll", "wlnu", "vvqq" - you need to find the cross sections, and split into appropriate samples
-			supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq"]
+			if selection == "muCR":
+				supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq", "zll"] # wlnu
+			else:
+				supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq"]
 			supersamples.extend(config.signal_names)
 			for supersample in supersamples:
 				first = True
@@ -823,12 +826,22 @@ if __name__ == "__main__":
 						# Normalize histograms
 						if "Spin0" in sample or "Sbb" in sample:
 							# Normalize to visible cross section of 1 pb
-							print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
-							if this_pass_histogram.GetEntries():
-								lumi_sf = luminosity / this_pass_histogram.GetEntries()
+							#print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
+							#if this_pass_histogram.GetEntries():
+							#	lumi_sf = luminosity / this_pass_histogram.GetEntries()
+							#	print "\tLuminosity scale factor = {}".format(lumi_sf)
+							#else:
+							#	print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
+							#	lumi_sf = 0.
+							
+							# Actually, maybe it's easier to normalize to xs*BR*A(filter)=1pb
+							print "\tNormalizing signal sample {} to xs*BR*A=1pb"
+							if n_input_events > 0:
+								print sample
+								lumi_sf = luminosity * cross_sections[sample] / n_input_events
 								print "\tLuminosity scale factor = {}".format(lumi_sf)
 							else:
-								print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
+								print "[setup_limits] WARNING : Found zero input events for sample {}. Something went wrong in an earlier step. I'll continue, but you need to fix this.".format(sample)
 								lumi_sf = 0.
 						else:
 							if n_input_events > 0:
@@ -838,11 +851,11 @@ if __name__ == "__main__":
 							else:
 								print "[setup_limits] WARNING : Found zero input events for sample {}. Something went wrong in an earlier step. I'll continue, but you need to fix this.".format(sample)
 								lumi_sf = 0.
-						this_pass_histogram.Scale(luminosity * cross_sections[sample] / n_input_events)
-						this_fail_histogram.Scale(luminosity * cross_sections[sample] / n_input_events)
+						this_pass_histogram.Scale(lumi_sf)
+						this_fail_histogram.Scale(lumi_sf)
 						for systematic in systematics[selection]:
-							this_pass_histogram_syst[systematic].Scale(luminosity * cross_sections[sample] / n_input_events)
-							this_fail_histogram_syst[systematic].Scale(luminosity * cross_sections[sample] / n_input_events)
+							this_pass_histogram_syst[systematic].Scale(lumi_sf)
+							this_fail_histogram_syst[systematic].Scale(lumi_sf)
 
 					if first:
 						pass_histograms[supersample] = this_pass_histogram.Clone()
@@ -896,13 +909,23 @@ if __name__ == "__main__":
 								n_input_events = input_file.Get("h_input_nevents").Integral()
 								if "Spin0" in sample or "Sbb" in sample:
 									# Normalize to visible cross section of 1 pb
-									print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
-									pass_events = input_file.Get("h_SR_{}_pass".format(args.jet_type)).Integral()
-									if pass_events:
-										lumi_sf = luminosity / pass_events
+									#print "\tNormalizing signal sample {} to visible cross section of 1 pb".format(sample)
+									#pass_events = input_file.Get("h_SR_{}_pass".format(args.jet_type)).Integral()
+									#if pass_events:
+									#	lumi_sf = luminosity / pass_events
+									#	print "\tLuminosity scale factor = {}".format(lumi_sf)
+									#else:
+									#	print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
+									#	lumi_sf = 0.
+									
+									# Actually, maybe it's easier to normalize to xs*BR*A(filter)=1pb
+									print "\tNormalizing signal sample {} to xs*BR*A=1pb"
+									if n_input_events > 0:
+										print sample
+										lumi_sf = luminosity * cross_sections[sample] / n_input_events
 										print "\tLuminosity scale factor = {}".format(lumi_sf)
 									else:
-										print "[setup_limits] WARNING : Found zero input events for sample {}.".format(sample)
+										print "[setup_limits] WARNING : Found zero input events for sample {}. Something went wrong in an earlier step. I'll continue, but you need to fix this.".format(sample)
 										lumi_sf = 0.
 								else:
 									if n_input_events > 0:
