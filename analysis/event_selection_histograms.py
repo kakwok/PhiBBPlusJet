@@ -607,7 +607,7 @@ if __name__ == "__main__":
 		#from joblib import delayed
 		for sample in samples:
 			print "\n *** Running sample {}".format(sample)
-			if "DMSbb" in sample or args.skim_inputs:
+			if "Sbb" in sample or args.skim_inputs:
 				tree_name = "Events"
 			else:
 				tree_name = "otree"
