@@ -189,12 +189,12 @@ sklims = {
 	#'W'                : [sklim_directory+'/WJetsToQQ_HT_600ToInf_13TeV_1000pb_weighted.root'], 
 	'wqq'               : [sklim_directory+'/WJetsToQQ_HT180_13TeV.root'], 
 	#'wlnu'              : [sklim_directory+'WJetsToLNu_HT_70To100_13TeV.root', sklim_directory+'WJetsToLNu_HT_100To200_13TeV.root', sklim_directory+'/WJetsToLNu_HT_200To400_13TeV.root', sklim_directory+'/WJetsToLNu_HT_400To600_13TeV.root', sklim_directory+'/WJetsToLNu_HT_600To800_13TeV.root'], 
-	'wlnu_HT_100To200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_100To200_13TeV.root"],
-	'wlnu_HT_200To400':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_200To400_13TeV.root"],
-	'wlnu_HT_400To600':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_400To600_13TeV.root"],
-	'wlnu_HT_600To800':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_600To800_13TeV.root"],
-	'wlnu_HT_800To1200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_800To1200_13TeV.root"],
-	'wlnu_HT_1200To2500':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_1200To2500_13TeV.root"],
+	'wlnu_HT_100To200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_100To200_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_200To400':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_200To400_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_400To600':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_400To600_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_600To800':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_600To800_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_800To1200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_800To1200_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_1200To2500':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_1200To2500_13TeV_1000pb_weighted.root"],
 
 	#'TTbar'            : [sklim_directory+'/TTJets_13TeV_1000pb_weighted.root'], #MadGraph is the old default 
 	'tqq'             : [sklim_directory+'/TT_powheg.root'], #Powheg is the new default 
