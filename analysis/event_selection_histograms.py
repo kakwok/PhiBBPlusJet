@@ -774,6 +774,12 @@ if __name__ == "__main__":
 					selection_tau21s["SR_tau21ddt{}_dcsv{}".format(tau21_ddt_cut, dcsv_cut)] = tau21_ddt_cut
 					selection_dcsvs["SR_tau21ddt{}_dcsv{}".format(tau21_ddt_cut, dcsv_cut)] = dcsv_cut
 		for selection in selections:
+			if "SR" in selection:
+				selection_prefix = "SR"
+			elif "muCR" in selection:
+				selection_prefix = "muCR"
+			elif "Preselection" in selection:
+				selection_prefix = "Preselection"
 			output_file = ROOT.TFile("/uscms/home/dryu/DAZSLE/data/LimitSetting/histograms_{}_{}.root".format(selection, args.jet_type), "RECREATE")
 			pass_histograms = {}
 			pass_histograms_syst = {}
@@ -782,7 +788,7 @@ if __name__ == "__main__":
 			# data_obs, data_singlemu - not ready yet
 			# "zll", "wlnu", "vvqq" - you need to find the cross sections, and split into appropriate samples
 			if selection == "muCR":
-				supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq", "zll"] # wlnu
+				supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq", "zll", "wlnu"]
 			else:
 				supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq"]
 			supersamples.extend(config.signal_names)
@@ -795,21 +801,21 @@ if __name__ == "__main__":
 					print "Opening {}".format(input_histogram_filename)
 					input_file = ROOT.TFile(input_histogram_filename, "READ")
 					if selection in selection_tau21s:
-						pass_histogram_name = "h_SR_tau21ddt{}_{}_pass_dcsv{}".format(selection_tau21s[selection], args.jet_type, selection_dcsvs[selection])
-						fail_histogram_name = "h_SR_tau21ddt{}_{}_fail_dcsv{}".format(selection_tau21s[selection], args.jet_type, selection_dcsvs[selection])
-						nevents_histogram_name = "h_SR_tau21ddt{}_{}_pass_nevents".format(selection_tau21s[selection], args.jet_type)
+						pass_histogram_name = "h_{}_tau21ddt{}_{}_pass_dcsv{}".format(selection_prefix, selection_tau21s[selection], args.jet_type, selection_dcsvs[selection])
+						fail_histogram_name = "h_{}_tau21ddt{}_{}_fail_dcsv{}".format(selection_prefix, selection_tau21s[selection], args.jet_type, selection_dcsvs[selection])
+						nevents_histogram_name = "h_{}_tau21ddt{}_{}_pass_nevents".format(selection_prefix, selection_tau21s[selection], args.jet_type)
 					else:
-						pass_histogram_name = "h_SR_{}_pass".format(args.jet_type)
-						fail_histogram_name = "h_SR_{}_fail".format(args.jet_type)
-						nevents_histogram_name = "h_SR_{}_pass_nevents".format(args.jet_type)
+						pass_histogram_name = "h_{}_{}_pass".format(selection_prefix, args.jet_type)
+						fail_histogram_name = "h_{}_{}_fail".format(selection_prefix, args.jet_type)
+						nevents_histogram_name = "h_{}_{}_pass_nevents".format(selection_prefix, args.jet_type)
 					this_pass_histogram = input_file.Get(pass_histogram_name)
 					this_fail_histogram = input_file.Get(fail_histogram_name)
 					this_pass_histogram_syst = {}
 					this_fail_histogram_syst = {}
 					for systematic in systematics[selection]:
 						if selection in selection_tau21s:
-							pass_histogram_name = "h_SR_tau21ddt{}_{}_pass_{}_dcsv{}".format(selection_tau21s[selection], args.jet_type, systematic, selection_dcsvs[selection])
-							fail_histogram_name = "h_SR_tau21ddt{}_{}_fail_{}_dcsv{}".format(selection_tau21s[selection], args.jet_type, systematic, selection_dcsvs[selection])
+							pass_histogram_name = "h_{}_tau21ddt{}_{}_pass_{}_dcsv{}".format(selection_prefix, selection_tau21s[selection], args.jet_type, systematic, selection_dcsvs[selection])
+							fail_histogram_name = "h_{}_tau21ddt{}_{}_fail_{}_dcsv{}".format(selection_prefix, selection_tau21s[selection], args.jet_type, systematic, selection_dcsvs[selection])
 						else:
 							pass_histogram_name = "h_{}_{}_pass_{}".format(selection, args.jet_type, systematic)
 							fail_histogram_name = "h_{}_{}_fail_{}".format(selection, args.jet_type, systematic)
