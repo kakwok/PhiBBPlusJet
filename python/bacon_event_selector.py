@@ -18,7 +18,7 @@ class BaconEventSelector(EventSelector):
 			exit(1)
 		delta_phi = math.acos(math.cos(phi_mu - phi_jet))
 		self._return_data["Min_dphi_mu_jet"] = delta_phi
-		return (delta_phi > self._cut_parameters["Min_dphi_mu_jet"])
+		return (delta_phi > self._cut_parameters["Min_dphi_mu_jet"]["Min_dphi_mu_jet"])
 
 	def Min_AK8Puppijet0_msd(self):
 		self._return_data["Min_AK8Puppijet0_msd"] = self._event.AK8Puppijet0_msd
