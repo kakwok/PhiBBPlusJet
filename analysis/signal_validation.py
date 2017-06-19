@@ -126,7 +126,7 @@ if __name__ == "__main__":
 	parser.add_argument('--skim_inputs', action='store_true', help="Run over skim inputs")
 	args = parser.parse_args()
 
-	if args.run or args.condor_run:
+	if args.run or args.condor_run or args.plots:
 		# Make a list of input samples and files
 		samples = []
 		sample_files = {} # Dictionary is sample : [list of files in sample]
@@ -289,7 +289,7 @@ if __name__ == "__main__":
 			hadd_scripts.append("{}/hadd.sh".format(submission_directory))
 			hadd_script = open("{}/hadd.sh".format(submission_directory), "w")
 			hadd_script.write("#!/bin/bash\n")
-			hadd_script.write(os.path.expandvars("hadd $HOME/DAZSLE/data/Validation/SignalValidation.root {}/SignalValidation*csubjob*root\n".format(submission_directory)))
+			hadd_script.write(os.path.expandvars("hadd $HOME/DAZSLE/data/Validation/SignalValidation_{}.root {}/SignalValidation*csubjob*root\n".format(sample, submission_directory)))
 			hadd_script.close()
 			os.chdir(start_directory)
 		# One hadd script to rule them all
