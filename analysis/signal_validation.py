@@ -87,17 +87,11 @@ class SignalValidation(AnalysisBase):
 
 	def finish(self):
 		if self._output_path == "":
-			self._output_path = "/uscms/home/dryu/DAZSLE/data/Validation/SignalValidation_{}.root".format(time.time)
+			self._output_path = os.path.expandvars("$HOME/DAZSLE/data/Validation/SignalValidation_{}.root".format(time.time))
 			print "[SignalCutflow::finish] WARNING : Output path was not provided! Saving to {}".format(self._output_path)
 		print "[SignalCutflow::finish] INFO : Saving histograms to {}".format(self._output_path)
 		f_out = ROOT.TFile(self._output_path, "RECREATE")
 		self._histograms.SaveAll(f_out)
-		for selection, histogrammer in self._selection_histograms.iteritems():
-			histogrammer.SaveAll(f_out)
-		for selection, selector in self._event_selectors.iteritems():
-			selector.print_cutflow()
-			selector.make_cutflow_histograms(f_out)
-			selector.save_nminusone_histograms(f_out)
 		f_out.Close()
 
 # Not using this right now! It was intended for joblib parallel processing, but you weren't able to figure out joblib on condor. 
@@ -124,6 +118,7 @@ if __name__ == "__main__":
 	action_group = parser.add_mutually_exclusive_group() 
 	action_group.add_argument('--run', action="store_true", help="Run")
 	action_group.add_argument('--condor_run', action="store_true", help="Run on condor")
+	action_group.add_argument('--plots', action="store_true", help="Make plots")
 	#action_group.add_argument('--rhalphabet', action="store_true", help="Run rhalpabet and create workspaces for combine")
 	#action_group.add_argument('--datacards', action="store_true", help="Create datacards for combine")
 	parser.add_argument('--output_folder', type=str, help="Output folder")
@@ -210,9 +205,9 @@ if __name__ == "__main__":
 				
 			signal_validation_histogrammer = SignalValidation(sample, tree_name=tree_name)
 			if args.output_folder:
-				signal_validation_histogrammer.set_output_path("{}/SignalValidation.root".format(args.output_folder))
+				signal_validation_histogrammer.set_output_path("{}/SignalValidation_{}.root".format(args.output_folder, sample))
 			else:
-				signal_validation_histogrammer.set_output_path("/uscms/home/dryu/DAZSLE/data/Validation/SignalValidation.root")
+				signal_validation_histogrammer.set_output_path(os.path.expandvars("$HOME/DAZSLE/data/Validation/SignalValidation_{}.root".format(sample)))
 			for filename in sample_files[sample]:
 				print "Input file {}".format(filename)
 				signal_validation_histogrammer.add_file(filename)
@@ -310,3 +305,16 @@ if __name__ == "__main__":
 			master_hadd_script.write("source " + hadd_script_path + "\n")
 		master_hadd_script.close()		
 
+	if args.plots:
+		for sample in samples:
+			print "\n *** Plotting sample {}".format(sample)
+			if args.output_folder:
+				histogram_file = TFile("{}/SignalValidation_{}.root".format(args.output_folder, sample), "READ")
+			else:
+				histogram_file = TFile(os.path.expandvars("$HOME/DAZSLE/data/Validation/SignalValidation_{}.root".format(sample)), "READ")
+			for var in ["genVPt", "genVEta", "genVPhi", "genVMass"]:
+				c = TCanvas("c_{}_{}".format(sample, var), "c_{}_{}".format(sample, var), 700, 500)
+				h = histogram_file.Get("h_{}".format(var))
+				h.Draw()
+				c.SaveAs("$HOME/DAZSLE/data/Validation/figures/{}.pdf".format(c.GetName()))
+			histogram_file.Close()
