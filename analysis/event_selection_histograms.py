@@ -398,7 +398,7 @@ class EventSelectionHistograms(AnalysisBase):
 					elif self._jet_type == "CA15":
 						fatjet_pt = self._data.CA15Puppijet0_pt
 						fatjet_eta = self._data.CA15Puppijet0_eta
-						fatjet_msd = self._data.CA15Puppijet0_msd
+						fatjet_msd = self._data.CA15Puppijet0_msd_puppi
 						fatjet_dcsv = self._data.CA15Puppijet0_doublesub
 						fatjet_n2ddt = self._data.CA15Puppijet0_N2DDT
 						fatjet_rho = self._data.CA15Puppijet0_rho
@@ -472,8 +472,8 @@ class EventSelectionHistograms(AnalysisBase):
 							else:
 								print "ERROR : Systematic not recognized: " + systematic
 								sys.exit(1)
-							fatjet_msd = self._data.CA15Puppijet0_msd
-							fatjet_dcsv = self._data.CA15Puppijet0_doublecsv
+							fatjet_msd = self._data.CA15Puppijet0_msd_puppi
+							fatjet_dcsv = self._data.CA15Puppijet0_doublesub
 
 						if fatjet_dcsv > self._dcsv_cut:
 							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
