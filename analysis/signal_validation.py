@@ -264,10 +264,8 @@ if __name__ == "__main__":
 					job_script = open(job_script_path, 'w')
 					job_script.write("#!/bin/bash\n")
 					job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/signal_plots.py --files {} --label {}_csubjob{} --output_folder . --run ".format(",".join(this_job_input_files), sample, csubjob_index)
-					if args.skim_inputs or args.all_lxplus:
+					if args.skim_inputs:
 						job_command += " --skim_inputs "
-					if args.do_optimization:
-						job_command += " --do_optimization "
 					job_command += " 2>&1\n"
 					job_script.write(job_command)
 					job_script.close()
