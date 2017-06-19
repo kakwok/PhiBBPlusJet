@@ -263,7 +263,7 @@ if __name__ == "__main__":
 					job_script_path = "{}/run_csubjob{}.sh".format(submission_directory, csubjob_index)
 					job_script = open(job_script_path, 'w')
 					job_script.write("#!/bin/bash\n")
-					job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/signal_plots.py --files {} --label {}_csubjob{} --output_folder . --run ".format(",".join(this_job_input_files), sample, csubjob_index)
+					job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/signal_validation.py --files {} --label {}_csubjob{} --output_folder . --run ".format(",".join(this_job_input_files), sample, csubjob_index)
 					if args.skim_inputs:
 						job_command += " --skim_inputs "
 					job_command += " 2>&1\n"
