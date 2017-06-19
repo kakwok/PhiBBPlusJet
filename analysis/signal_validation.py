@@ -216,7 +216,6 @@ if __name__ == "__main__":
 			for filename in sample_files[sample]:
 				print "Input file {}".format(filename)
 				signal_validation_histogrammer.add_file(filename)
-			signal_validation_histogrammer.set_jet_type(args.jet_type)
 			signal_validation_histogrammer.start()
 			signal_validation_histogrammer.run()
 			signal_validation_histogrammer.finish()
