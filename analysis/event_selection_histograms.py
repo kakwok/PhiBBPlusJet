@@ -742,6 +742,10 @@ if __name__ == "__main__":
 				print "Input file {}".format(filename)
 				limit_histogrammer.add_file(filename)
 			limit_histogrammer.set_jet_type(args.jet_type)
+			if "JetHTRun2016" in sample or "SingleMuRun2016" in sample:
+				limit_histogrammer.set_data_source("data")
+			else:
+				limit_histogrammer.set_data_source("simulation")
 			limit_histogrammer.start()
 			limit_histogrammer.run()
 			limit_histogrammer.finish()
