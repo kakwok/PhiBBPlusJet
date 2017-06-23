@@ -329,14 +329,20 @@ class EventSelectionHistograms(AnalysisBase):
 				if self._data_source == "data":
 					event_weight = 1.
 					event_weight_syst = {}
-					event_weight_syst["MuTriggerUp"] = 1.
-					event_weight_syst["MuTriggerDown"] = 1.
-					event_weight_syst["MuIDUp"] = 1.
-					event_weight_syst["MuIDDown"] = 1.
-					event_weight_syst["MuIsoUp"] = 1.
-					event_weight_syst["MuIsoDown"] = 1.
-					event_weight_syst["PUUp"] = 1.
-					event_weight_syst["PUDown"] = 1.
+					if "SR" in selection or "Preselection" in selection:
+						event_weight_syst["TriggerUp"] = 1.
+						event_weight_syst["TriggerDown"] = 1.
+						event_weight_syst["PUUp"] = 1.
+						event_weight_syst["PUDown"] = 1.
+					elif "muCR" in selection:
+						event_weight_syst["MuTriggerUp"] = 1.
+						event_weight_syst["MuTriggerDown"] = 1.
+						event_weight_syst["MuIDUp"] = 1.
+						event_weight_syst["MuIDDown"] = 1.
+						event_weight_syst["MuIsoUp"] = 1.
+						event_weight_syst["MuIsoDown"] = 1.
+						event_weight_syst["PUUp"] = 1.
+						event_weight_syst["PUDown"] = 1.
 				else:
 					if "SR" in selection or "Preselection" in selection:
 						if self._jet_type == "AK8":
