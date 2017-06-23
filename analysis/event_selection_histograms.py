@@ -65,6 +65,7 @@ class EventSelectionHistograms(AnalysisBase):
 		self._jet_type = jet_type 
 
 	def set_data_source(self, data_source):
+		print "[EventSelectionHistograms::set_data_source] INFO : Setting data source to " + data_source
 		if not data_source in ["data", "simulation"]:
 			print "[EventSelectionHistograms] ERROR : Data source must be data or simulation."
 			sys.exit(1)
@@ -632,6 +633,7 @@ if __name__ == "__main__":
 	parser.add_argument('--label', type=str, help="If running with --files, need to specify a label manually, in lieu of the sample names, for the output file naming.")
 	parser.add_argument('--luminosity', type=float, default=35900, help="Luminosity in pb^-1")
 	parser.add_argument('--jet_type', type=str, default="AK8", help="AK8 or CA15")
+	parser.add_argument('--data_source', type=str, default="data", help="data or simulation")
 	parser.add_argument('--skim_inputs', action='store_true', help="Run over skim inputs")
 	parser.add_argument('--do_optimization', action='store_true', help="Make tau21DDT opt plots")
 	args = parser.parse_args()
@@ -682,7 +684,8 @@ if __name__ == "__main__":
 				if args.label:
 					this_sample = args.label
 				else:
-					this_sample = "UnknownSample"
+					print "[event_selection_histograms] ERROR : When running with --files option, you must specify a label for the output!"
+					sys.exit(1)
 				if not this_sample in sample_files:
 					sample_files[this_sample] = []
 				sample_files[this_sample].append(filename)
