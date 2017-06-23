@@ -35,6 +35,7 @@ class EventSelectionHistograms(AnalysisBase):
 		self._jet_type = "AK8"
 		self._selections = ["Preselection", "SR", "muCR"]
 		self._do_optimization = False
+		self._data_source = "data"
 
 		# Weight systematics: these only affect the weights used to fill histograms, so can easily be filled in normal running
 		self._weight_systematics = {
@@ -62,6 +63,12 @@ class EventSelectionHistograms(AnalysisBase):
 			print "[EventSelectionHistograms::set_jet_type] ERROR : Unknown jet type {}. Exiting.".format(jet_type)
 			sys.exit(1)
 		self._jet_type = jet_type 
+
+	def set_data_source(self, data_source):
+		if not data_source in ["data", "simulation"]:
+			print "[EventSelectionHistograms] ERROR : Data source must be data or simulation."
+			sys.exit(1)
+		self._data_source = data_source
 
 	# Overload add_file to extract the number of input events to the skims, stored in histogram NEvents in the same file as the trees
 	def add_file(self, filename):
@@ -153,6 +160,18 @@ class EventSelectionHistograms(AnalysisBase):
 						self._selection_histograms[selection].AddTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)						
 						self._selection_histograms[selection].AddTH2D("fail_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 						self._selection_histograms[selection].AddTH2D("fail_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+
+			# Pass/fail histograms for matched V in simulation
+			if self._data_source == "simulation":
+				self._selection_histograms[selection].AddTH2D("pass_matched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				self._selection_histograms[selection].AddTH2D("pass_unmatched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				self._selection_histograms[selection].AddTH2D("fail_matched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				self._selection_histograms[selection].AddTH2D("fail_unmatched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				for systematic in self._weight_systematics[selection] + self._jet_systematics:
+					self._selection_histograms[selection].AddTH2D("pass_{}_matched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+					self._selection_histograms[selection].AddTH2D("pass_{}_unmatched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)					
+					self._selection_histograms[selection].AddTH2D("fail_{}_matched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+					self._selection_histograms[selection].AddTH2D("fail_{}_unmatched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 70, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)					
 
 		# Event selections
 		self._event_selectors = {}
@@ -288,90 +307,27 @@ class EventSelectionHistograms(AnalysisBase):
 			pu_weight_down = self._h_pu_weight_down.GetBinContent(self._h_pu_weight_down.FindBin(npu))
 
 			k_vjets = 1.
+			w_scale = {
+				[0, 500]:1.0,
+				[500, 600]:1.0,
+				[600, 700]:1.0,
+				[700, 800]:1.2,
+				[800, 900]:1.25,
+				[900, 1000]:1.25,
+				[1000, 3000]:1.0
+			}
 			if self._sample_name == 'wqq' or self._sample_name == 'W':
-				k_vjets = self._data.kfactor * 1.2  # ==1 for not V+jets events
+				k_vjets = self._data.kfactor * 1.35  # ==1 for not V+jets events
+				for pt_range, w_sf in w_scale.iteritems():
+					if pt_range[0] < self._data.genVPt < pt_range[1]:
+						k_vjets *= w_sf
 			elif self._sample_name == 'zqq' or self._sample_name == 'DY':
-				k_vjets = self._data.kfactor * 1.15  # ==1 for not V+jets events
+				k_vjets = self._data.kfactor * 1.45  # ==1 for not V+jets events
 
 			for selection in self._selections:
 				# Get weights
-				if "SR" in selection or "Preselection" in selection:
-					if self._jet_type == "AK8":
-						trigger_mass = min(self._data.AK8Puppijet0_msd, 300.)
-						trigger_pt = max(200., min(self._data.AK8Puppijet0_pt, 1000.))
-					elif self._jet_type == "CA15":
-						trigger_mass = min(self._data.CA15Puppijet0_msd, 300.)
-						trigger_pt = max(200., min(self._data.CA15Puppijet0_pt, 1000.))
-					trigger_weight = self._trig_eff.GetEfficiency(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
-					trigger_weight_up = trigger_weight + self._trig_eff.GetEfficiencyErrorUp(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
-					trigger_weight_down = trigger_weight - self._trig_eff.GetEfficiencyErrorLow(
-						self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
-					if trigger_weight <= 0 or trigger_weight_down <= 0 or trigger_weight_up <= 0:
-						#print 'trigger_weights are %f, %f, %f, setting all to 1' % (trigger_weight, trigger_weight_up, trigger_weight_down)
-						trigger_weight = 1
-						trigger_weight_down = 1
-						trigger_weight_up = 1
-
-					event_weight = pu_weight * k_vjets * trigger_weight
-					event_weight_syst = {}
-					event_weight_syst["TriggerUp"] = pu_weight * k_vjets * trigger_weight_up
-					event_weight_syst["TriggerDown"] = pu_weight * k_vjets * trigger_weight_down
-					event_weight_syst["PUUp"] = pu_weight_up * k_vjets * trigger_weight
-					event_weight_syst["PUDown"] = pu_weight_down * k_vjets * trigger_weight
-
-				elif "muCR" in selection:
-					mutrigweight = 1
-					mutrigweightDown = 1
-					mutrigweightUp = 1
-					if self._data.nmuLoose > 0:
-						muPtForTrig = max(52., min(self._data.vmuoLoose0_pt, 700.))
-						muEtaForTrig = min(abs(self._data.vmuoLoose0_eta), 2.3)
-						mutrigweight = self._mutrig_eff.GetBinContent(self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
-						mutrigweightUp = mutrigweight + self._mutrig_eff.GetBinError(
-							self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
-						mutrigweightDown = mutrigweight - self._mutrig_eff.GetBinError(
-							self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
-						if mutrigweight <= 0 or mutrigweightDown <= 0 or mutrigweightUp <= 0:
-							print 'mutrigweights are %f, %f, %f, setting all to 1' % (
-							mutrigweight, mutrigweightUp, mutrigweightDown)
-							mutrigweight = 1
-							mutrigweightDown = 1
-							mutrigweightUp = 1
-
-					muidweight = 1
-					muidweightDown = 1
-					muidweightUp = 1
-					if self._data.nmuLoose > 0:
-						muPtForId = max(20., min(self._data.vmuoLoose0_pt, 100.))
-						muEtaForId = min(abs(self._data.vmuoLoose0_eta), 2.3)
-						muidweight = self._muid_eff.GetBinContent(self._muid_eff.FindBin(muPtForId, muEtaForId))
-						muidweightUp = muidweight + self._muid_eff.GetBinError(self._muid_eff.FindBin(muPtForId, muEtaForId))
-						muidweightDown = muidweight - self._muid_eff.GetBinError(self._muid_eff.FindBin(muPtForId, muEtaForId))
-						if muidweight <= 0 or muidweightDown <= 0 or muidweightUp <= 0:
-							print 'muidweights are %f, %f, %f, setting all to 1' % (muidweight, muidweightUp, muidweightDown)
-							muidweight = 1
-							muidweightDown = 1
-							muidweightUp = 1
-
-					muisoweight = 1
-					muisoweightDown = 1
-					muisoweightUp = 1
-					if self._data.nmuLoose > 0:
-						muPtForIso = max(20., min(self._data.vmuoLoose0_pt, 100.))
-						muEtaForIso = min(abs(self._data.vmuoLoose0_eta), 2.3)
-						muisoweight = self._muiso_eff.GetBinContent(self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
-						muisoweightUp = muisoweight + self._muiso_eff.GetBinError(
-							self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
-						muisoweightDown = muisoweight - self._muiso_eff.GetBinError(
-							self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
-						if muisoweight <= 0 or muisoweightDown <= 0 or muisoweightUp <= 0:
-							print 'muisoweights are %f, %f, %f, setting all to 1' % (
-							muisoweight, muisoweightUp, muisoweightDown)
-							muisoweight = 1
-							muisoweightDown = 1
-							muisoweightUp = 1
-
-					event_weight = pu_weight * k_vjets * mutrigweight * muidweight * muisoweight
+				if self._data_source == "data":
+					event_weight = 1.
 					event_weight_syst = {}
 					event_weight_syst["MuTriggerUp"] = pu_weight * k_vjets * mutrigweightUp * muidweight * muisoweight
 					event_weight_syst["MuTriggerDown"] = pu_weight * k_vjets * mutrigweightDown * muidweight * muisoweight
@@ -381,6 +337,93 @@ class EventSelectionHistograms(AnalysisBase):
 					event_weight_syst["MuIsoDown"] = pu_weight * k_vjets * mutrigweight * muidweight * muisoweightDown
 					event_weight_syst["PUUp"] = pu_weight_up * k_vjets * mutrigweight * muidweight * muisoweight
 					event_weight_syst["PUDown"] = pu_weight_down * k_vjets * mutrigweight * muidweight * muisoweight
+				else:
+					if "SR" in selection or "Preselection" in selection:
+						if self._jet_type == "AK8":
+							trigger_mass = min(self._data.AK8Puppijet0_msd, 300.)
+							trigger_pt = max(200., min(self._data.AK8Puppijet0_pt, 1000.))
+						elif self._jet_type == "CA15":
+							trigger_mass = min(self._data.CA15Puppijet0_msd, 300.)
+							trigger_pt = max(200., min(self._data.CA15Puppijet0_pt, 1000.))
+						trigger_weight = self._trig_eff.GetEfficiency(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
+						trigger_weight_up = trigger_weight + self._trig_eff.GetEfficiencyErrorUp(self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
+						trigger_weight_down = trigger_weight - self._trig_eff.GetEfficiencyErrorLow(
+							self._trig_eff.FindFixBin(trigger_mass, trigger_pt))
+						if trigger_weight <= 0 or trigger_weight_down <= 0 or trigger_weight_up <= 0:
+							#print 'trigger_weights are %f, %f, %f, setting all to 1' % (trigger_weight, trigger_weight_up, trigger_weight_down)
+							trigger_weight = 1
+							trigger_weight_down = 1
+							trigger_weight_up = 1
+
+						event_weight = pu_weight * k_vjets * trigger_weight
+						event_weight_syst = {}
+						event_weight_syst["TriggerUp"] = pu_weight * k_vjets * trigger_weight_up
+						event_weight_syst["TriggerDown"] = pu_weight * k_vjets * trigger_weight_down
+						event_weight_syst["PUUp"] = pu_weight_up * k_vjets * trigger_weight
+						event_weight_syst["PUDown"] = pu_weight_down * k_vjets * trigger_weight
+
+					elif "muCR" in selection:
+						mutrigweight = 1
+						mutrigweightDown = 1
+						mutrigweightUp = 1
+						if self._data.nmuLoose > 0:
+							muPtForTrig = max(52., min(self._data.vmuoLoose0_pt, 700.))
+							muEtaForTrig = min(abs(self._data.vmuoLoose0_eta), 2.3)
+							mutrigweight = self._mutrig_eff.GetBinContent(self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
+							mutrigweightUp = mutrigweight + self._mutrig_eff.GetBinError(
+								self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
+							mutrigweightDown = mutrigweight - self._mutrig_eff.GetBinError(
+								self._mutrig_eff.FindBin(muPtForTrig, muEtaForTrig))
+							if mutrigweight <= 0 or mutrigweightDown <= 0 or mutrigweightUp <= 0:
+								print 'mutrigweights are %f, %f, %f, setting all to 1' % (
+								mutrigweight, mutrigweightUp, mutrigweightDown)
+								mutrigweight = 1
+								mutrigweightDown = 1
+								mutrigweightUp = 1
+
+						muidweight = 1
+						muidweightDown = 1
+						muidweightUp = 1
+						if self._data.nmuLoose > 0:
+							muPtForId = max(20., min(self._data.vmuoLoose0_pt, 100.))
+							muEtaForId = min(abs(self._data.vmuoLoose0_eta), 2.3)
+							muidweight = self._muid_eff.GetBinContent(self._muid_eff.FindBin(muPtForId, muEtaForId))
+							muidweightUp = muidweight + self._muid_eff.GetBinError(self._muid_eff.FindBin(muPtForId, muEtaForId))
+							muidweightDown = muidweight - self._muid_eff.GetBinError(self._muid_eff.FindBin(muPtForId, muEtaForId))
+							if muidweight <= 0 or muidweightDown <= 0 or muidweightUp <= 0:
+								print 'muidweights are %f, %f, %f, setting all to 1' % (muidweight, muidweightUp, muidweightDown)
+								muidweight = 1
+								muidweightDown = 1
+								muidweightUp = 1
+
+						muisoweight = 1
+						muisoweightDown = 1
+						muisoweightUp = 1
+						if self._data.nmuLoose > 0:
+							muPtForIso = max(20., min(self._data.vmuoLoose0_pt, 100.))
+							muEtaForIso = min(abs(self._data.vmuoLoose0_eta), 2.3)
+							muisoweight = self._muiso_eff.GetBinContent(self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
+							muisoweightUp = muisoweight + self._muiso_eff.GetBinError(
+								self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
+							muisoweightDown = muisoweight - self._muiso_eff.GetBinError(
+								self._muiso_eff.FindBin(muPtForIso, muEtaForIso))
+							if muisoweight <= 0 or muisoweightDown <= 0 or muisoweightUp <= 0:
+								print 'muisoweights are %f, %f, %f, setting all to 1' % (
+								muisoweight, muisoweightUp, muisoweightDown)
+								muisoweight = 1
+								muisoweightDown = 1
+								muisoweightUp = 1
+
+						event_weight = pu_weight * k_vjets * mutrigweight * muidweight * muisoweight
+						event_weight_syst = {}
+						event_weight_syst["MuTriggerUp"] = pu_weight * k_vjets * mutrigweightUp * muidweight * muisoweight
+						event_weight_syst["MuTriggerDown"] = pu_weight * k_vjets * mutrigweightDown * muidweight * muisoweight
+						event_weight_syst["MuIDUp"] = pu_weight * k_vjets * mutrigweight * muidweightUp * muisoweight
+						event_weight_syst["MuIDDown"] = pu_weight * k_vjets * mutrigweight * muidweightDown * muisoweight
+						event_weight_syst["MuIsoUp"] = pu_weight * k_vjets * mutrigweight * muidweight * muisoweightUp
+						event_weight_syst["MuIsoDown"] = pu_weight * k_vjets * mutrigweight * muidweight * muisoweightDown
+						event_weight_syst["PUUp"] = pu_weight_up * k_vjets * mutrigweight * muidweight * muisoweight
+						event_weight_syst["PUDown"] = pu_weight_down * k_vjets * mutrigweight * muidweight * muisoweight
 
 				# Run selection and fill histograms
 				self._event_selectors[selection].process_event(self._data, event_weight)
@@ -388,6 +431,7 @@ class EventSelectionHistograms(AnalysisBase):
 					self._selection_histograms[selection].GetTH1D("pass_nevents").Fill(0)
 					self._selection_histograms[selection].GetTH1D("pass_nevents_weighted").Fill(0, event_weight)
 
+					# Pick up AK8 or CA15 event variables here, to avoid mistakes later
 					if self._jet_type == "AK8":
 						fatjet_pt = self._data.AK8Puppijet0_pt
 						fatjet_eta = self._data.AK8Puppijet0_eta
@@ -395,6 +439,7 @@ class EventSelectionHistograms(AnalysisBase):
 						fatjet_dcsv = self._data.AK8Puppijet0_doublecsv
 						fatjet_n2ddt = self._data.AK8Puppijet0_N2DDT
 						fatjet_rho = self._data.AK8Puppijet0_rho
+						fatjet_phi = self._data.AK8Puppijet0_phi
 					elif self._jet_type == "CA15":
 						fatjet_pt = self._data.CA15Puppijet0_pt
 						fatjet_eta = self._data.CA15Puppijet0_eta
@@ -402,6 +447,17 @@ class EventSelectionHistograms(AnalysisBase):
 						fatjet_dcsv = self._data.CA15Puppijet0_doublesub
 						fatjet_n2ddt = self._data.CA15Puppijet0_N2DDT
 						fatjet_rho = self._data.CA15Puppijet0_rho
+						fatjet_phi = self._data.CA15Puppijet0_phi
+
+					# For simulated V(bb), match fat jet to parent truth particle
+					if self._data_source == "simulation":
+						vmatched = False
+						if self._data.genVPt > 0 and self._data.genVMass > 0:
+							matching_dphi = abs(math.acos(math.cos(self._data.genVPhi - fatjet_phi)))
+							matching_dpt = abs(self._data.genVPt - fatjet_pt) / self._data.genVPt
+							matching_dmass = abs(self._data.genVMass - fatjet_msd) / self._data.genVMass
+							vmatched = matching_dphi < 0.8 and matching_dpt < 0.5 and matching_dmass < 0.3
+
 					self._selection_histograms[selection].GetTH2D("pt_dcsv").Fill(fatjet_pt, fatjet_dcsv, event_weight)
 					self._selection_histograms[selection].GetTH1D("pfmet").Fill(self._data.pfmet, event_weight)
 					self._selection_histograms[selection].GetTH1D("dcsv").Fill(fatjet_dcsv, event_weight)
@@ -412,8 +468,18 @@ class EventSelectionHistograms(AnalysisBase):
 					if fatjet_dcsv > self._dcsv_cut:
 						self._selection_histograms[selection].GetTH2D("pass").Fill(fatjet_msd, fatjet_pt, event_weight)
 						self._selection_histograms[selection].GetTH2D("pass_unweighted").Fill(fatjet_msd, fatjet_pt)
+						if self._data_source == "simulation":
+							if vmatched:
+								self._selection_histograms[selection].GetTH2D("pass_matched").Fill(fatjet_msd, fatjet_pt, event_weight)
+							else:
+								self._selection_histograms[selection].GetTH2D("pass_unmatched").Fill(fatjet_msd, fatjet_pt, event_weight)
 						for systematic in self._weight_systematics[selection]:
 							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+							if self._data_source == "simulation":
+								if vmatched:
+									self._selection_histograms[selection].GetTH2D("pass_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+								else:
+									self._selection_histograms[selection].GetTH2D("pass_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
 						self._selection_histograms[selection].GetTH1D("pass_pfmet").Fill(self._data.pfmet, event_weight)
 						self._selection_histograms[selection].GetTH1D("pass_dcsv").Fill(fatjet_dcsv, event_weight)
 						self._selection_histograms[selection].GetTH1D("pass_n2ddt").Fill(fatjet_n2ddt, event_weight)
@@ -424,8 +490,18 @@ class EventSelectionHistograms(AnalysisBase):
 					elif fatjet_dcsv > self._dcsv_min:
 						self._selection_histograms[selection].GetTH2D("fail").Fill(fatjet_msd, fatjet_pt, event_weight)
 						self._selection_histograms[selection].GetTH2D("fail_unweighted").Fill(fatjet_msd, fatjet_pt)
+						if self._data_source == "simulation":
+							if vmatched:
+								self._selection_histograms[selection].GetTH2D("fail_matched").Fill(fatjet_msd, fatjet_pt, event_weight)
+							else:
+								self._selection_histograms[selection].GetTH2D("fail_unmatched").Fill(fatjet_msd, fatjet_pt, event_weight)
 						for systematic in self._weight_systematics[selection]:
 							self._selection_histograms[selection].GetTH2D("fail_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+							if self._data_source == "simulation":
+								if vmatched:
+									self._selection_histograms[selection].GetTH2D("fail_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+								else:
+									self._selection_histograms[selection].GetTH2D("fail_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
 						self._selection_histograms[selection].GetTH1D("fail_pfmet").Fill(self._data.pfmet, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_dcsv").Fill(fatjet_dcsv, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_n2ddt").Fill(fatjet_n2ddt, event_weight)
@@ -477,8 +553,18 @@ class EventSelectionHistograms(AnalysisBase):
 
 						if fatjet_dcsv > self._dcsv_cut:
 							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+							if self._data_source == "simulation":
+								if vmatched:
+									self._selection_histograms[selection].GetTH2D("pass_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+								else:
+									self._selection_histograms[selection].GetTH2D("pass_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
 						elif fatjet_dcsv > self._dcsv_min:
 							self._selection_histograms[selection].GetTH2D("fail_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+							if self._data_source == "simulation":
+								if vmatched:
+									self._selection_histograms[selection].GetTH2D("fail_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+								else:
+									self._selection_histograms[selection].GetTH2D("fail_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
 
 						if self._do_optimization:
 							for dcsv_cut in self._dcsv_cuts:
