@@ -457,6 +457,7 @@ class EventSelectionHistograms(AnalysisBase):
 
 					# For simulated V(bb), match fat jet to parent truth particle
 					if self._data_source == "simulation":
+						print "[debug] Matching V"
 						vmatched = False
 						if self._data.genVPt > 0 and self._data.genVMass > 0:
 							matching_dphi = abs(math.acos(math.cos(self._data.genVPhi - fatjet_phi)))
