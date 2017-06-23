@@ -308,13 +308,13 @@ class EventSelectionHistograms(AnalysisBase):
 
 			k_vjets = 1.
 			w_scale = {
-				[0, 500]:1.0,
-				[500, 600]:1.0,
-				[600, 700]:1.0,
-				[700, 800]:1.2,
-				[800, 900]:1.25,
-				[900, 1000]:1.25,
-				[1000, 3000]:1.0
+				(0, 500):1.0,
+				(500, 600):1.0,
+				(600, 700):1.0,
+				(700, 800):1.2,
+				(800, 900):1.25,
+				(900, 1000):1.25,
+				(1000, 3000):1.0
 			}
 			if self._sample_name == 'wqq' or self._sample_name == 'W':
 				k_vjets = self._data.kfactor * 1.35  # ==1 for not V+jets events
