@@ -458,7 +458,6 @@ class EventSelectionHistograms(AnalysisBase):
 
 					# For simulated V(bb), match fat jet to parent truth particle
 					if self._data_source == "simulation":
-						print "[debug] Matching V"
 						vmatched = False
 						if self._data.genVPt > 0 and self._data.genVMass > 0:
 							matching_dphi = abs(math.acos(math.cos(self._data.genVPhi - fatjet_phi)))
@@ -558,6 +557,15 @@ class EventSelectionHistograms(AnalysisBase):
 								sys.exit(1)
 							fatjet_msd = self._data.CA15Puppijet0_msd_puppi
 							fatjet_dcsv = self._data.CA15Puppijet0_doublesub
+
+						# For simulated V(bb), match fat jet to parent truth particle
+						if self._data_source == "simulation":
+							vmatched = False
+							if self._data.genVPt > 0 and self._data.genVMass > 0:
+								matching_dphi = abs(math.acos(math.cos(self._data.genVPhi - fatjet_phi)))
+								matching_dpt = abs(self._data.genVPt - fatjet_pt) / self._data.genVPt
+								matching_dmass = abs(self._data.genVMass - fatjet_msd) / self._data.genVMass
+								vmatched = matching_dphi < 0.8 and matching_dpt < 0.5 and matching_dmass < 0.3
 
 						if fatjet_dcsv > self._dcsv_cut:
 							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
