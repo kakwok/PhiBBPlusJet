@@ -432,29 +432,29 @@ class EventSelectionHistograms(AnalysisBase):
 						event_weight_syst["PUUp"] = pu_weight_up * k_vjets * mutrigweight * muidweight * muisoweight
 						event_weight_syst["PUDown"] = pu_weight_down * k_vjets * mutrigweight * muidweight * muisoweight
 
+				# Pick up AK8 or CA15 event variables here, to avoid mistakes later
+				if self._jet_type == "AK8":
+					fatjet_pt = self._data.AK8Puppijet0_pt
+					fatjet_eta = self._data.AK8Puppijet0_eta
+					fatjet_msd = self._data.AK8Puppijet0_msd_puppi
+					fatjet_dcsv = self._data.AK8Puppijet0_doublecsv
+					fatjet_n2ddt = self._data.AK8Puppijet0_N2DDT
+					fatjet_rho = self._data.AK8Puppijet0_rho
+					fatjet_phi = self._data.AK8Puppijet0_phi
+				elif self._jet_type == "CA15":
+					fatjet_pt = self._data.CA15Puppijet0_pt
+					fatjet_eta = self._data.CA15Puppijet0_eta
+					fatjet_msd = self._data.CA15Puppijet0_msd_puppi
+					fatjet_dcsv = self._data.CA15Puppijet0_doublesub
+					fatjet_n2ddt = self._data.CA15Puppijet0_N2DDT
+					fatjet_rho = self._data.CA15Puppijet0_rho
+					fatjet_phi = self._data.CA15Puppijet0_phi
+
 				# Run selection and fill histograms
 				self._event_selectors[selection].process_event(self._data, event_weight)
 				if self._event_selectors[selection].event_pass():
 					self._selection_histograms[selection].GetTH1D("pass_nevents").Fill(0)
 					self._selection_histograms[selection].GetTH1D("pass_nevents_weighted").Fill(0, event_weight)
-
-					# Pick up AK8 or CA15 event variables here, to avoid mistakes later
-					if self._jet_type == "AK8":
-						fatjet_pt = self._data.AK8Puppijet0_pt
-						fatjet_eta = self._data.AK8Puppijet0_eta
-						fatjet_msd = self._data.AK8Puppijet0_msd_puppi
-						fatjet_dcsv = self._data.AK8Puppijet0_doublecsv
-						fatjet_n2ddt = self._data.AK8Puppijet0_N2DDT
-						fatjet_rho = self._data.AK8Puppijet0_rho
-						fatjet_phi = self._data.AK8Puppijet0_phi
-					elif self._jet_type == "CA15":
-						fatjet_pt = self._data.CA15Puppijet0_pt
-						fatjet_eta = self._data.CA15Puppijet0_eta
-						fatjet_msd = self._data.CA15Puppijet0_msd_puppi
-						fatjet_dcsv = self._data.CA15Puppijet0_doublesub
-						fatjet_n2ddt = self._data.CA15Puppijet0_N2DDT
-						fatjet_rho = self._data.CA15Puppijet0_rho
-						fatjet_phi = self._data.CA15Puppijet0_phi
 
 					# For simulated V(bb), match fat jet to parent truth particle
 					if self._data_source == "simulation":
@@ -531,65 +531,61 @@ class EventSelectionHistograms(AnalysisBase):
 					if self._event_selectors_syst[selection][systematic].event_pass():
 						if self._jet_type == "AK8":
 							if systematic == "JESUp":
-								fatjet_pt = self._data.AK8Puppijet0_pt_JESUp
+								fatjet_pt_syst = self._data.AK8Puppijet0_pt_JESUp
 							elif systematic == "JESDown":
-								fatjet_pt = self._data.AK8Puppijet0_pt_JESDown
+								fatjet_pt_syst = self._data.AK8Puppijet0_pt_JESDown
 							elif systematic == "JERUp":
-								fatjet_pt = self._data.AK8Puppijet0_pt_JERUp
+								fatjet_pt_syst = self._data.AK8Puppijet0_pt_JERUp
 							elif systematic == "JERDown":
-								fatjet_pt = self._data.AK8Puppijet0_pt_JERDown
+								fatjet_pt_syst = self._data.AK8Puppijet0_pt_JERDown
 							else:
 								print "ERROR : Systematic not recognized: " + systematic
 								sys.exit(1)
-							fatjet_msd = self._data.AK8Puppijet0_msd_puppi
-							fatjet_dcsv = self._data.AK8Puppijet0_doublecsv
 						elif self._jet_type == "CA15":
 							if systematic == "JESUp":
-								fatjet_pt = self._data.CA15Puppijet0_pt_JESUp
+								fatjet_pt_syst = self._data.CA15Puppijet0_pt_JESUp
 							elif systematic == "JESDown":
-								fatjet_pt = self._data.CA15Puppijet0_pt_JESDown
+								fatjet_pt_syst = self._data.CA15Puppijet0_pt_JESDown
 							elif systematic == "JERUp":
-								fatjet_pt = self._data.CA15Puppijet0_pt_JERUp
+								fatjet_pt_syst = self._data.CA15Puppijet0_pt_JERUp
 							elif systematic == "JERDown":
-								fatjet_pt = self._data.CA15Puppijet0_pt_JERDown
+								fatjet_pt_syst = self._data.CA15Puppijet0_pt_JERDown
 							else:
 								print "ERROR : Systematic not recognized: " + systematic
 								sys.exit(1)
-							fatjet_msd = self._data.CA15Puppijet0_msd_puppi
-							fatjet_dcsv = self._data.CA15Puppijet0_doublesub
 
 						# For simulated V(bb), match fat jet to parent truth particle
 						if self._data_source == "simulation":
 							vmatched = False
 							if self._data.genVPt > 0 and self._data.genVMass > 0:
 								matching_dphi = abs(math.acos(math.cos(self._data.genVPhi - fatjet_phi)))
-								matching_dpt = abs(self._data.genVPt - fatjet_pt) / self._data.genVPt
+								matching_dpt = abs(self._data.genVPt - fatjet_pt_syst) / self._data.genVPt
 								matching_dmass = abs(self._data.genVMass - fatjet_msd) / self._data.genVMass
 								vmatched = matching_dphi < 0.8 and matching_dpt < 0.5 and matching_dmass < 0.3
 
 						if fatjet_dcsv > self._dcsv_cut:
-							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+							self._selection_histograms[selection].GetTH2D("pass_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
 							if self._data_source == "simulation":
 								if vmatched:
-									self._selection_histograms[selection].GetTH2D("pass_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+									self._selection_histograms[selection].GetTH2D("pass_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
 								else:
-									self._selection_histograms[selection].GetTH2D("pass_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+									self._selection_histograms[selection].GetTH2D("pass_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
 						elif fatjet_dcsv > self._dcsv_min:
-							self._selection_histograms[selection].GetTH2D("fail_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+							self._selection_histograms[selection].GetTH2D("fail_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
 							if self._data_source == "simulation":
 								if vmatched:
-									self._selection_histograms[selection].GetTH2D("fail_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+									self._selection_histograms[selection].GetTH2D("fail_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
 								else:
-									self._selection_histograms[selection].GetTH2D("fail_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight)
+									self._selection_histograms[selection].GetTH2D("fail_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
 
 						if self._do_optimization:
 							for dcsv_cut in self._dcsv_cuts:
 								if fatjet_dcsv > dcsv_cut:
-									self._selection_histograms[selection].GetTH2D("pass_{}_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt, event_weight)
-									self._selection_histograms[selection].GetTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt)
+									self._selection_histograms[selection].GetTH2D("pass_{}_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
+									self._selection_histograms[selection].GetTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt_syst)
 								elif fatjet_dcsv > self._dcsv_min:
-									self._selection_histograms[selection].GetTH2D("fail_{}_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt, event_weight)
-									self._selection_histograms[selection].GetTH2D("fail_{}_unweighted_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt)
+									self._selection_histograms[selection].GetTH2D("fail_{}_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt_syst, event_weight)
+									self._selection_histograms[selection].GetTH2D("fail_{}_unweighted_dcsv{}".format(systematic, dcsv_cut)).Fill(fatjet_msd, fatjet_pt_syst)
 
 
 	def finish(self):
