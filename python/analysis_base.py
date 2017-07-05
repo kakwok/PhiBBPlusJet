@@ -6,9 +6,6 @@ import datetime
 import ROOT
 from ROOT import *
 
-ROOT.gInterpreter.Declare("#include \"DAZSLE/PhiBBPlusJet/interface/BaconData.h\"")
-ROOT.gInterpreter.Declare("#include \"DAZSLE/PhiBBPlusJet/interface/BaconEventCutFunctions.h\"")
-ROOT.gSystem.Load(os.path.expandvars("$CMSSW_BASE/lib/$SCRAM_ARCH/libDAZSLEPhiBBPlusJet.so"))
 #ROOT.gROOT.ProcessLine('template HBHEDigi BaconData::Digi<HBHEDigi>(int i);') # Unfortunate hack needed for pyroot to recognize templated member functions
 
 class AnalysisBase(object):
@@ -16,7 +13,6 @@ class AnalysisBase(object):
 	def __init__(self, tree_name="otree"):
 		self._files = []
 		self._chain = ROOT.TChain(tree_name)
-		self._data = BaconData(self._chain)
 
 	def add_file(self, filename):
 		self._chain.Add(filename)

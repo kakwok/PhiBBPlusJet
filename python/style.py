@@ -14,7 +14,7 @@ background_colors = {
 	"vvqq":seaborn.GetColorRoot("cubehelixlarge", 15, 24),
 	"stqq":seaborn.GetColorRoot("cubehelixlarge", 18, 24),
 	"zll":seaborn.GetColorRoot("cubehelixlarge", 21, 24),
-	"wlnu":seaborn.GetColorRoot("cubehelixlarge", 24, 24),
+	"wlnu":seaborn.GetColorRoot("cubehelixlarge", 23, 24),
 }
 
 axis_titles = {

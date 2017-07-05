@@ -16,7 +16,7 @@ seaborn = Root.SeabornInterface()
 seaborn.Initialize()
 
 
-def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sbb100"], backgrounds=["qcd","tqq","wqq","zqq","hbb","stqq","vvqq"], logy=False):
+def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sbb100"], backgrounds=["qcd","tqq","wqq","zqq","hbb","stqq","vvqq"], logy=False, rebin=None, legend_position="right", x_range=None):
 	print "Welcome to DataMCPlot({}, {}, {}, {})".format(var, selection, jet_type, data_name)
 	for what in ["pass", "fail", "inclusive"]:
 		print "Input file: " + config.get_histogram_file(selection, jet_type)
@@ -101,8 +101,19 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 				signal_histograms[signal_name] = histogram_file.Get(hname)
 			signal_histograms[signal_name].SetDirectory(0)
 
+		if rebin:
+			for background_name, background_histogram in background_histograms.iteritems():
+				background_histogram.Rebin(rebin)
+			total_bkgd_histogram.Rebin(rebin)
+			data_histogram.Rebin(rebin)
+			for signal_name, signal_histogram in signal_histograms.iteritems():
+				signal_histogram.Rebin(rebin)
+
 		# Sort backgrounds by integral, and make THStack (and legend)
-		l = TLegend(0.4, 0.6, 0.88, 0.88)
+		if legend_position == "right":
+			l = TLegend(0.6, 0.4, 0.88, 0.88)
+		elif legend_position == "left":
+			l = TLegend(0.2, 0.4, 0.48, 0.88)
 		l.SetFillColor(0)
 		l.SetBorderSize(0)
 		l.AddEntry(data_histogram, "Data 2016", "p")
@@ -112,6 +123,7 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 		bkgd_stack = THStack("bkgd_stack", "bkgd_stack")
 		for bkgd in bkgds_sorted:
 			bkgd_stack.Add(background_histograms[bkgd])
+		for bkgd in reversed(bkgds_sorted):
 			l.AddEntry(background_histograms[bkgd], bkgd, "f")
 		for signal_name in signal_names:
 			l.AddEntry(signal_histograms[signal_name], signal_name, "l")
@@ -132,6 +144,7 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 		bkgd_stack.GetXaxis().SetLabelSize(0)
 		bkgd_stack.GetXaxis().SetTitleSize(0)
 		bkgd_stack.GetYaxis().SetTitleSize(0.06)
+		bkgd_stack.GetYaxis().SetTitleOffset(0.9)
 		bkgd_stack.GetYaxis().SetLabelSize(0.06)
 		bkgd_stack.GetYaxis().SetTitle("Events")
 		ymax = max(data_histogram.GetMaximum(), total_bkgd_histogram.GetMaximum())
@@ -143,11 +156,17 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 			ymax = ymax * 1.3
 		bkgd_stack.SetMinimum(ymin)
 		bkgd_stack.SetMaximum(ymax)
+		if x_range:
+			bkgd_stack.GetXaxis().SetRangeUser(x_range[0], x_range[1])
 		#frame_top.Draw("axis")
 		#bkgd_stack.Draw("same")
+		total_bkgd_histogram.SetMarkerStyle(20)
+		total_bkgd_histogram.SetMarkerSize(0)
 		total_bkgd_histogram.SetLineWidth(2)
 		total_bkgd_histogram.SetLineColor(seaborn.GetColorRoot("dark", 1))
-		total_bkgd_histogram.Draw("same")
+		total_bkgd_histogram.SetFillColor(0)
+		total_bkgd_histogram.SetFillStyle(0)
+		total_bkgd_histogram.Draw("hist same")
 		data_histogram.SetMarkerSize(1)
 		data_histogram.SetMarkerStyle(20)
 		data_histogram.SetMarkerColor(1)
@@ -157,7 +176,7 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 		for i, signal_name in enumerate(signal_names):
 			signal_histograms[signal_name].SetLineWidth(2)
 			signal_histograms[signal_name].SetLineStyle(2+i)
-			signal_histograms[signal_name].SetLineColor(seaborn.GetColorRoot("cubehelix", i, len(signal_names)))
+			signal_histograms[signal_name].SetLineColor(seaborn.GetColorRoot("dark", i))
 			signal_histograms[signal_name].Draw("hist same")
 		#frame_top.Draw("axis same")
 		l.Draw()
@@ -177,8 +196,11 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 		ratio_histogram.GetXaxis().SetTitleSize(0.06)
 		ratio_histogram.GetXaxis().SetLabelSize(0.06)
 		ratio_histogram.GetYaxis().SetTitleSize(0.06)
+		ratio_histogram.GetYaxis().SetTitleOffset(0.9)
 		ratio_histogram.GetYaxis().SetLabelSize(0.06)
 		ratio_histogram.GetYaxis().SetTitle("Data / Bkgd")
+		if x_range:
+			ratio_histogram.GetXaxis().SetRangeUser(x_range[0], x_range[1])
 		ratio_histogram.Draw("p")
 
 		c.cd()
@@ -192,6 +214,17 @@ def DataMCPlot(var, selection, jet_type, data_name="data_obs", signal_names=["Sb
 
 if __name__ == "__main__":
 	vars = ["pfmet","dcsv","n2ddt","pt","eta","rho", "msd"]
+	rebin = {"pfmet":1,"dcsv":4, "n2ddt":1, "pt":10, "eta":1, "rho":4, "msd":1}
+	legend_positions = {"pfmet":"right","dcsv":"right","n2ddt":"right","pt":"right","eta":"right","rho":"left", "msd":"right"}
+	x_ranges = {
+		"pfmet":[0,500],
+		"dcsv":[-1,1],
+		"n2ddt":[-0.4, 0.2],
+		"pt":[0,2000],
+		"eta":[-3.,3.],
+		"rho":[-7.5, -1.],
+		"msd":[0., 400.]
+	}
 	selections = ["SR", "Preselection", "muCR"]
 	backgrounds = {
 		"SR":["qcd","tqq","wqq","zqq","hbb","stqq","vvqq"],
@@ -203,5 +236,5 @@ if __name__ == "__main__":
 	for var in vars:
 		for selection in selections:
 			for jet_type in jet_types:
-				DataMCPlot(var, selection, jet_type, data_name=data_names[selection], backgrounds=backgrounds[selection])
-				DataMCPlot(var, selection, jet_type, data_name=data_names[selection], backgrounds=backgrounds[selection], logy=True)
+				DataMCPlot(var, selection, jet_type, data_name=data_names[selection], backgrounds=backgrounds[selection], rebin=rebin[var], legend_position=legend_positions[var], x_range=x_ranges[var])
+				DataMCPlot(var, selection, jet_type, data_name=data_names[selection], backgrounds=backgrounds[selection], logy=True, rebin=rebin[var], legend_position=legend_positions[var], x_range=x_ranges[var])
