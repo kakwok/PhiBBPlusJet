@@ -77,6 +77,7 @@ def make_validation_plots(interpolated_histogram, simulated_histogram, save_tag,
 			for adj_mass, adj_hist in adjacent_histograms.iteritems():
 				if adj_hist.GetMaximum() > ymax:
 					ymax = adj_hist.GetMaximum()
+		ymax = ymax * 1.3
 
 		interpolated_histogram_1D.SetMarkerStyle(24)
 		interpolated_histogram_1D.SetMarkerColor(seaborn.GetColorRoot("default", 2))
@@ -310,16 +311,25 @@ if __name__ == "__main__":
 		int_file = TFile(config.get_interpolation_file(args.jet_type), "READ")
 		for region in ["pass", "fail"]:
 			for model in ["Sbb", "PSbb"]:
-				for ptbin in xrange(1, 7):
+				for ptbin in xrange(0, 7):
 					sim_hists = {}
 					int_hists = {}
 					for sim_mass in input_masses:
-						sim_hists[sim_mass] = sim_file.Get("{}{}_{}".format(model, sim_mass, region)).ProjectionX("{}{}_{}_ptbin{}".format(model, sim_mass, region, ptbin), ptbin, ptbin)
+						if ptbin == 0:
+							sim_hists[sim_mass] = sim_file.Get("{}{}_{}".format(model, sim_mass, region)).ProjectionX("{}{}_{}_ptbinAll".format(model, sim_mass, region))
+						else:
+							sim_hists[sim_mass] = sim_file.Get("{}{}_{}".format(model, sim_mass, region)).ProjectionX("{}{}_{}_ptbin{}".format(model, sim_mass, region, ptbin), ptbin, ptbin)
 						sim_hists[sim_mass].SetDirectory(0)
 					for int_mass in output_masses:
-						int_hists[int_mass] = int_file.Get("{}{}_{}".format(model, int_mass, region)).ProjectionX("{}{}_{}_ptbin{}".format(model, sim_mass, region, ptbin), ptbin, ptbin)
+						if ptbin == 0:
+							int_hists[int_mass] = int_file.Get("{}{}_{}".format(model, int_mass, region)).ProjectionX("{}{}_{}_ptbinAll".format(model, sim_mass, region))
+						else:
+							int_hists[int_mass] = int_file.Get("{}{}_{}".format(model, int_mass, region)).ProjectionX("{}{}_{}_ptbin{}".format(model, sim_mass, region, ptbin), ptbin, ptbin)
 						int_hists[int_mass].SetDirectory(0)
-					save_tag = "{}_{}_ptbin{}".format(region, model, ptbin)
+					if ptbin == 0:
+						save_tag = "{}_{}_{}_ptbinAll".format(region, model, args.jet_type)
+					else:
+						save_tag = "{}_{}_{}_ptbin{}".format(region, model, args.jet_type, ptbin)
 					make_summary_plot(sim_hists, int_hists, save_tag)
 
 
