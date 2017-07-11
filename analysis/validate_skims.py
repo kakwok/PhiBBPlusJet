@@ -198,7 +198,7 @@ if "uscms" in os.path.expandvars("$HOME"):
 
 else:
     my_nevents = {}
-    for supersample in sorted(config.supersamples.keys()):
+    for supersample in sorted(config.supersamples):
         my_nevents[supersample] = 0
         for sample in config.samples[supersample]:
             if sample in config.skims:
@@ -209,5 +209,5 @@ else:
                     my_nevents[supersample] += t.GetEntriesFast()
                     f.Close()
 
-    for supersample in sorted(config.supersamples.keys()):
+    for supersample in sorted(config.supersamples):
         print "{} : {}".format(supersample, my_nevents[supersample])
