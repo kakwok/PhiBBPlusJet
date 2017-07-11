@@ -7,6 +7,7 @@ from multiprocessing import Pool
 
 
 def GetNEvents(args):
+    print "[debug] Opening " + args[0]
     f = TFile.Open(args[0], "READ")
     t = f.Get(args[1])
     this_nevents = t.GetEntriesFast()
