@@ -2,6 +2,7 @@ import os
 import sys
 from ROOT import *
 import DAZSLE.PhiBBPlusJet.analysis_configuration as config
+from multiprocessing import Pool
 
 if "uscms" in os.path.expandvars("$HOME"):
     idir = "root://cmseos.fnal.gov//eos/uscms/store/user/lpchbb/zprimebits-v12.04/norm2/cvernier/"
@@ -201,13 +202,18 @@ else:
     for supersample in sorted(config.supersamples):
         my_nevents[supersample] = 0
         for sample in config.samples[supersample]:
-            if sample in config.skims:
-                for filename in config.skims[sample]:
-                    print "[debug] Openining " + filename
-                    f = TFile.Open(filename, "READ")
-                    t = f.Get("Events")
-                    my_nevents[supersample] += t.GetEntriesFast()
-                    f.Close()
+            if sample in config.skims
+                pool = Pool(4).map(GetNEvents, config.skims[sample])
+                my_nevents[supersample] += sum(pool)
 
     for supersample in sorted(config.supersamples):
         print "{} : {}".format(supersample, my_nevents[supersample])
+
+
+def GetNEvents(filename, treename):
+    f = TFile.Open(filename, "READ")
+    t = f.Get(treename)
+    this_nevents = t.GetEntriesFast()
+    f.Close()
+    return this_nevents
+
