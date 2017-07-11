@@ -10,6 +10,9 @@ def GetNEvents(args):
     print "[debug] Opening " + args[0]
     f = TFile.Open(args[0], "READ")
     t = f.Get(args[1])
+    if not t:
+        print "BAD FILE: {}".format(args[0])
+        return 0
     this_nevents = t.GetEntriesFast()
     f.Close()
     return this_nevents
@@ -213,6 +216,8 @@ else:
     for supersample in sorted(config.supersamples):
         my_nevents[supersample] = 0
         for sample in config.samples[supersample]:
+            if "QCD_HT2000toInf" in sample:
+                continue
             if sample in config.skims:
                 pool = Pool(4).map(GetNEvents, [(x, "Events") for x in config.skims[sample]])
                 my_nevents[supersample] += sum(pool)
