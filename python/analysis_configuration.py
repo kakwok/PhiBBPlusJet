@@ -49,7 +49,7 @@ samples = {
 	"wlnu":['wlnu_HT_100To200','wlnu_HT_200To400','wlnu_HT_400To600','wlnu_HT_600To800','wlnu_HT_800To1200','wlnu_HT_1200To2500'],
 	"vvqq":["WWTo4Q", "WZ", "ZZ"],
 	#"vvqq":["vvqq"],
-	"hbb":["hqq125"],#,"vbfhqq125","zhqq125","whqq125","tthqq125"
+	"hbb":["gghbb", "vbfhbb" "wmhbb", "wphbb", "tthbb", "zqqhbb", "znunuhbb", "ggzqqhbb", "ggznunuhbb"],#,"vbfhqq125","zhqq125","whqq125","tthqq125"
 	"data_obs":["JetHTRun2016B","JetHTRun2016C","JetHTRun2016D","JetHTRun2016E","JetHTRun2016F","JetHTRun2016G","JetHTRun2016H"],
 	"data_singlemu":["SingleMuRun2016B","SingleMuRun2016C","SingleMuRun2016D","SingleMuRun2016E","SingleMuRun2016F","SingleMuRun2016G","SingleMuRun2016H"],
 	"DMSbb50":["DMSbb50"],
@@ -118,16 +118,16 @@ skims["QCD_HT700to1000"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_B
 skims["QCD_HT1000to1500"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT1000to1500_13TeV.txt"), "r")]
 skims["QCD_HT1500to2000"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT1500to2000_13TeV.txt"), "r")]
 skims["QCD_HT2000toInf"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT2000toInf_13TeV.txt"), "r")]
-skims["ST_t_antitop"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.txt"), "r")]
-skims["ST_t_top"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.txt"), "r")]
-skims["ST_tW_antitop"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.txt"), "r")]
-skims["ST_tW_top"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.txt"), "r")]
-skims["wqq"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WJetsToQQ_HT180_13TeV.txt"), "r")]
-skims["zqq"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/DYJetsToQQ_HT180_13TeV.txt"), "r")]
-skims["tqq"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/TT_powheg.txt"), "r")]
-skims["WWTo4Q"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WWTo4Q_13TeV_powheg.txt"), "r")]
-skims["WZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WZ_13TeV_pythia8.txt"), "r")]
-skims["ZZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ZZ_13TeV_pythia8.txt"), "r")]
+#skims["ST_t_antitop"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.txt"), "r")]
+#skims["ST_t_top"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.txt"), "r")]
+#skims["ST_tW_antitop"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.txt"), "r")]
+#skims["ST_tW_top"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.txt"), "r")]
+#skims["wqq"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WJetsToQQ_HT180_13TeV.txt"), "r")]
+#skims["zqq"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/DYJetsToQQ_HT180_13TeV.txt"), "r")]
+#skims["tqq"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/TT_powheg.txt"), "r")]
+#skims["WWTo4Q"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WWTo4Q_13TeV_powheg.txt"), "r")]
+#skims["WZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WZ_13TeV_pythia8.txt"), "r")]
+#skims["ZZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ZZ_13TeV_pythia8.txt"), "r")]
 
 for mass in signal_model_masses["Sbb"]:
 	skims["Sbb{}".format(mass)] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/Spin0_ggPhibb1j_g1_{}_Scalar.txt".format(mass)))]
@@ -171,56 +171,71 @@ for mass in signal_model_masses["PSbb"]:
 
 # Sklims
 sklim_directory = "root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/sklim2/"
+lpchbb_directory = "root://cmsxrootd-site.fnal.gov//store/user/lpchbb"
 sklims = { 
-	'hqq125'            : [sklim_directory+'/GluGluHToBB_M125_13TeV_powheg_pythia8_all_1000pb_weighted.root'], 
-	'vbfhqq125'         : [sklim_directory+'/VBFHToBB_M_125_13TeV_powheg_pythia8_weightfix_all_1000pb_weighted.root'], 
-	'zhqq125'           : [sklim_directory+'/ZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root', sklim_directory+'/ggZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_1000pb_weighted.root', sklim_directory+'/ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_ext_1000pb_weighted.root', sklim_directory+'/ggZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root'], 
-	'whqq125'           : [sklim_directory+'/WminusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root', sklim_directory+'/WplusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root'], 
-	'tthqq125'          : [sklim_directory+'/ttHTobb_M125_13TeV_powheg_pythia8_1000pb_weighted.root'],#ttHTobb_M125_TuneCUETP8M2_ttHtranche3_13TeV_powheg_pythia8_1000pb_weighted.root'],
-	'WWTo4Q'            : [sklim_directory+'/WWTo4Q_13TeV_powheg.root'],
-	'ZZ'                : [sklim_directory+'/ZZ_13TeV_pythia8.root'],
-	'WZ'                : [sklim_directory+'/WZ_13TeV_pythia8.root'], 
-	'zqq'               : [sklim_directory+'/DYJetsToQQ_HT180_13TeV.root'],
-	'zll'               : [sklim_directory + "/DYJetsToLL_M_50_13TeV_ext.root"],
-	'ST_t_antitop'      : [sklim_directory+'/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.root'],
-	'ST_t_top'          : [sklim_directory+'/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.root'],
-	'ST_tW_antitop'     : [sklim_directory+'/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.root'],
-	'ST_tW_top'         : [sklim_directory+'/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.root'], 
-	#'W'                : [sklim_directory+'/WJetsToQQ_HT_600ToInf_13TeV_1000pb_weighted.root'], 
-	'wqq'               : [sklim_directory+'/WJetsToQQ_HT180_13TeV.root'], 
-	#'wlnu'              : [sklim_directory+'WJetsToLNu_HT_70To100_13TeV.root', sklim_directory+'WJetsToLNu_HT_100To200_13TeV.root', sklim_directory+'/WJetsToLNu_HT_200To400_13TeV.root', sklim_directory+'/WJetsToLNu_HT_400To600_13TeV.root', sklim_directory+'/WJetsToLNu_HT_600To800_13TeV.root'], 
-	'wlnu_HT_100To200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_100To200_13TeV_1000pb_weighted.root"],
-	'wlnu_HT_200To400':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_200To400_13TeV_1000pb_weighted.root"],
-	'wlnu_HT_400To600':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_400To600_13TeV_1000pb_weighted.root"],
-	'wlnu_HT_600To800':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_600To800_13TeV_1000pb_weighted.root"],
-	'wlnu_HT_800To1200':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_800To1200_13TeV_1000pb_weighted.root"],
-	'wlnu_HT_1200To2500':["root://cmsxrootd-site.fnal.gov//store/user/lpchbb/zprimebits-v12.04/cvernier/WJetsToLNu_HT_1200To2500_13TeV_1000pb_weighted.root"],
+	"gghbb":[lpchbb_directory + "/zprimebits-v12.05/GluGluHToBB_M125_13TeV_powheg_pythia8_CKKW_1000pb_weighted.root"],
+	"vbfhbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/VBFHToBB_M_125_13TeV_powheg_pythia8_weightfix_all_1000pb_weighted.root"],
+	"wmhbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WminusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root"],
+	"wphbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WplusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root"],
+	"tthbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/ttHTobb_M125_13TeV_powheg_pythia8_1000pb_weighted.root"],
+	"zqqhbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/ZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root"],
+	"znunuhbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_ext_1000pb_weighted.root"],
+	"ggzqqhbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/ggZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root"],
+	"ggznunuhbb":[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/ggZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_1000pb_weighted.root"],
+	#'hqq125'            : [lpchbb_directory+'/GluGluHToBB_M125_13TeV_powheg_pythia8_all_1000pb_weighted.root'], 
+	#'vbfhqq125'         : [lpchbb_directory+'/VBFHToBB_M_125_13TeV_powheg_pythia8_weightfix_all_1000pb_weighted.root'], 
+	#'zhqq125'           : [lpchbb_directory+'/ZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root', lpchbb_directory+'/ggZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_1000pb_weighted.root', lpchbb_directory+'/ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8_ext_1000pb_weighted.root', lpchbb_directory+'/ggZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root'], 
+	#'whqq125'           : [lpchbb_directory+'/WminusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root', lpchbb_directory+'/WplusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8_1000pb_weighted.root'], 
+	#'tthqq125'          : [lpchbb_directory+'/ttHTobb_M125_13TeV_powheg_pythia8_1000pb_weighted.root'],#ttHTobb_M125_TuneCUETP8M2_ttHtranche3_13TeV_powheg_pythia8_1000pb_weighted.root'],
+	'WWTo4Q'            : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/WJetsToQQ_HT180_13TeV_1000pb_weighted.root'],
+	'ZZ'                : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ZZ_13TeV_pythia8.root'],
+	'WZ'                : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/WZ_13TeV_pythia8.root'], 
+	'zqq'               : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/DYJetsToQQ_HT180_13TeV_1000pb_weighted.root'],
+	'zll'               : [lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/DYJetsToLL_M_50_13TeV_ext.root"],
+	'ST_t_antitop'      : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root'],
+	'ST_t_top'          : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root'],
+	'ST_tW_antitop'     : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4_1000pb_weighted.root'],
+	'ST_tW_top'         : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ST_tW_top_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4_1000pb_weighted.root'], 
+	#'W'                : [lpchbb_directory+'/WJetsToQQ_HT_600ToInf_13TeV_1000pb_weighted.root'], 
+	'wqq'               : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/WJetsToQQ_HT180_13TeV_1000pb_weighted.root'], 
+	#'wlnu'              : [lpchbb_directory+'WJetsToLNu_HT_70To100_13TeV.root', lpchbb_directory+'WJetsToLNu_HT_100To200_13TeV.root', lpchbb_directory+'/WJetsToLNu_HT_200To400_13TeV.root', lpchbb_directory+'/WJetsToLNu_HT_400To600_13TeV.root', lpchbb_directory+'/WJetsToLNu_HT_600To800_13TeV.root'], 
+	'wlnu_HT_100To200':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_100To200_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_200To400':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_200To400_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_400To600':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_400To600_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_600To800':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_600To800_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_800To1200':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_800To1200_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_1200To2500':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_1200To2500_13TeV_1000pb_weighted.root"],
 
-	#'TTbar'            : [sklim_directory+'/TTJets_13TeV_1000pb_weighted.root'], #MadGraph is the old default 
-	'tqq'             : [sklim_directory+'/TT_powheg.root'], #Powheg is the new default 
-	"QCD_HT100to200"    : [sklim_directory+'/QCD_HT100to200_13TeV_1000pb_weighted.root'],
-	"QCD_HT200to300"    : [sklim_directory+'/QCD_HT200to300_13TeV_all_1000pb_weighted.root'],
-	"QCD_HT300to500"    : [sklim_directory+'/QCD_HT300to500_13TeV_all_1000pb_weighted.root'],
-	"QCD_HT500to700"    : [sklim_directory+'/QCD_HT500to700_13TeV_ext_1000pb_weighted.root'],
-	"QCD_HT700to1000"   : [sklim_directory+'/QCD_HT700to1000_13TeV_ext_1000pb_weighted.root'],
-	"QCD_HT1000to1500"  : [sklim_directory+'/QCD_HT1000to1500_13TeV_all_1000pb_weighted.root'],
-	"QCD_HT1500to2000"  : [sklim_directory+'/QCD_HT1500to2000_13TeV_all_1000pb_weighted.root'],
-	"QCD_HT2000toInf"   : [sklim_directory+'/QCD_HT2000toInf_13TeV_1000pb_weighted.root'],
-	"JetHTRun2016B":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016B.txt"))],
-	"JetHTRun2016C":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016C.txt"))],
-	"JetHTRun2016D":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016D.txt"))],
-	"JetHTRun2016E":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016E.txt"))],
-	"JetHTRun2016F":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016F.txt"))],
-	"JetHTRun2016G":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016G.txt"))],
-	"JetHTRun2016H":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/sklim_directory/cmslpc/JetHTRun2016H.txt"))],
-	'SingleMuRun2016B': [sklim_directory+'/SingleMuonRun2016B_03Feb2017_ver1_v1_fixtrig.root', sklim_directory+'/SingleMuonRun2016B_03Feb2017_ver2_v2_fixtrig.root'], 
-	'SingleMuRun2016C': [sklim_directory+'/SingleMuonRun2016C_03Feb2017_v1_fixtrig.root'], 
-	'SingleMuRun2016D': [sklim_directory+'/SingleMuonRun2016D_03Feb2017_v1_fixtrig.root'],
-	'SingleMuRun2016E': [sklim_directory+'/SingleMuonRun2016E_03Feb2017_v1_fixtrig.root'],
-	'SingleMuRun2016F': [sklim_directory+'/SingleMuonRun2016F_03Feb2017_v1_fixtrig.root'], 
-	'SingleMuRun2016G': [sklim_directory+'/SingleMuonRun2016G_03Feb2017_v1_fixtrig.root'], 
-	'SingleMuRun2016H': [sklim_directory+'/SingleMuonRun2016H_03Feb2017_ver2_v1_fixtrig.root', sklim_directory+'/SingleMuonRun2016H_03Feb2017_ver3_v1_fixtrig.root'],
+	#'TTbar'            : [lpchbb_directory+'/TTJets_13TeV_1000pb_weighted.root'], #MadGraph is the old default 
+	'tqq'             : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/TT_powheg_1000pb_weighted.root'], #Powheg is the new default 
+	#"QCD_HT100to200"    : [lpchbb_directory+'/QCD_HT100to200_13TeV_1000pb_weighted.root'],
+	#"QCD_HT200to300"    : [lpchbb_directory+'/QCD_HT200to300_13TeV_all_1000pb_weighted.root'],
+	#"QCD_HT300to500"    : [lpchbb_directory+'/QCD_HT300to500_13TeV_all_1000pb_weighted.root'],
+	#"QCD_HT500to700"    : [lpchbb_directory+'/QCD_HT500to700_13TeV_ext_1000pb_weighted.root'],
+	#"QCD_HT700to1000"   : [lpchbb_directory+'/QCD_HT700to1000_13TeV_ext_1000pb_weighted.root'],
+	#"QCD_HT1000to1500"  : [lpchbb_directory+'/QCD_HT1000to1500_13TeV_all_1000pb_weighted.root'],
+	#"QCD_HT1500to2000"  : [lpchbb_directory+'/QCD_HT1500to2000_13TeV_all_1000pb_weighted.root'],
+	#"QCD_HT2000toInf"   : [lpchbb_directory+'/QCD_HT2000toInf_13TeV_1000pb_weighted.root'],
+	#"JetHTRun2016B":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/lpchbb_directory/cmslpc/JetHTRun2016B.txt"))],
+	#"JetHTRun2016C":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/lpchbb_directory/cmslpc/JetHTRun2016C.txt"))],
+	#"JetHTRun2016D":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/lpchbb_directory/cmslpc/JetHTRun2016D.txt"))],
+	#"JetHTRun2016E":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/lpchbb_directory/cmslpc/JetHTRun2016E.txt"))],
+	#"JetHTRun2016F":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/lpchbb_directory/cmslpc/JetHTRun2016F.txt"))],
+	#"JetHTRun2016G":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/lpchbb_directory/cmslpc/JetHTRun2016G.txt"))],
+	#"JetHTRun2016H":[x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/lpchbb_directory/cmslpc/JetHTRun2016H.txt"))],
+	#'SingleMuRun2016B': [lpchbb_directory+'/SingleMuonRun2016B_03Feb2017_ver1_v1_fixtrig.root', lpchbb_directory+'/SingleMuonRun2016B_03Feb2017_ver2_v2_fixtrig.root'], 
+	#'SingleMuRun2016C': [lpchbb_directory+'/SingleMuonRun2016C_03Feb2017_v1_fixtrig.root'], 
+	#'SingleMuRun2016D': [lpchbb_directory+'/SingleMuonRun2016D_03Feb2017_v1_fixtrig.root'],
+	#'SingleMuRun2016E': [lpchbb_directory+'/SingleMuonRun2016E_03Feb2017_v1_fixtrig.root'],
+	#'SingleMuRun2016F': [lpchbb_directory+'/SingleMuonRun2016F_03Feb2017_v1_fixtrig.root'], 
+	#'SingleMuRun2016G': [lpchbb_directory+'/SingleMuonRun2016G_03Feb2017_v1_fixtrig.root'], 
+	#'SingleMuRun2016H': [lpchbb_directory+'/SingleMuonRun2016H_03Feb2017_ver2_v1_fixtrig.root', lpchbb_directory+'/SingleMuonRun2016H_03Feb2017_ver3_v1_fixtrig.root'],
 }
+for mass in signal_model_masses["Sbb"]:
+	skims["Sbb{}".format(mass)] = [lpchbb_directory + "/zprimebits-v12.05/Spin0_ggPhibb1j_g1_{}_Scalar_1000pb_weighted.root".format(mass)]
+for mass in signal_model_masses["PSbb"]:
+	skims["PSbb{}".format(mass)] = [lpchbb_directory + "/zprimebits-v12.05/Spin0_ggPhibb1j_g1_{}_PseudoScalar_1000pb_weighted.root".format(mass)]
+
 for mass in [50,75,100,125,150,200,250,300,400,500]:
 	sklims["DMSbb{}".format(mass)] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/cmslpc/DMSpin0_ggPhibb1j_{}.txt".format(mass)))]
 	#sklims["Sbb{}".format(mass)] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/Spin0_ggPhi12j_g1_{}_Scalar_13TeV_madgraph.txt".format(mass)))]

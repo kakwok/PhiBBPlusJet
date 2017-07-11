@@ -186,7 +186,7 @@ if "uscms" in os.path.expandvars("$HOME"):
     for sample_name in sorted(tfiles.keys()):
         anter_nevents[sample_name] = 0
         for filename in tfiles[sample_name]:
-            f = TFile(filename, "READ")
+            f = TFile.Open(filename, "READ")
             t = f.Get("otree")
             anter_nevents[sample_name] += t.GetEntriesFast()
             f.Close()

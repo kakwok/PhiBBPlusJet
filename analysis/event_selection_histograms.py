@@ -655,10 +655,10 @@ if __name__ == "__main__":
 			elif args.all_lxplus:
 				# lxplus: JetHT, SingleMuon, QCD, signal
 				supersamples = ["data_obs", "data_singlemu", "qcd"]
-				supersamples.extend(config.signal_names)
 				args.skim_inputs = True
 			elif args.all_cmslpc:
 				supersamples = ["stqq", "tqq", "wqq", "zqq", "zll", "wlnu", "vvqq", "hbb"]
+				supersamples.extend(config.signal_names)
 				args.skim_inputs = False
 			samples = [] 
 			for supersample in supersamples:
@@ -915,6 +915,9 @@ if __name__ == "__main__":
 						pass_histogram_name = "h_{}_{}_pass".format(selection_prefix, args.jet_type)
 						fail_histogram_name = "h_{}_{}_fail".format(selection_prefix, args.jet_type)
 						nevents_histogram_name = "h_{}_{}_pass_nevents".format(selection_prefix, args.jet_type)
+						if supersample in ["wqq", "zqq", "hbb"] or "Sbb" in supersample:
+							pass_histogram_name += "_matched"
+							fail_histogram_name += "_matched"
 					this_pass_histogram = input_file.Get(pass_histogram_name)
 					this_fail_histogram = input_file.Get(fail_histogram_name)
 					this_pass_histogram_syst = {}
@@ -926,6 +929,9 @@ if __name__ == "__main__":
 						else:
 							pass_histogram_name = "h_{}_{}_pass_{}".format(selection, args.jet_type, systematic)
 							fail_histogram_name = "h_{}_{}_fail_{}".format(selection, args.jet_type, systematic)
+							if supersample in ["wqq", "zqq", "hbb"] or "Sbb" in supersample:
+								pass_histogram_name += "_matched"
+								fail_histogram_name += "_matched"
 						this_pass_histogram_syst[systematic] = input_file.Get(pass_histogram_name)
 						this_fail_histogram_syst[systematic] = input_file.Get(fail_histogram_name)
 					if supersample in config.background_names or supersample in config.signal_names:
@@ -1034,7 +1040,7 @@ if __name__ == "__main__":
 									#	lumi_sf = 0.
 									
 									# Actually, maybe it's easier to normalize to xs*BR*A(filter)=1pb
-									print "\tNormalizing signal sample {} to xs*BR*A=1pb"
+									print "\tNormalizing signal sample {} to xs*BR*A=1pb".format(supersample)
 									if n_input_events > 0:
 										print sample
 										lumi_sf = luminosity * cross_sections[sample] / n_input_events

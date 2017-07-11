@@ -301,6 +301,7 @@ cross_sections = {
 "WplusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8":		8.400E-01*(1.-3.*0.108535)*5.824E-01,
 "ttHTobb_M125_13TeV_powheg_pythia8":			5.071E-01*5.824E-01,
 "ttHTobb_M125_TuneCUETP8M2_ttHtranche3_13TeV_powheg_pythia8":	5.071E-01*5.824E-01,
+"ggZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8":			1.227E-01*5.82E-01*0.6991,
 "ggZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8":			1.227E-01*5.824E-01*0.201030,
 "ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8":			8.839E-01*5.824E-01*0.201030,
 "ZH_HToBB_ZToNuNu_M125_13TeV_powheg_herwigpp":			8.839E-01*5.824E-01*0.201030,
@@ -392,3 +393,13 @@ cross_sections = {
 "Spin0_ggPhi12j_g1_500_PseudoScalar":1,
 
 }
+
+# Aliases
+cross_sections["gghbb"] = cross_sections["GluGluHToBB_M125_13TeV_powheg_pythia8"]
+cross_sections["vbfhbb"] = cross_sections["VBFHToBB_M_125_13TeV_powheg_pythia8_weightfix"]
+cross_sections["wphbb"] = cross_sections["WplusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8"]
+cross_sections["wmhbb"] = cross_sections["WminusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8"]
+cross_sections["zqqhbb"] = cross_sections["ZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8"]
+cross_sections["znunuhbb"] = cross_sections["ZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8"]
+cross_sections["ggzqqhbb"] = cross_sections["ggZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8"]
+cross_sections["ggznunuhbb"] = cross_sections["ggZH_HToBB_ZToNuNu_M125_13TeV_powheg_pythia8"]
