@@ -4,6 +4,16 @@ from ROOT import *
 import DAZSLE.PhiBBPlusJet.analysis_configuration as config
 from multiprocessing import Pool
 
+
+
+def GetNEvents(filename, treename):
+    f = TFile.Open(filename, "READ")
+    t = f.Get(treename)
+    this_nevents = t.GetEntriesFast()
+    f.Close()
+    return this_nevents
+
+
 if "uscms" in os.path.expandvars("$HOME"):
     idir = "root://cmseos.fnal.gov//eos/uscms/store/user/lpchbb/zprimebits-v12.04/norm2/cvernier/"
     idir_muon = "root://cmseos.fnal.gov//eos/uscms/store/user/lpchbb/zprimebits-v12.04/cvernier/"
@@ -208,12 +218,3 @@ else:
 
     for supersample in sorted(config.supersamples):
         print "{} : {}".format(supersample, my_nevents[supersample])
-
-
-def GetNEvents(filename, treename):
-    f = TFile.Open(filename, "READ")
-    t = f.Get(treename)
-    this_nevents = t.GetEntriesFast()
-    f.Close()
-    return this_nevents
-
