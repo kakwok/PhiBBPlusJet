@@ -205,7 +205,7 @@ else:
                 for filename in config.skims[sample]:
                     print "[debug] Openining " + filename
                     f = TFile.Open(filename, "READ")
-                    t = f.Get("otree")
+                    t = f.Get("Events")
                     my_nevents[supersample] += t.GetEntriesFast()
                     f.Close()
 
