@@ -202,7 +202,7 @@ else:
         my_nevents[supersample] = 0
         for sample in config.samples[supersample]:
             if sample in config.skims:
-                for filename in config.sklims[sample]:
+                for filename in config.skims[sample]:
                     print "[debug] Openining " + filename
                     f = TFile.Open(filename, "READ")
                     t = f.Get("otree")
