@@ -213,7 +213,7 @@ else:
         my_nevents[supersample] = 0
         for sample in config.samples[supersample]:
             if sample in config.skims:
-                pool = Pool(4).map(GetNEvents, config.skims[sample])
+                pool = Pool(4).map(GetNEvents, [(x, "Events") for x in config.skims[sample]])
                 my_nevents[supersample] += sum(pool)
 
     for supersample in sorted(config.supersamples):
