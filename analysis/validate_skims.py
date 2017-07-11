@@ -6,9 +6,9 @@ from multiprocessing import Pool
 
 
 
-def GetNEvents(filename, treename):
-    f = TFile.Open(filename, "READ")
-    t = f.Get(treename)
+def GetNEvents(args):
+    f = TFile.Open(args[0], "READ")
+    t = f.Get(args[1])
     this_nevents = t.GetEntriesFast()
     f.Close()
     return this_nevents
