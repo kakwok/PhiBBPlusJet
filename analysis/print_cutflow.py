@@ -16,68 +16,112 @@ seaborn = Root.SeabornInterface()
 seaborn.Initialize()
 
 formatted_samples = {}
-formatted_labels = {}
+formatted_labels = {
+	"SR":{
+		"Inclusive":"Inclusive",
+		"Min_AK8Puppijet0_pt":"$p_{\\mathrm{T}}>\SI{450}{\\giga\\electronvolt}$",
+		"Min_CA15Puppijet0_pt":"$p_{\\mathrm{T}}>\SI{450}{\\giga\\electronvolt}$",
+		"Min_AK8Puppijet0_msd_puppi":"$m_{SD}>\SI{40}{\\giga\\electronvolt}$",
+		"Min_CA15Puppijet0_msd_puppi":"$m_{SD}>\SI{40}{\\giga\\electronvolt}$",
+		"AK8Puppijet0_isTightVJet":"Tight VJet",
+		"CA15Puppijet0_isTightVJet":"Tight VJet",
+		"Max_neleLoose":"$n_{e}==0$",
+		"Max_nmuLoose":"$n_{\\mu}==0$",
+		"Max_ntau":"$n_{\\tau}==0$",
+		"Max_pfmet":"PF MET$<\\SI{140}{\\giga\\electronvolt}$",
+		"Max_AK8Puppijet0_N2DDT":"$N_{2}^{\\mathrm{DDT}}<0$",
+		"Max_CA15Puppijet0_N2DDT":"$N_{2}^{\\mathrm{DDT}}<0$",
+	},
+	"muCR":{
+		"Inclusive":"Inclusive",
+		"Min_AK8Puppijet0_pt":"$p_{\\mathrm{T}}>\\SI{400}{\\giga\\electronvolt}$",
+		"Min_CA15Puppijet0_pt":"$p_{\\mathrm{T}}>\\SI{400}{\\giga\\electronvolt}$",
+		"Min_AK8Puppijet0_msd_puppi":"$m_{\\mathrm{SD}}>\\SI{40}{\\giga\\electronvolt}$",
+		"Min_CA15Puppijet0_msd_puppi":"$m_{\\mathrm{SD}}>\\SI{40}{\\giga\\electronvolt}$",
+		"AK8Puppijet0_isTightVJet":"Tight VJet",
+		"CA15Puppijet0_isTightVJet":"Tight VJet",
+		"Max_neleLoose":"$n_{e}==0$",
+		"Max_ntau":"$n_{\\tau}==0$",
+		"Min_nmuLoose":"$n_{\\mu}\\geq1$",
+		"Max_nmuLoose":"$n_{\\mu}\\leq1$",
+		"Min_vmuoLoose0_pt":"$p_{\\mathrm{T}}(\\mu)>\\SI{55}{\\giga\\electronvolt}$",
+		"Max_vmuoLoose0_abseta":"$|\\eta(\\mu)|<2.1$",
+		"Min_dphi_mu_jet":"$\\Delta\\phi(\\mu,j)<\\frac{2\\pi}{3}$",
+		"Min_nAK4PuppijetsMPt50dR08_0":"Min\_nAK4PuppijetsMPt50dR08\_0",
+		"Max_AK8Puppijet0_N2DDT":"$N_{2}^{\\mathrm{DDT}}<0$",
+		"Max_CA15Puppijet0_N2DDT":"$N_{2}^{\\mathrm{DDT}}<0$",
+	}
+}
 
 # Convert a cutflow histogram to a latex table row
 def cutflow_histogram_to_row(name, hist):
 	if name in formatted_samples:
-		row_string = "\t\t" + formatted_samples[name]
+		row_string = "\t\t" + formatted_samples[name].replace("_","\_")
 	else:
-		row_string = "\t\t" + name
+		row_string = "\t\t" + name.replace("_","\_")
 	for bin in xrange(1, hist.GetNbinsX() + 1):
-		if not hist.GetXaxis().GetBinLabel(bin).EqualTo(""):
-			row_string += "\t&\t" + str(hist.GetBinContent(bin))
+		if hist.GetXaxis().GetBinLabel(bin) != "":
+			row_string += "\t&\t" + str(int(hist.GetBinContent(bin)))
 	row_string += "\t\\\\"
 	return row_string
 
-def get_cutflow_headers(hist):
+def get_cutflow_headers(hist, region):
 	header_string = "\t\t Sample"
 	columns = 1
 	for bin in xrange(1, hist.GetNbinsX() + 1):
-		if not hist.GetXaxis().GetBinLabel(bin).EqualTo(""):
+		if hist.GetXaxis().GetBinLabel(bin) != "":
 			raw_label = hist.GetXaxis().GetBinLabel(bin)
-			if raw_label in formatted_labels:
-				header_string += "\t&\t" + formatted_labels[raw_label]
+			if raw_label in formatted_labels[region]:
+				header_string += "\t&\t" + formatted_labels[region][raw_label]
 			else:
 				header_string += "\t&\t" + raw_label
 			columns += 1
+	header_string += "\\\\"
+	print header_string
 	return header_string, columns
 
 if __name__ == "__main__":
 	jet_types = ["AK8", "CA15"]
 	regions = ["SR", "muCR"]
-	samples = {
-		"SR":["data_obs", "Sbb100", "Sbb200", "Sbb300", "qcd", "tqq", "zqq", "wqq", "hbb"]
+	supersamples = {
+		"SR":["data_obs", "Sbb100", "Sbb200", "Sbb300", "qcd", "tqq", "zqq", "wqq", "hbb"],
 		"muCR":["data_singlemu", "tqq", "qcd", "wlnu", "zll"]
 	}
 	for jet_type in jet_types:
 		for region in regions:
 			# Make latex table
-			table_file = open("$HOME/DAZSLE/data/EventSelection/cutflows/{}_{}.tex".format(region, jet_type))
+			table_file = open(os.path.expandvars("$HOME/DAZSLE/data/EventSelection/cutflows/{}_{}.tex".format(region, jet_type)), 'w')
 			cutflow_histograms = {}
 			row_strings = {}
 			header_string = None
 			columns = 0
-			for sample in samples[region]:
-				f = TFile(config.get_histogram_file(region, jet_type), "READ")
-				cutflow_histograms[sample] = f.Get("h_CutFlowCounter_{}_weighted".format(region))
-				cutflow_histograms[sample].SetName("h_CutFlowCounter_{}_{}_{}".format(jet_type, region, sample))
-				cutflow_histograms[sample].SetDirectory(0)
-				row_strings[sample] = cutflow_histogram_to_row(sample, cutflow_histograms[sample])
-				if not header_string:
-					header_string, coluns = get_cutflow_headers(cutflow_histograms[sample])
-				f.Close()
+			for supersample in supersamples[region]:
+				for sample in config.samples[supersample]:
+					fname = os.path.expandvars("$HOME/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, jet_type))
+					f = TFile(fname, "READ")
+					hname = "CutFlowCounter_EventSelector_{}".format(region)
+					cutflow_histograms[sample] = f.Get(hname)
+					if not cutflow_histograms[sample]:
+						print "ERROR : Unable to get histogram {} from file {}".format(hname, f.GetPath())
+						sys.exit(1)
+					cutflow_histograms[sample].SetName("h_CutFlowCounter_{}_{}_{}".format(jet_type, region, sample))
+					cutflow_histograms[sample].SetDirectory(0)
+					row_strings[sample] = cutflow_histogram_to_row(sample, cutflow_histograms[sample])
+					if not header_string:
+						header_string, columns = get_cutflow_headers(cutflow_histograms[sample], region)
+					f.Close()
 			table_file.write("\\begin{table}\n")
-			table_file.write("\t\\begin{tabular}{|c|" + "c|".join(["" for x in xrange(columns)]) + "\n")
+			table_file.write("\t\\begin{tabular}{|c|" + "c|".join(["" for x in xrange(columns)]) + "}\n")
 			table_file.write("\t\t\\hline\n")
 			table_file.write(header_string + "\n")
 			table_file.write("\t\t\\hline\n")
-			for sample in samples[region]:
-				table_file.write(row_strings[sample] + "\n")
-				table_file.write("\t\t\\hline\n")
+			for supersample in supersamples[region]:
+				for sample in config.samples[supersample]:
+					table_file.write(row_strings[sample] + "\n")
+					table_file.write("\t\t\\hline\n")
 			table_file.write("\t\\end{tabular}\n")
 			table_file.write("\\end{table}\n")
-			table_file.Close()
+			table_file.close()
 
 			# Make pretty plot
-			cutflow_canvas = 
+			#cutflow_canvas = 

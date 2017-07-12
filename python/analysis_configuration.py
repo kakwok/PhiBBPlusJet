@@ -46,7 +46,7 @@ samples = {
 	"zqq":["zqq"],
 	"zll":["zll"],
 	"wlnu":["wlnu"],
-	"wlnu":['wlnu_HT_100To200','wlnu_HT_200To400','wlnu_HT_400To600','wlnu_HT_600To800','wlnu_HT_800To1200','wlnu_HT_1200To2500'],
+	"wlnu":['wlnu_HT_100To200','wlnu_HT_200To400','wlnu_HT_400To600','wlnu_HT_600To800','wlnu_HT_800To1200','wlnu_HT_1200To2500','wlnu_HT_2500ToInf'],
 	"vvqq":["WWTo4Q", "WZ", "ZZ"],
 	#"vvqq":["vvqq"],
 	"hbb":["gghbb", "vbfhbb" "wmhbb", "wphbb", "tthbb", "zqqhbb", "znunuhbb", "ggzqqhbb", "ggznunuhbb"],#,"vbfhqq125","zhqq125","whqq125","tthqq125"
@@ -191,7 +191,7 @@ sklims = {
 	'ZZ'                : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ZZ_13TeV_pythia8_1000pb_weighted.root'],
 	'WZ'                : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/WZ_13TeV_pythia8_1000pb_weighted.root'], 
 	'zqq'               : [lpchbb_directory+'/zprimebits-v12.05/DYJetsToQQ_HT180_13TeV_1000pb_weighted.root'],
-	'zll'               : [lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/DYJetsToLL_M_50_13TeV_ext.root"],
+	'zll'               : [lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/DYJetsToLL_M_50_13TeV_ext_1000pb_weighted.root"],
 	'ST_t_antitop'      : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root'],
 	'ST_t_top'          : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin_1000pb_weighted.root'],
 	'ST_tW_antitop'     : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4_1000pb_weighted.root'],
@@ -205,6 +205,7 @@ sklims = {
 	'wlnu_HT_600To800':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_600To800_13TeV_1000pb_weighted.root"],
 	'wlnu_HT_800To1200':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_800To1200_13TeV_1000pb_weighted.root"],
 	'wlnu_HT_1200To2500':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_1200To2500_13TeV_1000pb_weighted.root"],
+	'wlnu_HT_2500ToInf':[lpchbb_directory + "/zprimebits-v12.04/norm2/cvernier/WJetsToLNu_HT_2500ToInf_13TeV_1000pb_weighted.root"],
 
 	#'TTbar'            : [lpchbb_directory+'/TTJets_13TeV_1000pb_weighted.root'], #MadGraph is the old default 
 	'tqq'             : [lpchbb_directory+'/zprimebits-v12.04/norm2/cvernier/TT_powheg_1000pb_weighted.root'], #Powheg is the new default 
