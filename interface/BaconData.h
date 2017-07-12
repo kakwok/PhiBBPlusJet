@@ -42,7 +42,8 @@ public:
 	Double_t pfmet_JERUp;
 	Double_t pfmet_JERDown;
 private:
-	TH1D* n2_ddt_transformation_;
+	TH1D* n2_ddt_transformation_AK8_;
+	TH1D* n2_ddt_transformation_CA15_;
 	TF1* puppi_corr_gen_;
 	TF1* puppi_corr_reco_cen_;
 	TF1* puppi_corr_reco_for_;

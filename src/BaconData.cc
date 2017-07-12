@@ -5,11 +5,17 @@
 
 BaconData::BaconData(TTree *tree) : BaconTree(tree) {
 	// Histogram for N2 DDT
-	TFile *f_n2ddt = new TFile("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ZqqJet/h3_n2ddt_26eff_36binrho11pt_Spring16.root","read");
-	n2_ddt_transformation_ = (TH1D*)f_n2ddt->Get("h2ddt");
-	n2_ddt_transformation_->SetDirectory(0);
-	f_n2ddt->Close();
-	delete f_n2ddt;
+	TFile *f_n2ddt_AK8 = new TFile("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/ZqqJet/h3_n2ddt_26eff_36binrho11pt_Spring16.root","read");
+	n2_ddt_transformation_AK8_ = (TH1D*)f_n2ddt->Get("h2ddt");
+	n2_ddt_transformation_AK8_->SetDirectory(0);
+	f_n2ddt_AK8->Close();
+	delete f_n2ddt_AK8;
+
+	TFile *f_n2ddt_CA15 = new TFile("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/analysis/PbbJet/h3_n2ddt_CA15.root","read");
+	n2_ddt_transformation_CA15_ = (TH1D*)f_n2ddt->Get("h2ddt");
+	n2_ddt_transformation_CA15_->SetDirectory(0);
+	f_n2ddt_CA15->Close();
+	delete f_n2ddt_CA15;
 
 	// PUPPI weight functions
 	// Based on https://github.com/thaarres/PuppiSoftdropMassCorr Summer16
@@ -87,7 +93,7 @@ Int_t BaconData::GetEntry(Long64_t entry) {
 	} else if (pt_index <= 0) {
 		pt_index = 1;
 	}
-	AK8Puppijet0_N2DDT = AK8Puppijet0_N2sdb1 - n2_ddt_transformation_->GetBinContent(rho_index, pt_index);
+	AK8Puppijet0_N2DDT = AK8Puppijet0_N2sdb1 - n2_ddt_transformation_AK8_->GetBinContent(rho_index, pt_index);
 
 	// CA15Puppijet0_N2DDT
 	rho_index = n2_ddt_transformation_->GetXaxis()->FindBin(CA15Puppijet0_rho);
@@ -102,7 +108,7 @@ Int_t BaconData::GetEntry(Long64_t entry) {
 	} else if (pt_index <= 0) {
 		pt_index = 1;
 	}
-	CA15Puppijet0_N2DDT = CA15Puppijet0_N2sdb1 - n2_ddt_transformation_->GetBinContent(rho_index, pt_index);
+	CA15Puppijet0_N2DDT = CA15Puppijet0_N2sdb1 - n2_ddt_transformation_CA15_->GetBinContent(rho_index, pt_index);
 
 
 	// MET JES/JER
