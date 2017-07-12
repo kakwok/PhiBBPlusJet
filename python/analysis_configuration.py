@@ -49,7 +49,7 @@ samples = {
 	"wlnu":['wlnu_HT_100To200','wlnu_HT_200To400','wlnu_HT_400To600','wlnu_HT_600To800','wlnu_HT_800To1200','wlnu_HT_1200To2500','wlnu_HT_2500ToInf'],
 	"vvqq":["WWTo4Q", "WZ", "ZZ"],
 	#"vvqq":["vvqq"],
-	"hbb":["gghbb", "vbfhbb" "wmhbb", "wphbb", "tthbb", "zqqhbb", "znunuhbb", "ggzqqhbb", "ggznunuhbb"],#,"vbfhqq125","zhqq125","whqq125","tthqq125"
+	"hbb":["gghbb", "vbfhbb", "wmhbb", "wphbb", "tthbb", "zqqhbb", "znunuhbb", "ggzqqhbb", "ggznunuhbb"],#,"vbfhqq125","zhqq125","whqq125","tthqq125"
 	"data_obs":["JetHTRun2016B","JetHTRun2016C","JetHTRun2016D","JetHTRun2016E","JetHTRun2016F","JetHTRun2016G","JetHTRun2016H"],
 	"data_singlemu":["SingleMuRun2016B","SingleMuRun2016C","SingleMuRun2016D","SingleMuRun2016E","SingleMuRun2016F","SingleMuRun2016G","SingleMuRun2016H"],
 	"DMSbb50":["DMSbb50"],
