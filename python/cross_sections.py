@@ -88,6 +88,7 @@ cross_sections = {
 "wlnu_HT_600To800":                                                                   12.05*1.21,
 "wlnu_HT_800To1200":                                                                   5.501*1.21,
 "wlnu_HT_1200To2500":                                                                  1.329*1.21,
+"wlnu_HT_2500ToInf":                                                                   0.03216*1.21,
 "DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8":                     18610.0,
 "DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":                147.40*1.23,
 "DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8":                 40.99*1.23,
