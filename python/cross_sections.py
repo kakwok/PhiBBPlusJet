@@ -397,6 +397,7 @@ cross_sections = {
 # Aliases
 cross_sections["gghbb"] = cross_sections["GluGluHToBB_M125_13TeV_powheg_pythia8"]
 cross_sections["vbfhbb"] = cross_sections["VBFHToBB_M_125_13TeV_powheg_pythia8_weightfix"]
+cross_sections["tthbb"] = cross_sections["ttHTobb_M125_13TeV_powheg_pythia8"]
 cross_sections["wphbb"] = cross_sections["WplusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8"]
 cross_sections["wmhbb"] = cross_sections["WminusH_HToBB_WToQQ_M125_13TeV_powheg_pythia8"]
 cross_sections["zqqhbb"] = cross_sections["ZH_HToBB_ZToQQ_M125_13TeV_powheg_pythia8"]
