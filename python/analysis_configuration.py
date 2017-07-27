@@ -19,23 +19,35 @@ background_names = [
 ]
 # First 12.05 signal processing. Some samples are missing.
 signal_names = []
+simulated_signal_names = []
 signal_models = ["Sbb", "PSbb"]
-signal_model_masses = {}
-signal_model_masses["Sbb"] = [50,100,125,200,300,350,400,500]  # 400,500
-signal_model_masses["PSbb"] = [50,100,125,200,300,350,400,500] # 125, 400,500
+signal_model_masses = [50,100,125,200,300,350,400,500]  # 400,500
 signal_masses = {}
 #signal_masses = [25,50,75,100,125,150,200,250,300,350,400,500,600,800]
 #signal_masses = [50,75,100,125,150,200,250,300,350,400,500,600,800,1000]
 #signal_masses = [50,75,100,125,150,200,250,300,400,500]
 for model in ["Sbb", "PSbb"]:
-	for mass in signal_model_masses[model]:
-		signal_names.append("{}{}".format(model, mass))
-		signal_masses["{}{}".format(model, mass)] = mass
+	for mass in signal_model_masses:
+		this_signal_name = "{}{}".format(model, mass)
+		signal_names.append(this_signal_name)
+		simulated_signal_names.append(this_signal_name)
+		signal_masses[this_signal_name] = mass
 data_names = ["data_obs", "data_singlemu"]
 supersamples = []
 supersamples.extend(background_names)
 supersamples.extend(signal_names)
 supersamples.extend(data_names)
+
+interpolated_signal_masses = [x for x in range(50, 525, 25) if not x in signal_model_masses]
+interpolated_signal_names = []
+for model in ["Sbb", "PSbb"]:
+	interpolated_signal_masses[model] = 
+	for mass in interpolated_signal_masses:
+		this_signal_name = "{}{}".format(model, mass)
+		signal_names.append(this_signal_name)
+		interpolated_signal_names.append(this_signal_name)
+		signal_masses[this_signal_name] = mass
+
 
 # Sample names. Dictionary is [signal/background/data name]:[list of samples] 
 samples = {

@@ -21,7 +21,7 @@ gStyle.SetPaintTextFormat("1.3f")
 def PlotOptimizationEfficiencies(jet_type):
 	tau21_values = [0.4, 0.45, 0.5, 0.525, 0.55, 0.575, 0.6, 0.65, 0.7]
 	dcsv_values = [0.7, 0.75, 0.8, 0.85, 0.875, 0.9, 0.925, 0.95, 0.975]
-	for signal in config.signal_names:
+	for signal in config.simulated_signal_names:
 		signal_mass = config.signal_masses[signal]
 		if "PSbb" in signal:
 			model = "PSbb"
@@ -44,8 +44,8 @@ def PlotOptimizationEfficiencies(jet_type):
 		c.SaveAs("/uscms/home/dryu/DAZSLE/data/LimitSetting/figures/Optimization/{}.pdf".format(c.GetName()))
 
 def PlotEfficiencyVsMass(model, jet_type):
-	tg_eff = TGraph(len(config.signal_model_masses[model]))
-	for i, mass in enumerate(config.signal_model_masses[model]):
+	tg_eff = TGraph(len(config.signal_model_masses))
+	for i, mass in enumerate(config.signal_model_masses):
 		tg_eff.SetPoint(i, mass, signal_efficiencies[jet_type][model][mass])
 	c = TCanvas("c_signal_eff_{}_{}".format(model, jet_type))
 	tg_eff.GetXaxis().SetTitle(model + " mass [GeV]")

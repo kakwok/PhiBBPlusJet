@@ -131,7 +131,7 @@ if __name__ == "__main__":
 		samples = []
 		sample_files = {} # Dictionary is sample : [list of files in sample]
 		if args.all:
-			supersamples = config.signal_names
+			supersamples = config.simulated_signal_names
 			samples = [] 
 			for supersample in supersamples:
 				samples.extend(config.samples[supersample])

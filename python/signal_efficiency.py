@@ -15,7 +15,7 @@ if __name__ == "__main__":
 	# Get the signal efficiencies from cutflow histograms and print
 	jet_types = ["AK8", "CA15"]
 	models = ["Sbb", "PSbb"]
-	masses = {"Sbb":config.signal_model_masses["Sbb"], "PSbb":config.signal_model_masses["PSbb"]}
+	masses = {"Sbb":config.signal_model_masses, "PSbb":config.signal_model_masses}
 
 	this_signal_efficiencies = {}
 	this_signal_efficiencies_opt = {}

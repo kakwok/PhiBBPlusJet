@@ -100,25 +100,28 @@ if __name__ == "__main__":
 					fname = os.path.expandvars("$HOME/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, jet_type))
 					f = TFile(fname, "READ")
 					hname = "CutFlowCounter_EventSelector_{}".format(region)
-					cutflow_histograms[sample] = f.Get(hname)
-					if not cutflow_histograms[sample]:
+					if not f.Get(hname):
 						print "ERROR : Unable to get histogram {} from file {}".format(hname, f.GetPath())
 						sys.exit(1)
-					cutflow_histograms[sample].SetName("h_CutFlowCounter_{}_{}_{}".format(jet_type, region, sample))
-					cutflow_histograms[sample].SetDirectory(0)
-					row_strings[sample] = cutflow_histogram_to_row(sample, cutflow_histograms[sample])
-					if not header_string:
-						header_string, columns = get_cutflow_headers(cutflow_histograms[sample], region)
+					if not supersample in cutflow_histograms:
+						cutflow_histograms[supersample] = f.Get(hname).Clone()
+						cutflow_histograms[supersample].SetName("h_CutFlowCounter_{}_{}_{}".format(jet_type, region, supersample))
+						cutflow_histograms[supersample].SetDirectory(0)
+					else:
+						cutflow_histograms[supersample].Add(f.Get(hname))
 					f.Close()
+				cutflow_histograms[supersample].SetDirectory(0)
+				row_strings[supersample] = cutflow_histogram_to_row(supersample, cutflow_histograms[supersample])
+				if not header_string:
+					header_string, columns = get_cutflow_headers(cutflow_histograms[supersample], region)
 			table_file.write("\\begin{table}\n")
 			table_file.write("\t\\begin{tabular}{|c|" + "c|".join(["" for x in xrange(columns)]) + "}\n")
 			table_file.write("\t\t\\hline\n")
 			table_file.write(header_string + "\n")
 			table_file.write("\t\t\\hline\n")
 			for supersample in supersamples[region]:
-				for sample in config.samples[supersample]:
-					table_file.write(row_strings[sample] + "\n")
-					table_file.write("\t\t\\hline\n")
+				table_file.write(row_strings[supersample] + "\n")
+				table_file.write("\t\t\\hline\n")
 			table_file.write("\t\\end{tabular}\n")
 			table_file.write("\\end{table}\n")
 			table_file.close()

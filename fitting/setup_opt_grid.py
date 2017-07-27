@@ -230,7 +230,7 @@ if __name__ == "__main__":
 					input_file = ROOT.TFile(input_histogram_filename, "READ")
 					this_pass_histogram = input_file.Get("h_pass_ak8")
 					this_fail_histogram = input_file.Get("h_fail_ak8")
-					if supersample in config.background_names or supersample in config.signal_names:
+					if supersample in config.background_names or supersample in config.simulated_signal_names:
 						n_input_events = input_file.Get("h_input_nevents").Integral()
 						if n_input_events > 0:
 							#print sample

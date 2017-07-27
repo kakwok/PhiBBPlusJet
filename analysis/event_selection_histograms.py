@@ -5,6 +5,7 @@ from DAZSLE.PhiBBPlusJet.analysis_base import AnalysisBase
 import DAZSLE.PhiBBPlusJet.analysis_configuration as config
 import DAZSLE.PhiBBPlusJet.event_selections as event_selections
 from DAZSLE.PhiBBPlusJet.bacon_event_selector import *
+from DAZSLE.ZPrimePlusJet.xbb_config import analysis_parameters as params
 from math import ceil, sqrt,floor
 import array
 
@@ -26,16 +27,17 @@ seaborn = Root.SeabornInterface()
 seaborn.Initialize()
 
 class EventSelectionHistograms(AnalysisBase):
-	def __init__(self, sample_name, tree_name="otree"):
+	def __init__(self, sample_name, tree_name="otree", jet_type="AK8"):
 		super(EventSelectionHistograms, self).__init__(tree_name=tree_name)
 		self._data = BaconData(self._chain)
 		self._output_path = ""
 		self._sample_name = sample_name
 		self._input_nevents = 0
 		self._n2_ddt_cut = 0.
-		self._dcsv_cut = 0.9
+		self._dcsv_cut = params[jet_type]["DCSV"]
+		self._dcsv_cut_loose = 0.8
 		self._dcsv_min = -999.
-		self._jet_type = "AK8"
+		self._jet_type = jet_type
 		self._selections = ["Preselection", "SR", "muCR"]
 		self._do_optimization = False
 		self._data_source = "data"
@@ -121,6 +123,7 @@ class EventSelectionHistograms(AnalysisBase):
 
 			self._selection_histograms[selection].AddTH2D("pass", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 			self._selection_histograms[selection].AddTH2D("pass_unweighted", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+			self._selection_histograms[selection].AddTH2D("passloose", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 			self._selection_histograms[selection].AddTH2D("fail", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 			self._selection_histograms[selection].AddTH2D("fail_unweighted", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 
@@ -161,7 +164,9 @@ class EventSelectionHistograms(AnalysisBase):
 				if self._do_optimization:
 					for dcsv_cut in self._dcsv_cuts:
 						self._selection_histograms[selection].AddTH2D("pass_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
-						self._selection_histograms[selection].AddTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)						
+						self._selection_histograms[selection].AddTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)					
+						self._selection_histograms[selection].AddTH2D("passloose_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+
 						self._selection_histograms[selection].AddTH2D("fail_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 						self._selection_histograms[selection].AddTH2D("fail_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 
@@ -169,11 +174,15 @@ class EventSelectionHistograms(AnalysisBase):
 			if self._data_source == "simulation":
 				self._selection_histograms[selection].AddTH2D("pass_matched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 				self._selection_histograms[selection].AddTH2D("pass_unmatched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				self._selection_histograms[selection].AddTH2D("passloose_matched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				self._selection_histograms[selection].AddTH2D("passloose_unmatched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 				self._selection_histograms[selection].AddTH2D("fail_matched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 				self._selection_histograms[selection].AddTH2D("fail_unmatched", "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 				for systematic in self._weight_systematics[selection] + self._jet_systematics:
 					self._selection_histograms[selection].AddTH2D("pass_{}_matched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 					self._selection_histograms[selection].AddTH2D("pass_{}_unmatched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)					
+					self._selection_histograms[selection].AddTH2D("passloose_{}_matched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+					self._selection_histograms[selection].AddTH2D("passloose_{}_unmatched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)					
 					self._selection_histograms[selection].AddTH2D("fail_{}_matched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 					self._selection_histograms[selection].AddTH2D("fail_{}_unmatched".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)					
 
@@ -311,6 +320,7 @@ class EventSelectionHistograms(AnalysisBase):
 			pu_weight_down = self._h_pu_weight_down.GetBinContent(self._h_pu_weight_down.FindBin(npu))
 
 			k_vjets = 1.
+			k_ttbar = 1.
 			w_scale = {
 				(0, 500):1.0,
 				(500, 600):1.0,
@@ -327,6 +337,8 @@ class EventSelectionHistograms(AnalysisBase):
 						k_vjets *= w_sf
 			elif self._sample_name == 'zqq' or self._sample_name == 'DY':
 				k_vjets = self._data.kfactor * 1.45  # ==1 for not V+jets events
+			elif self._sample_name == 'tqq':
+				k_ttbar = self._data.topPtWeight
 
 			for selection in self._selections:
 				# Get weights
@@ -365,12 +377,12 @@ class EventSelectionHistograms(AnalysisBase):
 							trigger_weight_down = 1
 							trigger_weight_up = 1
 
-						event_weight = pu_weight * k_vjets * trigger_weight
+						event_weight = pu_weight * k_vjets * trigger_weight * k_ttbar
 						event_weight_syst = {}
-						event_weight_syst["TriggerUp"] = pu_weight * k_vjets * trigger_weight_up
-						event_weight_syst["TriggerDown"] = pu_weight * k_vjets * trigger_weight_down
-						event_weight_syst["PUUp"] = pu_weight_up * k_vjets * trigger_weight
-						event_weight_syst["PUDown"] = pu_weight_down * k_vjets * trigger_weight
+						event_weight_syst["TriggerUp"] = pu_weight * k_vjets * k_ttbar *trigger_weight_up
+						event_weight_syst["TriggerDown"] = pu_weight * k_vjets * k_ttbar * trigger_weight_down
+						event_weight_syst["PUUp"] = pu_weight_up * k_vjets * k_ttbar * trigger_weight
+						event_weight_syst["PUDown"] = pu_weight_down * k_vjets * k_ttbar * trigger_weight
 
 					elif "muCR" in selection:
 						mutrigweight = 1
@@ -424,16 +436,16 @@ class EventSelectionHistograms(AnalysisBase):
 								muisoweightDown = 1
 								muisoweightUp = 1
 
-						event_weight = pu_weight * k_vjets * mutrigweight * muidweight * muisoweight
+						event_weight = pu_weight * k_vjets * k_ttbar * mutrigweight * muidweight * muisoweight
 						event_weight_syst = {}
-						event_weight_syst["MuTriggerUp"] = pu_weight * k_vjets * mutrigweightUp * muidweight * muisoweight
-						event_weight_syst["MuTriggerDown"] = pu_weight * k_vjets * mutrigweightDown * muidweight * muisoweight
-						event_weight_syst["MuIDUp"] = pu_weight * k_vjets * mutrigweight * muidweightUp * muisoweight
-						event_weight_syst["MuIDDown"] = pu_weight * k_vjets * mutrigweight * muidweightDown * muisoweight
-						event_weight_syst["MuIsoUp"] = pu_weight * k_vjets * mutrigweight * muidweight * muisoweightUp
-						event_weight_syst["MuIsoDown"] = pu_weight * k_vjets * mutrigweight * muidweight * muisoweightDown
-						event_weight_syst["PUUp"] = pu_weight_up * k_vjets * mutrigweight * muidweight * muisoweight
-						event_weight_syst["PUDown"] = pu_weight_down * k_vjets * mutrigweight * muidweight * muisoweight
+						event_weight_syst["MuTriggerUp"] = pu_weight * k_vjets * k_ttbar * mutrigweightUp * muidweight * muisoweight
+						event_weight_syst["MuTriggerDown"] = pu_weight * k_vjets * k_ttbar * mutrigweightDown * muidweight * muisoweight
+						event_weight_syst["MuIDUp"] = pu_weight * k_vjets * k_ttbar * mutrigweight * muidweightUp * muisoweight
+						event_weight_syst["MuIDDown"] = pu_weight * k_vjets * k_ttbar * mutrigweight * muidweightDown * muisoweight
+						event_weight_syst["MuIsoUp"] = pu_weight * k_vjets * k_ttbar * mutrigweight * muidweight * muisoweightUp
+						event_weight_syst["MuIsoDown"] = pu_weight * k_vjets * k_ttbar * mutrigweight * muidweight * muisoweightDown
+						event_weight_syst["PUUp"] = pu_weight_up * k_vjets * k_ttbar * mutrigweight * muidweight * muisoweight
+						event_weight_syst["PUDown"] = pu_weight_down * k_vjets * k_ttbar * mutrigweight * muidweight * muisoweight
 
 				# Pick up AK8 or CA15 event variables here, to avoid mistakes later
 				if self._jet_type == "AK8":
@@ -475,6 +487,8 @@ class EventSelectionHistograms(AnalysisBase):
 					self._selection_histograms[selection].GetTH1D("pt").Fill(fatjet_pt, event_weight)
 					self._selection_histograms[selection].GetTH1D("eta").Fill(fatjet_eta, event_weight)
 					self._selection_histograms[selection].GetTH1D("rho").Fill(fatjet_rho, event_weight)
+
+					# Pass and fail histograms
 					if fatjet_dcsv > self._dcsv_cut:
 						self._selection_histograms[selection].GetTH2D("pass").Fill(fatjet_msd, fatjet_pt, event_weight)
 						self._selection_histograms[selection].GetTH2D("pass_unweighted").Fill(fatjet_msd, fatjet_pt)
@@ -518,6 +532,22 @@ class EventSelectionHistograms(AnalysisBase):
 						self._selection_histograms[selection].GetTH1D("fail_pt").Fill(fatjet_pt, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_eta").Fill(fatjet_eta, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_rho").Fill(fatjet_rho, event_weight)
+					if fatjet_dcsv > self._dcsv_cut_loose:
+						self._selection_histograms[selection].GetTH2D("passloose").Fill(fatjet_msd, fatjet_pt, event_weight)
+						if self._data_source == "simulation":
+							if vmatched:
+								self._selection_histograms[selection].GetTH2D("passloose_matched").Fill(fatjet_msd, fatjet_pt, event_weight)
+							else:
+								self._selection_histograms[selection].GetTH2D("passloose_unmatched").Fill(fatjet_msd, fatjet_pt, event_weight)
+
+						for systematic in self._weight_systematics[selection]:
+
+							self._selection_histograms[selection].GetTH2D("passloose_{}".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+							if self._data_source == "simulation":
+								if vmatched:
+									self._selection_histograms[selection].GetTH2D("passloose_{}_matched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
+								else:
+									self._selection_histograms[selection].GetTH2D("passloose_{}_unmatched".format(systematic)).Fill(fatjet_msd, fatjet_pt, event_weight_syst[systematic])
 
 					if self._do_optimization:
 						for dcsv_cut in self._dcsv_cuts:
@@ -658,7 +688,7 @@ if __name__ == "__main__":
 				args.skim_inputs = True
 			elif args.all_cmslpc:
 				supersamples = ["stqq", "tqq", "wqq", "zqq", "zll", "wlnu", "vvqq", "hbb"]
-				supersamples.extend(config.signal_names)
+				supersamples.extend(config.simulated_signal_names)
 				args.skim_inputs = False
 			samples = [] 
 			for supersample in supersamples:
@@ -898,11 +928,14 @@ if __name__ == "__main__":
 				supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq", "zll", "wlnu"]
 			else:
 				supersamples = ["data_obs", "data_singlemu", "qcd", "tqq", "wqq", "zqq", "hbb", "stqq", "vvqq"]
-			supersamples.extend(config.signal_names)
+			supersamples.extend(config.simulated_signal_names)
 			for supersample in supersamples:
 				first = True
 				pass_histograms_syst[supersample] = {}
 				fail_histograms_syst[supersample] = {}
+				use_Vmatched_histograms = (supersample in ["wqq", "zqq", "hbb"]) or ("Sbb" in supersample)
+				use_loose_template = (supersample in ["wqq", "zqq"]) # Use looser DCSV cut for pass shape, to improve statistics
+
 				for sample in config.samples[supersample]:
 					input_histogram_filename = "/uscms/home/dryu/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, args.jet_type)
 					print "Opening {}".format(input_histogram_filename)
@@ -915,11 +948,16 @@ if __name__ == "__main__":
 						pass_histogram_name = "h_{}_{}_pass".format(selection_prefix, args.jet_type)
 						fail_histogram_name = "h_{}_{}_fail".format(selection_prefix, args.jet_type)
 						nevents_histogram_name = "h_{}_{}_pass_nevents".format(selection_prefix, args.jet_type)
-						if supersample in ["wqq", "zqq", "hbb"] or "Sbb" in supersample:
+						if use_Vmatched_histograms:
 							pass_histogram_name += "_matched"
 							fail_histogram_name += "_matched"
+					if use_loose_template:
+						pass_histogram_name_normalization = pass_histogram_name
+						pass_histogram_name = pass_histogram_name.replace("pass", "passloose")
 					this_pass_histogram = input_file.Get(pass_histogram_name)
 					this_fail_histogram = input_file.Get(fail_histogram_name)
+					if use_loose_template:
+						this_pass_histogram_normalization = input_file.Get(pass_histogram_name_normalization)
 					this_pass_histogram_syst = {}
 					this_fail_histogram_syst = {}
 					for systematic in systematics[selection]:
@@ -932,9 +970,14 @@ if __name__ == "__main__":
 							if supersample in ["wqq", "zqq", "hbb"] or "Sbb" in supersample:
 								pass_histogram_name += "_matched"
 								fail_histogram_name += "_matched"
+						if use_loose_template:
+							pass_histogram_name_normalization = pass_histogram_name
+							pass_histogram_name = pass_histogram_name.replace("pass", "passloose")
 						this_pass_histogram_syst[systematic] = input_file.Get(pass_histogram_name)
 						this_fail_histogram_syst[systematic] = input_file.Get(fail_histogram_name)
-					if supersample in config.background_names or supersample in config.signal_names:
+						if use_loose_template:
+							this_pass_histogram_syst[systematic + "_normalization"] = input_file.Get(pass_histogram_name_normalization)
+					if supersample in config.background_names or supersample in config.simulated_signal_names:
 						n_input_events = input_file.Get("h_input_nevents").Integral()
 						print "\tSample input events = {}".format(n_input_events)
 						print "\tSample processed events = {}".format(input_file.Get("h_processed_nevents").Integral())
@@ -977,6 +1020,10 @@ if __name__ == "__main__":
 						for systematic in systematics[selection]:
 							this_pass_histogram_syst[systematic].Scale(lumi_sf)
 							this_fail_histogram_syst[systematic].Scale(lumi_sf)
+						if use_loose_template:
+							this_pass_histogram_normalization.Scale(lumi_sf)
+							for systematic in systematics[selection]:
+								this_pass_histogram_syst[systematic + "_normalization"].Scale(lumi_sf)
 
 					if first:
 						pass_histograms[supersample] = this_pass_histogram.Clone()
@@ -992,6 +1039,14 @@ if __name__ == "__main__":
 							fail_histograms_syst[supersample][systematic] = this_fail_histogram_syst[systematic].Clone()
 							fail_histograms_syst[supersample][systematic].SetDirectory(0)
 							fail_histograms_syst[supersample][systematic].SetName("{}_fail_{}".format(supersample, systematic))
+						if use_loose_template:
+							pass_histograms[supersample + "_normalization"] = this_pass_histogram_normalization.Clone()
+							pass_histograms[supersample + "_normalization"].SetDirectory(0)
+							pass_histograms[supersample + "_normalization"].SetName("{}_pass_normalization".format(supersample))
+							for systematic in systematics[selection]:
+								pass_histograms_syst[supersample + "_normalization"][systematic] = this_pass_histogram_syst[systematic + "_normalization"].Clone()
+								pass_histograms_syst[supersample + "_normalization"][systematic].SetDirectory(0)
+								pass_histograms_syst[supersample + "_normalization"][systematic].SetName("{}_pass_{}_normalization".format(supersample, systematic))
 						first = False
 					else:
 						pass_histograms[supersample].Add(this_pass_histogram)
@@ -999,15 +1054,30 @@ if __name__ == "__main__":
 						for systematic in systematics[selection]:
 							pass_histograms_syst[supersample][systematic].Add(this_pass_histogram_syst[systematic])
 							fail_histograms_syst[supersample][systematic].Add(this_fail_histogram_syst[systematic])
+						if use_loose_template:
+							pass_histograms[supersample + "_normalization"].Add(this_pass_histogram_normalization)
+							for systematic in systematics[selection]:
+								pass_histograms_syst[supersample + "_normalization"][systematic].Add(this_pass_histogram_syst[systematic + "_normalization"])
 					#if sample in cross_sections:
 					#	n_input_events += input_file.Get("h_input_nevents").Integral()
 					input_file.Close()
 				output_file.cd()
+				if use_loose_template:
+					if pass_histograms[supersample].Integral():
+						pass_histograms[supersample].Scale(pass_histograms[supersample + "_normalization"].Integral() / pass_histograms[supersample].Integral())
+					for systematic in systematics[selection]:
+						if pass_histograms_systematic[supersample].Integral():
+							pass_histograms[supersample].Scale(pass_histograms_systematic[supersample + "_normalization"].Integral() / pass_histograms_systematic[supersample].Integral())
+
 				pass_histograms[supersample].Write()
 				fail_histograms[supersample].Write()
 				for systematic in systematics[selection]:
 					pass_histograms_syst[supersample][systematic].Write()
 					fail_histograms_syst[supersample][systematic].Write()
+				if use_loose_template:
+					pass_histograms[supersample + "_normalization"].Write()
+					for systematic in systematics[selection]:
+						pass_histograms_syst[supersample + "_normalization"][systematic].Write()
 
 				# Now do the extra histograms for plots
 				if selection in ["SR", "Preselection", "muCR"]:
@@ -1026,7 +1096,7 @@ if __name__ == "__main__":
 							this_histogram_pass = input_file.Get("h_{}_{}_pass_{}".format(selection, args.jet_type, var))
 							this_histogram_fail = input_file.Get("h_{}_{}_fail_{}".format(selection, args.jet_type, var))
 							# Normalize histograms
-							if supersample in config.background_names or supersample in config.signal_names:
+							if supersample in config.background_names or supersample in config.simulated_signal_names:
 								n_input_events = input_file.Get("h_input_nevents").Integral()
 								if "Spin0" in sample or "Sbb" in sample:
 									# Normalize to visible cross section of 1 pb
@@ -1083,6 +1153,8 @@ if __name__ == "__main__":
 						extra_histograms_fail[var].Write()
 					# End loop over extra vars
 				# End if SR or muCR
+				
+				# For matched histograms, also save the matched and unmatched histograms
 			# End loop over supersamples
 			output_file.Close()
 
