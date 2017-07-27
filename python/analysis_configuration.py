@@ -140,9 +140,8 @@ skims["QCD_HT2000toInf"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_B
 #skims["WZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/WZ_13TeV_pythia8.txt"), "r")]
 #skims["ZZ"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ZZ_13TeV_pythia8.txt"), "r")]
 
-for mass in signal_model_masses["Sbb"]:
+for mass in signal_model_masses:
 	skims["Sbb{}".format(mass)] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/Spin0_ggPhibb1j_g1_{}_Scalar.txt".format(mass)))]
-for mass in signal_model_masses["PSbb"]:
 	skims["PSbb{}".format(mass)] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/Spin0_ggPhibb1j_g1_{}_PseudoScalar.txt".format(mass)))]
 
 # Function to infer the sample from a file path... removing for now, because this doesn't work well on the batch system. E.g. if you have subfiles with generic names (e.g. Output_subjob1.root), there is no way to get the sample.
@@ -243,9 +242,8 @@ sklims = {
 	#'SingleMuRun2016G': [lpchbb_directory+'/SingleMuonRun2016G_03Feb2017_v1_fixtrig.root'], 
 	#'SingleMuRun2016H': [lpchbb_directory+'/SingleMuonRun2016H_03Feb2017_ver2_v1_fixtrig.root', lpchbb_directory+'/SingleMuonRun2016H_03Feb2017_ver3_v1_fixtrig.root'],
 }
-for mass in signal_model_masses["Sbb"]:
+for mass in signal_model_masses:
 	sklims["Sbb{}".format(mass)] = [lpchbb_directory + "/zprimebits-v12.05/Spin0_ggPhibb1j_g1_{}_Scalar_1000pb_weighted.root".format(mass)]
-for mass in signal_model_masses["PSbb"]:
 	sklims["PSbb{}".format(mass)] = [lpchbb_directory + "/zprimebits-v12.05/Spin0_ggPhibb1j_g1_{}_PseudoScalar_1000pb_weighted.root".format(mass)]
 
 for mass in [50,75,100,125,150,200,250,300,400,500]:
