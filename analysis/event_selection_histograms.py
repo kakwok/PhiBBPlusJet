@@ -160,12 +160,12 @@ class EventSelectionHistograms(AnalysisBase):
 
 			for systematic in self._weight_systematics[selection] + self._jet_systematics:
 				self._selection_histograms[selection].AddTH2D("pass_{}".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
+				self._selection_histograms[selection].AddTH2D("passloose_{}".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 				self._selection_histograms[selection].AddTH2D("fail_{}".format(systematic), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 				if self._do_optimization:
 					for dcsv_cut in self._dcsv_cuts:
 						self._selection_histograms[selection].AddTH2D("pass_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 						self._selection_histograms[selection].AddTH2D("pass_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)					
-						self._selection_histograms[selection].AddTH2D("passloose_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 
 						self._selection_histograms[selection].AddTH2D("fail_{}_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
 						self._selection_histograms[selection].AddTH2D("fail_{}_unweighted_dcsv{}".format(systematic, dcsv_cut), "; {} m_{{SD}}^{{PUPPI}} (GeV); {} p_{{T}} (GeV)".format(self._jet_type, self._jet_type), "m_{SD}^{PUPPI} [GeV]", 80, 40, 600, "p_{T} [GeV]", len(self._pt_bins) - 1, self._pt_bins)
