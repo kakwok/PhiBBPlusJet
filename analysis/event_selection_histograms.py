@@ -830,50 +830,46 @@ if __name__ == "__main__":
 					files_per_job = 10
 				elif "Spin0" in sample or "Sbb" in sample:
 					files_per_job = 3
+			n_jobs = int(math.ceil(1. * len(sample_files[sample]) / files_per_job))
 
-			csubjob_index = 0
-			this_job_input_files = []
-			input_files_to_transfer = []
-			for file_counter, filename in enumerate(sample_files[sample], start=1):
-				print file_counter, filename
-				if "root://" in filename:
-					this_job_input_files.append(filename)
-				else:
-					input_files_to_transfer.append(filename)
-					this_job_input_files.append(os.path.basename(filename))
-				
-				if file_counter % files_per_job == 0 or file_counter == len(sample_files[sample]):
-					print "\nSubmitting jobs now."
-					print "\t input_files_to_transfer = ",
-					print input_files_to_transfer
-					job_script_path = "{}/run_csubjob{}.sh".format(submission_directory, csubjob_index)
-					job_script = open(job_script_path, 'w')
-					job_script.write("#!/bin/bash\n")
-					job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files {} --label {}_csubjob{} --output_folder . --run ".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index)
-					if args.skim_inputs or args.all_lxplus:
-						job_command += " --skim_inputs "
-					if args.do_optimization:
-						job_command += " --do_optimization "
-					job_command += " 2>&1\n"
-					job_script.write(job_command)
-					job_script.close()
-					submission_command = "csub {} --cmssw --no_retar".format(job_script_path)
-					if len(input_files_to_transfer) >= 1:
-						submission_command += " -F " + ",".join(input_files_to_transfer)
-					print submission_command
+			job_script_path = "{}/run_csubjob.sh".format(submission_directory)
+			job_script = open(job_script_path, 'w')
+			job_script.write("#!/bin/bash\n")
+			job_script.write("input_files=( " + " ".join(sample_files[sample]) + " )\n")
+			job_script.write("files_per_job=" + str(files_per_job) + "\n")
+			job_script.write("first_file_index=$(($1*$files_per_job))\n")
+			job_script.write("max_file_index=$((${#input_files[@]}-1))\n")
+			job_script.write("if [ $(($first_file_index+$files_per_job-1)) -gt $max_file_index ]; then\n")
+			job_script.write("	files_per_job=$(($max_file_index-$first_file_index+1))\n")
+			job_script.write("fi\n")
+			job_script.write("declare -a this_input_files=(${input_files[@]:$first_file_index:$files_per_job})\n")
+			job_script.write("function join { local IFS=\"$1\"; shift; echo \"$*\"; }\n")
+			job_script.write("this_input_files_string=\"$(join , ${this_input_files[@]})\"\n")
+			job_script.write("echo \"Input files:\"\n")
+			job_script.write("echo $this_input_files_string\n")
 
-					# Save csub command for resubmission attempts
-					submission_script_path = "{}/csub_command{}.sh".format(submission_directory, csubjob_index)
-					submission_script = open(submission_script_path, "w")
-					submission_script.write("#!/bin/bash\n")
-					submission_script.write(submission_command + "\n")
-					submission_script.close()
+			job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files $this_input_files_string --label {}_csubjob$1 --output_folder . --run ".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index)
+			if args.skim_inputs or args.all_lxplus:
+				job_command += " --skim_inputs "
+			if args.do_optimization:
+				job_command += " --do_optimization "
+			job_command += " 2>&1\n"
+			job_script.write(job_command)
+			job_script.close()
+			submission_command = "csub {} --cmssw --no_retar -n {}".format(job_script_path, n_jobs)
+			print submission_command
 
-					# Submit jobs
-					os.system(submission_command)
-					this_job_input_files = []
-					input_files_to_transfer = []
-					csubjob_index += 1
+			# Save csub command for resubmission attempts
+			submission_script_path = "{}/csub_command.sh".format(submission_directory)
+			submission_script = open(submission_script_path, "w")
+			submission_script.write("#!/bin/bash\n")
+			submission_script.write(submission_command + "\n")
+			submission_script.close()
+
+			# Submit jobs
+			os.system(submission_command)
+
+
 			hadd_scripts.append("{}/hadd.sh".format(submission_directory))
 			hadd_script = open("{}/hadd.sh".format(submission_directory), "w")
 			hadd_script.write("#!/bin/bash\n")
