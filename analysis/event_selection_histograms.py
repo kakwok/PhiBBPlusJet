@@ -848,7 +848,7 @@ if __name__ == "__main__":
 			job_script.write("echo \"Input files:\"\n")
 			job_script.write("echo $this_input_files_string\n")
 
-			job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files $this_input_files_string --label {}_csubjob$1 --output_folder . --run ".format(args.jet_type, ",".join(this_job_input_files), sample, csubjob_index)
+			job_command = "python $CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/event_selection_histograms.py --jet_type {} --files $this_input_files_string --label {}_csubjob$1 --output_folder . --run ".format(args.jet_type, sample)
 			if args.skim_inputs or args.all_lxplus:
 				job_command += " --skim_inputs "
 			if args.do_optimization:
