@@ -931,6 +931,8 @@ if __name__ == "__main__":
 				fail_histograms_syst[supersample] = {}
 				use_Vmatched_histograms = (supersample in ["wqq", "zqq", "hbb"]) or ("Sbb" in supersample)
 				use_loose_template = (supersample in ["wqq", "zqq"]) # Use looser DCSV cut for pass shape, to improve statistics
+				if use_loose_template:
+					pass_histograms_syst[supersample + "_normalization"] = {}
 
 				for sample in config.samples[supersample]:
 					input_histogram_filename = "/uscms/home/dryu/DAZSLE/data/LimitSetting/InputHistograms_{}_{}.root".format(sample, args.jet_type)
