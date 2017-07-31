@@ -1064,8 +1064,8 @@ if __name__ == "__main__":
 					if pass_histograms[supersample].Integral():
 						pass_histograms[supersample].Scale(pass_histograms[supersample + "_normalization"].Integral() / pass_histograms[supersample].Integral())
 					for systematic in systematics[selection]:
-						if pass_histograms_systematic[supersample].Integral():
-							pass_histograms[supersample].Scale(pass_histograms_systematic[supersample + "_normalization"].Integral() / pass_histograms_systematic[supersample].Integral())
+						if pass_histograms_syst[supersample][systematic].Integral():
+							pass_histograms_syst[supersample][systematic].Scale(pass_histograms_syst[supersample + "_normalization"][systematic].Integral() / pass_histograms_syst[supersample][systematic].Integral())
 
 				pass_histograms[supersample].Write()
 				fail_histograms[supersample].Write()
