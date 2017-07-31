@@ -953,6 +953,8 @@ if __name__ == "__main__":
 						pass_histogram_name_normalization = pass_histogram_name
 						pass_histogram_name = pass_histogram_name.replace("pass", "passloose")
 					this_pass_histogram = input_file.Get(pass_histogram_name)
+					if not this_pass_histogram:
+						print "[event_selection_histograms] ERROR : Couldn't find histogram {} in file {}".format(pass_histogram_name, input_file.GetPath())
 					this_fail_histogram = input_file.Get(fail_histogram_name)
 					if use_loose_template:
 						this_pass_histogram_normalization = input_file.Get(pass_histogram_name_normalization)
