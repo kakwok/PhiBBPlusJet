@@ -3,7 +3,8 @@ import sys
 from math import sqrt, floor
 from ROOT import *
 from DAZSLE.ZPrimePlusJet.histogram_interpolator import HistogramInterpolator 
-import DAZSLE.PhiBBPlusJet.analysis_configuration as config
+#import DAZSLE.PhiBBPlusJet.analysis_configuration as config
+import DAZSLE.ZPrimePlusJet.xbb_config as config
 gInterpreter.Declare("#include \"MyTools/RootUtils/interface/SeabornInterface.h\"")
 gSystem.Load(os.path.expandvars("$CMSSW_BASE/lib/$SCRAM_ARCH/libMyToolsRootUtils.so"))
 gROOT.SetBatch(True)
@@ -173,9 +174,11 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Perform signal interpolations on pT vs. mSD histograms.')
 	parser.add_argument('--jet_type', type=str, help="AK8 or CA15")
 	parser.add_argument('--interpolate', action='store_true', help="Perform signal interpolations")
+	parser.add_argument('--interpolate_muCR', action='store_true', help="Perform signal interpolations")
 	parser.add_argument('--validate', type=int, help="Validate interpolation at specified mass value (must be a simulated point with adjacent simulated points)")
 	parser.add_argument('--plots', action='store_true', help="Validate interpolation at specified mass value (must be a simulated point with adjacent simulated points)")
-	parser.add_argument('--input_masses', type=str, default="100,125,200,300,350,400", help="List of input masses (comma-separated)")
+	parser.add_argument('--input_masses', type=str, default="50,100,125,200,300,350,400,500", help="List of input masses (comma-separated)")
+	parser.add_argument('--region', type=str, default="SR", help="SR or muCR")
 	output_group = parser.add_mutually_exclusive_group() 
 	output_group.add_argument('--output_masses', type=str, help="List of output masses (comma-separated)")
 	output_group.add_argument('--output_range', type=str, help="Range of output masses (e.g. 100,425,25 for 100-400 GeV in 25 GeV steps)")
@@ -199,47 +202,77 @@ if __name__ == "__main__":
 	if args.interpolate:
 		# Input and output files (uses David's configuration. Replace if you are not David.)
 		input_file = TFile(config.get_histogram_file("SR", args.jet_type), "READ")
-		output_file = TFile(config.get_interpolation_file(args.jet_type), "RECREATE")
+		output_file = TFile(config.get_interpolation_file("SR", args.jet_type), "RECREATE")
 
 		# Top-level loop
 		for region in ["pass", "fail"]:
 			for model in ["Sbb", "PSbb"]:
-				input_histograms = {}
-				output_histograms_1D = {}
-				model_histogram = None
-				for ptbin in xrange(1, 7):
-					input_histograms[ptbin] = {}
-					output_histograms_1D[ptbin] = {}
-					for mass in input_masses:
-						if not model_histogram:
-							model_histogram = input_file.Get("{}{}_{}".format(model, mass, region))
-							model_histogram.SetName("model")
-							model_histogram.SetDirectory(0)
-							model_histogram.Reset()
-							if model_histogram.GetNbinsY() != 6:
-								print "ERROR : The model histogram appears to have !=6 y bins, which this code assumes."
-								sys.exit(1)
-						input_histograms[ptbin][mass] = input_file.Get("{}{}_{}".format(model, mass, region)).ProjectionX("{}{}_{}_ptbin{}".format(model, mass, region, ptbin), ptbin, ptbin)
-						input_histograms[ptbin][mass].SetDirectory(0)
-					print input_histograms[ptbin]
-					interpolator = HistogramInterpolator(input_histograms[ptbin])
-					for mass in output_masses:
-						output_histograms_1D[ptbin][mass] = interpolator.make_interpolation(mass)
-						output_histograms_1D[ptbin][mass].SetName("{}{}_{}_ptbin{}".format(model, mass, region, ptbin))
-						#output_file.cd()
-						#output_histograms_1D[ptbin][mass].Write()
+				for syst in ["", "_JESUp", "_JERUp", "_PUUp", "_TriggerUp", "_JESDown", "_JERDown", "_PUDown", "_TriggerDown"]:
+					input_histograms = {}
+					output_histograms_1D = {}
+					model_histogram = None
+					for ptbin in xrange(1, 7):
+						input_histograms[ptbin] = {}
+						output_histograms_1D[ptbin] = {}
+						for mass in input_masses:
+							if not model_histogram:
+								model_histogram = input_file.Get("{}{}_{}{}".format(model, mass, region, syst))
+								if not model_histogram:
+									print "[signal_interpolations] ERROR : Couldn't find histogram {} in file {}".format("{}{}_{}{}".format(model, mass, region, syst), input_file.GetPath())
+								model_histogram.SetName("model")
+								model_histogram.SetDirectory(0)
+								model_histogram.Reset()
+								if model_histogram.GetNbinsY() != 6:
+									print "ERROR : The model histogram appears to have !=6 y bins, which this code assumes."
+									sys.exit(1)
+							input_histograms[ptbin][mass] = input_file.Get("{}{}_{}{}".format(model, mass, region, syst)).ProjectionX("{}{}_{}_ptbin{}".format(model, mass, region, ptbin), ptbin, ptbin)
+							input_histograms[ptbin][mass].SetDirectory(0)
+						print input_histograms[ptbin]
+						interpolator = HistogramInterpolator(input_histograms[ptbin])
+						for mass in output_masses:
+							output_histograms_1D[ptbin][mass] = interpolator.make_interpolation(mass)
+							output_histograms_1D[ptbin][mass].SetName("{}{}_{}{}_ptbin{}".format(model, mass, region, syst, ptbin))
+							#output_file.cd()
+							#output_histograms_1D[ptbin][mass].Write()
 
-				# Put 1D histograms back together into 2D
-				output_histograms = {}
-				for mass in output_masses:
-					output_histograms[mass] = model_histogram.Clone()
-					output_histograms[mass].SetName("{}{}_{}".format(model, mass, region))
-					for msdbin in xrange(1, model_histogram.GetNbinsX() + 1):
-						for ptbin in xrange(1, model_histogram.GetNbinsY() + 1):
-							output_histograms[mass].SetBinContent(msdbin, ptbin, output_histograms_1D[ptbin][mass].GetBinContent(msdbin))
-							output_histograms[mass].SetBinError(msdbin, ptbin, output_histograms_1D[ptbin][mass].GetBinContent(msdbin))
-					output_file.cd()
-					output_histograms[mass].Write()
+					# Put 1D histograms back together into 2D
+					output_histograms = {}
+					for mass in output_masses:
+						output_histograms[mass] = model_histogram.Clone()
+						output_histograms[mass].SetName("{}{}_{}{}".format(model, mass, region, syst))
+						for msdbin in xrange(1, model_histogram.GetNbinsX() + 1):
+							for ptbin in xrange(1, model_histogram.GetNbinsY() + 1):
+								output_histograms[mass].SetBinContent(msdbin, ptbin, output_histograms_1D[ptbin][mass].GetBinContent(msdbin))
+								output_histograms[mass].SetBinError(msdbin, ptbin, output_histograms_1D[ptbin][mass].GetBinContent(msdbin))
+						output_file.cd()
+						output_histograms[mass].Write()
+		input_file.Close()
+		output_file.Close()
+
+	if args.interpolate_muCR:
+		# Input and output files (uses David's configuration. Replace if you are not David.)
+		input_file = TFile(config.get_histogram_file("muCR", args.jet_type), "READ")
+		output_file = TFile(config.get_interpolation_file("muCR", args.jet_type), "RECREATE")
+		# Top-level loop
+		for region in ["pass", "fail"]:
+			for model in ["Sbb", "PSbb"]:
+				for syst in ['','_JERUp','_JERDown','_JESUp','_JESDown','_MuTriggerUp','_MuTriggerDown','_MuIDUp','_MuIDDown','_MuIsoUp','_MuIsoDown','_PUUp','_PUDown']:
+					input_histograms = {}
+					output_histograms = {}
+					for mass in input_masses:
+						h_2D = input_file.Get("{}{}_{}{}".format(model, mass, region, syst))
+						if not h_2D:
+							print "ERROR : Couldn't find histogram {}{}_{}{} in file {}".format(model, mass, region, syst, input_file.GetPath())
+							sys.exit(1)
+						input_histograms[mass] = h_2D.ProjectionX()
+						input_histograms[mass].SetDirectory(0)
+					print input_histograms
+					interpolator = HistogramInterpolator(input_histograms)
+					for mass in output_masses:
+						output_histograms[mass] = interpolator.make_interpolation(mass)
+						output_histograms[mass].SetName("{}{}_{}{}".format(model, mass, region, syst))
+						output_file.cd()
+						output_histograms[mass].Write()
 		input_file.Close()
 		output_file.Close()
 
@@ -308,7 +341,7 @@ if __name__ == "__main__":
 
 	if args.plots:
 		sim_file = TFile(config.get_histogram_file("SR", args.jet_type), "READ")
-		int_file = TFile(config.get_interpolation_file(args.jet_type), "READ")
+		int_file = TFile(config.get_interpolation_file("SR", args.jet_type), "READ")
 		for region in ["pass", "fail"]:
 			for model in ["Sbb", "PSbb"]:
 				for ptbin in xrange(0, 7):

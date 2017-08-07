@@ -85,7 +85,7 @@ if __name__ == "__main__":
 	regions = ["SR", "muCR"]
 	supersamples = {
 		"SR":["data_obs", "Sbb100", "Sbb200", "Sbb300", "qcd", "tqq", "zqq", "wqq", "hbb"],
-		"muCR":["data_singlemu", "tqq", "qcd", "wlnu", "zll"]
+		"muCR":["data_singlemu", "tqq", "qcd", "wlnu", "zll", "Sbb125"]
 	}
 	for jet_type in jet_types:
 		for region in regions:

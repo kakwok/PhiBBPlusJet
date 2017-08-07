@@ -143,6 +143,10 @@ class EventSelectionHistograms(AnalysisBase):
 			self._selection_histograms[selection].AddTH1D("pass_pt", "pt", "pt", 400, 0., 2000.)
 			self._selection_histograms[selection].AddTH1D("fail_pt", "pt", "pt", 400, 0., 2000.)
 
+			self._selection_histograms[selection].AddTH1D("msd", "msd", "msd", 120, 0., 600.)
+			self._selection_histograms[selection].AddTH1D("pass_msd", "msd", "msd", 120, 0., 600.)
+			self._selection_histograms[selection].AddTH1D("fail_msd", "msd", "msd", 120, 0., 600.)
+
 			self._selection_histograms[selection].AddTH1D("eta", "eta", "eta", 60, -3., 3.)
 			self._selection_histograms[selection].AddTH1D("pass_eta", "eta", "eta", 60, -3., 3.)
 			self._selection_histograms[selection].AddTH1D("fail_eta", "eta", "eta", 60, -3., 3.)
@@ -485,6 +489,7 @@ class EventSelectionHistograms(AnalysisBase):
 					self._selection_histograms[selection].GetTH1D("dcsv").Fill(fatjet_dcsv, event_weight)
 					self._selection_histograms[selection].GetTH1D("n2ddt").Fill(fatjet_n2ddt, event_weight)
 					self._selection_histograms[selection].GetTH1D("pt").Fill(fatjet_pt, event_weight)
+					self._selection_histograms[selection].GetTH1D("msd").Fill(fatjet_msd, event_weight)
 					self._selection_histograms[selection].GetTH1D("eta").Fill(fatjet_eta, event_weight)
 					self._selection_histograms[selection].GetTH1D("rho").Fill(fatjet_rho, event_weight)
 
@@ -508,6 +513,7 @@ class EventSelectionHistograms(AnalysisBase):
 						self._selection_histograms[selection].GetTH1D("pass_dcsv").Fill(fatjet_dcsv, event_weight)
 						self._selection_histograms[selection].GetTH1D("pass_n2ddt").Fill(fatjet_n2ddt, event_weight)
 						self._selection_histograms[selection].GetTH1D("pass_pt").Fill(fatjet_pt, event_weight)
+						self._selection_histograms[selection].GetTH1D("pass_msd").Fill(fatjet_msd, event_weight)
 						self._selection_histograms[selection].GetTH1D("pass_eta").Fill(fatjet_eta, event_weight)
 						self._selection_histograms[selection].GetTH1D("pass_rho").Fill(fatjet_rho, event_weight)
 
@@ -530,6 +536,7 @@ class EventSelectionHistograms(AnalysisBase):
 						self._selection_histograms[selection].GetTH1D("fail_dcsv").Fill(fatjet_dcsv, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_n2ddt").Fill(fatjet_n2ddt, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_pt").Fill(fatjet_pt, event_weight)
+						self._selection_histograms[selection].GetTH1D("fail_msd").Fill(fatjet_msd, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_eta").Fill(fatjet_eta, event_weight)
 						self._selection_histograms[selection].GetTH1D("fail_rho").Fill(fatjet_rho, event_weight)
 					if fatjet_dcsv > self._dcsv_cut_loose:
