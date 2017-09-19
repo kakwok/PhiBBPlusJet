@@ -5,7 +5,16 @@ class BaconEventSelector(EventSelector):
 	def __init__(self, name="UnnamedBaconEventSelector"):
 		super(BaconEventSelector, self).__init__(name)
 
-
+	def TriggerBits(self):
+		triggerbits = self._event.triggerBits
+		self._return_data["TriggerBits"] = self._event.triggerBits
+		return (triggerbits & self._cut_parameters["TriggerBits"])
+	
+	def AK8Puppijet0_rho(self):
+		rho = self._event.AK8Puppijet0_rho
+		self._return_data["AK8Puppijet0_rho"] = self._event.AK8Puppijet0_rho
+		return (rho > -6 and rho <-2.1)
+	
 	def Min_dphi_mu_jet(self):
 		phi_mu = self._event.vmuoLoose0_phi
 		phi_jet = 0.
@@ -691,3 +700,7 @@ class BaconEventSelector(EventSelector):
 			self.add_nminusone_histogram(cut_name, cut_name, "#N_{2}^{DDT}", 100, -5., 5.);
 		elif cut_name == "Max_CA15Puppijet0_N2DDT":
 			self.add_nminusone_histogram(cut_name, cut_name, "#N_{2}^{DDT}", 100, -5., 5.);		
+		elif cut_name == "TriggerBits":
+			self.add_nminusone_histogram(cut_name, cut_name, "trigger bit", 20, 0., 20.);		
+		elif cut_name == "AK8Puppijet0_rho":
+			self.add_nminusone_histogram(cut_name, cut_name, "#rho", 200, -10., 10.);		
