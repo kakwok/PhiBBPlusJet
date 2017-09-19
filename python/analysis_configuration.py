@@ -107,13 +107,24 @@ samples = {
 
 # Skims. Dictionary is [sample name]:[path to skim].
 skims = {}
-skims["JetHTRun2016B"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016B.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016B_PromptReco_v2_resub.root"]
-skims["JetHTRun2016C"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016C.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016C_PromptReco_v2.root"]
-skims["JetHTRun2016D"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016D.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016D_PromptReco_v2.root"]
-skims["JetHTRun2016E"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016E.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016E_PromptReco_v2.root"]
-skims["JetHTRun2016F"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016F.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016F_PromptReco_v1.root"]
-skims["JetHTRun2016G"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016G.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016G_PromptReco_v1.root"]
-skims["JetHTRun2016H"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016H.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016H_PromptReco_v2.root"]
+#skims["JetHTRun2016B"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016B.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016B_PromptReco_v2_resub.root"]
+#skims["JetHTRun2016C"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016C.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016C_PromptReco_v2.root"]
+#skims["JetHTRun2016D"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016D.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016D_PromptReco_v2.root"]
+#skims["JetHTRun2016E"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016E.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016E_PromptReco_v2.root"]
+#skims["JetHTRun2016F"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016F.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016F_PromptReco_v1.root"]
+#skims["JetHTRun2016G"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016G.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016G_PromptReco_v1.root"]
+#skims["JetHTRun2016H"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/JetHTRun2016H.txt"))] #["root://cmsxrootd-site.fnal.gov//store/user/jduarte1/zprimebits-v11.062/JetHTRun2016H_PromptReco_v2.root"]
+
+skims["JetHTRun2016B"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016B_ver1.txt"))
+skims["JetHTRun2016B"]+= readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016B_ver2.txt"))
+skims["JetHTRun2016C"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016C_ver1.txt"))
+skims["JetHTRun2016D"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016D_ver1.txt"))
+skims["JetHTRun2016E"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016E_ver1.txt"))
+skims["JetHTRun2016F"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016F_ver1.txt"))
+skims["JetHTRun2016G"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016G_ver1.txt"))
+skims["JetHTRun2016H"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016H_ver2.txt"))
+skims["JetHTRun2016H"]+= readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/2016H_ver3.txt"))
+
 skims["SingleMuRun2016B"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/SingleMuRun2016B.txt"))] 
 skims["SingleMuRun2016C"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/SingleMuRun2016C.txt"))] 
 skims["SingleMuRun2016D"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/SingleMuRun2016D.txt"))] 
@@ -121,14 +132,30 @@ skims["SingleMuRun2016E"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_
 skims["SingleMuRun2016F"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/SingleMuRun2016F.txt"))] 
 skims["SingleMuRun2016G"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/SingleMuRun2016G.txt"))] 
 skims["SingleMuRun2016H"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/SingleMuRun2016H.txt"))] 
-skims["QCD_HT100to200"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT100to200_13TeV.txt"), "r")]
-skims["QCD_HT200to300"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT200to300_13TeV.txt"), "r")]
-skims["QCD_HT300to500"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT300to500_13TeV.txt"), "r")]
-skims["QCD_HT500to700"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT500to700_13TeV.txt"), "r")]
-skims["QCD_HT700to1000"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT700to1000_13TeV.txt"), "r")]
-skims["QCD_HT1000to1500"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT1000to1500_13TeV.txt"), "r")]
-skims["QCD_HT1500to2000"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT1500to2000_13TeV.txt"), "r")]
-skims["QCD_HT2000toInf"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT2000toInf_13TeV.txt"), "r")]
+
+skims["QCD_HT100to200"]   = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT100to200_13TeV.txt"))
+skims["QCD_HT200to300"]   = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT200to300_13TeV.txt"))
+skims["QCD_HT200to300"]  += readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT200to300_13TeV_ext.txt"))
+skims["QCD_HT300to500"]   = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT300to500_13TeV.txt"))
+skims["QCD_HT300to500"]  += readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT300to500_13TeV_ext.txt"))
+skims["QCD_HT500to700"]   = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT500to700_13TeV.txt"))
+skims["QCD_HT500to700"]  += readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT500to700_13TeV_ext.txt"))
+skims["QCD_HT700to1000"]  = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT700to1000_13TeV.txt"))
+skims["QCD_HT700to1000"] += readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT700to1000_13TeV_ext.txt"))
+skims["QCD_HT1000to1500"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT1000to1500_13TeV.txt"))
+skims["QCD_HT1000to1500"]+= readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT1000to1500_13TeV_ext.txt"))
+skims["QCD_HT1500to2000"] = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT1500to2000_13TeV.txt"))
+skims["QCD_HT1500to2000"]+= readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT1500to2000_13TeV_ext.txt"))
+skims["QCD_HT2000toInf"]  = readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT2000toInf_13TeV.txt"))
+skims["QCD_HT2000toInf"] += readFile(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/PhiBBPlusJet/analysis/inputFiles/QCD_HT2000toInf_13TeV_ext.txt"))
+#skims["QCD_HT100to200"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT100to200_13TeV.txt"), "r")]
+#skims["QCD_HT200to300"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT200to300_13TeV.txt"), "r")]
+#skims["QCD_HT300to500"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT300to500_13TeV.txt"), "r")]
+#skims["QCD_HT500to700"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT500to700_13TeV.txt"), "r")]
+#skims["QCD_HT700to1000"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT700to1000_13TeV.txt"), "r")]
+#skims["QCD_HT1000to1500"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT1000to1500_13TeV.txt"), "r")]
+#skims["QCD_HT1500to2000"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT1500to2000_13TeV.txt"), "r")]
+#skims["QCD_HT2000toInf"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/QCD_HT2000toInf_13TeV.txt"), "r")]
 #skims["ST_t_antitop"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_t_channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.txt"), "r")]
 #skims["ST_t_top"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_t_channel_top_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV_powhegV2_madspin.txt"), "r")]
 #skims["ST_tW_antitop"] = [x.strip() for x in open(os.path.expandvars("$CMSSW_BASE/src/DAZSLE/ZPrimePlusJet/data/skim_directory/lxplus/ST_tW_antitop_5f_inclusiveDecays_13TeV_powheg_pythia8_TuneCUETP8M2T4.txt"), "r")]
@@ -271,3 +298,9 @@ def get_histogram_file(selection, jet_type):
 def get_interpolation_file(jet_type):
 	return paths["LimitSetting"] + "/Xbb_inputs/interpolations_{}.root".format(jet_type)
 
+#Read inputfiles with comments
+def readFile(fname):
+    lines=[]
+    for x in open(fname):
+        if not x[0]=="#": lines.append(x.strip())
+    return lines
